@@ -1,0 +1,166 @@
+{% load static %}
+<!-- Topbar Start -->
+<div class="container-fluid d-none d-lg-block">
+    <div class="row align-items-center bg-dark px-lg-5">
+        <div class="col-lg-9">
+            <nav class="navbar navbar-expand-sm bg-dark p-0">
+                <ul class="navbar-nav ml-n2">
+                    <li class="nav-item border-right border-secondary">
+                        <a class="nav-link text-body small"><i class="fa fa-clock text-primary me-2"></i>Campo Grande - {{ current_date|date:"d" }} de {{ current_date|date:"F" }} de {{ current_date|date:"Y" }}</a>
+                    </li>
+                    <li class="nav-item border-right border-secondary">
+                        <a class="nav-link text-body small"><i class="fa fa-users text-primary me-2"></i> {{ user_count }}</a>
+                    </li>
+                    <li class="nav-item border-right border-secondary">
+                            <a class="nav-link text-body small" href="#"><i class="fas fa-question-circle text-primary me-2"></i>FAQ</a>
+                        </li>
+                        <li class="nav-item border-right border-secondary">
+                            <a class="nav-link text-body small" href="{% url 'termos_de_uso' %}"><i class="fas fa-question-circle text-primary me-2"></i>Termos de Uso</a>
+                        </li>
+                    <li class="nav-item border-right border-secondary">
+                        <a class="nav-link text-body small" href="https://wa.me/5567991363900" target="_blank"><i class="fas fa-address-book text-primary me-2"></i>Contatos</a>
+                    </li>
+                    {% if not user.is_authenticated %}
+                    <li class="nav-item border-right border-secondary">
+                        <a class="nav-link text-body small" href="{% url 'login' %}">
+                             <i class="fa fa-sign-in-alt text-primary me-2"></i>Login</a>
+                    </li>
+                        <li class="nav-item border-right border-secondary">
+                            <a class="nav-link text-body small" href="{% url 'register' %}">
+                                <i class="fa fa-user text-primary me-2"></i>Registrar
+                            </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+        <div class="col-lg-3 text-right d-none d-md-block">
+        <nav class="navbar navbar-expand-sm bg-dark p-0">
+            <ul class="navbar-nav ml-auto mr-n2">
+                <li class="nav-item">
+                    <a class="nav-link text-body small" href="https://wa.me/5567991363900" target="_blank"><small class="fab fa-whatsapp text-primary me-2"></small></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-body small" href="#"><small class="fab fa-facebook-f text-primary me-2"></small></a>
+                </li>
+                {% if user.is_authenticated %}
+
+            <li class="nav-item">
+                <a class="nav-link text-body small" href="{% url 'dashboard' %}">
+                    <i class="fas fa-tachometer-alt text-primary me-2"></i>Dashboard
+                </a>
+            </li>
+            <li class="nav-item">
+                <a data-bs-toggle="modal" href="#logoutModal" id="logoutBtn" class="nav-link text-body small">
+                    <small class="fas fa-power-off text-primary me-2"></small>Sair
+                </a>
+            </li>
+
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+
+    </div>
+    <div class="row align-items-center bg-white py-3 px-lg-3">
+        <div class="col-lg-4">
+            <a href="{% url 'home' %}" class="navbar-brand p-0 d-none d-lg-block">
+                <img src="{% static 'dashboard/img/logo_coophanews1.png' %}" alt="Logo" style="height: 120px;"/> 
+            </a>
+        </div>
+        <div class="col-lg-8 text-center text-lg-right">
+            <div id="banner-container">
+                {% if banner_global %}
+                    <a href="{{ banner_global.link }}" class="banner-item">
+            <img class="img-fluid" src="{{ banner_global.banner.url }}" style="width: 728px; height: 90px;" alt="Banner VIP">
+                    </a>
+                {% else %}
+                    <p>Não há banners disponíveis no momento.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        let banners = document.querySelectorAll('.banner-item');
+        let currentBanner = 0;
+
+        if (banners.length > 0) {
+            banners[currentBanner].style.display = 'block';  // Mostra o primeiro banner
+
+            setInterval(function() {
+                banners[currentBanner].style.display = 'none';  // Esconde o banner atual
+                currentBanner = (currentBanner + 1) % banners.length;  // Avança para o próximo
+                banners[currentBanner].style.display = 'block';  // Mostra o próximo banner
+            }, 30000);  // Alterna a cada 30 segundos (30000ms)
+        }
+    });
+</script>
+
+<!-- Topbar End -->
+
+<!-- Navbar Start -->
+<div class="container-fluid p-0">
+    <nav class="navbar navbar-expand-lg bg-dark navbar-dark py-2 py-lg-0 px-lg-5">
+        <a href="{% url 'home' %}" class="navbar-brand d-block d-lg-none">
+            <img src="{% static 'dashboard/img/logo_coophanews1.png' %}" alt="Logo" style="height: 75px;"/> 
+        </a>
+        <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-between px-0 px-lg-3" id="navbarCollapse">
+            <div class="navbar-nav mr-auto py-0">
+                <a href="{% url 'home' %}" class="nav-item nav-link">Home</a>
+                <a href="{% url 'lista_promocoes' %}" class="nav-item nav-link">Promoções Diárias</a>
+                <a href="{% url 'banners' %}" class="nav-item nav-link">Comércios</a>
+                <a href="{% url 'categorias' %}" class="nav-item nav-link">Categorias</a>
+        
+                <!-- Menu com submenu -->
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" id="publicUtilitiesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Utilidade Pública
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="publicUtilitiesDropdown">
+                        <a href="{% url 'public_utilities' %}" class="dropdown-item">
+                            <i class="fas fa-list"></i> Serviços Públicos</a>
+                        <a href="{% url 'lost_and_found' %}" class="dropdown-item">
+                            <i class="fas fa-search"></i> Achados e Perdidos</a>
+                        <a href="" class="dropdown-item">
+                            <i class="fas fa-phone"></i> Contatos de Emergência</a>
+                        <a href="" class="dropdown-item">
+                            <i class="fas fa-link"></i> Links Importantes</a>
+                    </div>
+                </div>
+                <!-- Fim do menu com submenu -->
+        
+                {% if not user.is_authenticated %}
+                <a href="{% url 'login' %}" class="nav-item nav-link">
+                    <i class="fa fa-sign-in-alt text-primary"></i> Login</a>
+                <a href="{% url 'register' %}" class="nav-item nav-link">
+                    <i class="fa fa-user text-primary"></i> Registrar</a>
+                {% endif %}
+        
+                {% if user.is_authenticated %}
+                <a href="{% url 'dashboard' %}" class="nav-item nav-link">
+                    <i class="fas fa-tachometer-alt text-primary me-2"></i> Dashboard</a>
+                <a data-bs-toggle="modal" href="#logoutModal" id="logoutBtn" class="nav-item nav-link">
+                    <i class="fas fa-power-off text-primary me-2"></i> Sair</a>
+                {% endif %}
+            </div>
+        
+            <div class="input-group ml-auto d-none d-lg-flex" style="width: 100%; max-width: 165px;">
+                <form method="get" action="{% url 'news_search' %}" class="d-flex">
+                    <input type="text" name="termo" class="form-control border-0" placeholder="Buscar Notícias" aria-label="Buscar Notícias">
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-primary border-0">
+                            <i class="fa fa-search text-light"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+    </nav>
+</div>
+<!-- Navbar End -->

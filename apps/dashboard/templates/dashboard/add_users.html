@@ -1,0 +1,206 @@
+{% extends "base_dashboard.html" %}
+{% load static %}
+{% load humanize %}
+{% block extra_css %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+    {% endblock extra_css %}
+{% block content_dashboard %}
+
+<main class="adminuiux-content has-sidebar" onclick="contentClick()">
+<div class="container-fluid mt-3">
+<div class="bg-theme-1-subtle rounded px-3 py-3">
+<div class="row gx-3 align-items-center">
+<div class="col col-sm mb-2 mb-sm-0">
+<p class="h5">Add Usuário</p>
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb mb-0">
+      <li class="breadcrumb-item bi"> <a href="clinic-dashboard.html">Home</a> </li>
+      <li class="breadcrumb-item bi"> <a href="clinic-patients.html">Patients</a> </li>
+      <li class="breadcrumb-item active bi" aria-current="page">Add Patient</li>
+    </ol>
+  </nav>
+
+</div>
+<div class="col-auto py-1"></div>
+</div>
+</div>
+</div>
+<div class="container mt-4" id="main-content">
+<div class="row">
+<div class="col-12 col-md-12 col-lg-12 col-xxl-8">
+<div class="card adminuiux-card mb-4">
+<div class="card-body">
+<p class="h6 mb-3">Dados Conta Usuário (Principal)</p>
+<div class="row mb-2">
+<div class="col-12 col-lg-6 col-xl-4">
+<div class="form-floating mb-3">
+<input class="form-control" id="patientname" placeholder="Enter Patient First Name" value="Alex">
+<label for="patientname">Patient First Name</label>
+</div>
+</div>
+<div class="col-12 col-lg-6 col-xl-4">
+<div class="form-floating mb-3">
+<input class="form-control" id="patientmname" placeholder="Enter Patient Middle Name">
+<label for="patientmname">Patient Middle Name (Optional)</label>
+</div>
+</div>
+<div class="col-12 col-lg-6 col-xl-4">
+<div class="form-floating mb-3">
+<input class="form-control" id="patientlname" placeholder="Enter Patient Last Name" value="Smith">
+<label for="patientlname">Patient Last Name</label>
+</div>
+</div>
+<div class="col-12 col-lg-6 col-xl-4">
+<div class="form-floating mb-3">
+<input class="form-control" id="dobdate" placeholder="Select Birthday">
+<label for="dobdate">Select Birthday</label>
+</div>
+</div>
+<div class="col-12 col-lg-6 col-xl-4">
+<div class="form-floating mb-3">
+<input class="form-control" id="phoneon" placeholder="Enter phone" value="+91 4152 21A45488004">
+<label for="phoneon">Enter Phone</label>
+</div>
+</div>
+<div class="col-12 col-lg-6 col-xl-4">
+<div class="form-floating mb-3">
+<input type="email" class="form-control" id="emailaddresson" placeholder="Enter Email Address" value="alex.smith@tgmail.com">
+<label for="emailaddresson">Email Address</label>
+</div>
+</div>
+</div>
+<p class="h6 mb-3">Patient Address</p>
+<div class="row mb-2">
+<div class="col-12 col-lg-6 col-xl-4">
+<div class="form-floating mb-3">
+<input class="form-control" id="house" placeholder="Enter house number" value="12">
+<label for="house">House Number</label>
+</div>
+</div>
+<div class="col-12 col-lg-6 col-xl-4">
+<div class="form-floating mb-3">
+<input class="form-control" id="street" placeholder="Enter Street" value="Featherstone Street">
+<label for="street">Street</label>
+</div>
+</div>
+<div class="col-12 col-lg-6 col-xl-4">
+<div class="form-floating mb-3">
+<input class="form-control" id="locality" placeholder="Enter locality" value="Ward">
+<label for="locality">Locality</label>
+</div>
+</div>
+<div class="col-12 col-lg-6 col-xl-4">
+<div class="form-floating mb-3">
+<input class="form-control" id="town" placeholder="Enter Town" value="London">
+<label for="town">Town</label>
+</div>
+</div>
+<div class="col-12 col-lg-6 col-xl-4">
+<div class="form-floating mb-3">
+<input class="form-control" id="city" placeholder="Enter City" value="London">
+<label for="city">City</label>
+</div>
+</div>
+<div class="col-12 col-lg-6 col-xl-4">
+<div class="form-floating mb-3">
+<input class="form-control" id="postcode" placeholder="Enter Postcode" value="NG25 5AY">
+<label for="postcode">Postcode</label>
+</div>
+</div>
+<div class="col-12 col-lg-6 col-xl-4">
+<div class="form-floating mb-3">
+<input class="form-control" id="country" placeholder="Enter Country" value="United Kingdom">
+<label for="country">Country</label>
+</div>
+</div>
+</div>
+<p class="h6 mb-3">Describe permanent health issues</p>
+<div class="row mb-2">
+<div class="col-12">
+<div class="form-floating mb-3">
+<input class="form-control" id="healthissue" placeholder="Health Issue in few words">
+<label for="healthissue">Health Issue in few words</label>
+</div>
+</div>
+</div>
+<p class="h6 mb-3">Patient's Relative Details</p>
+<div class="row mb-1">
+<div class="col-12 col-lg-6 col-xl-4">
+<div class="form-floating mb-3">
+<input class="form-control" id="patientname1" placeholder="Enter First Name" value="Alex">
+<label for="patientname1">First Name</label>
+</div>
+</div>
+<div class="col-12 col-lg-6 col-xl-4">
+<div class="form-floating mb-3">
+<input class="form-control" id="patientmname1" placeholder="Enter Middle Name">
+<label for="patientmname1">Middle Name (Optional)</label>
+</div>
+</div>
+<div class="col-12 col-lg-6 col-xl-4">
+<div class="form-floating mb-3">
+<input class="form-control" id="patientlname2" placeholder="Enter Last Name" value="Smith">
+<label for="patientlname2">Last Name</label>
+</div>
+</div>
+<div class="col-12 col-lg-6 col-xl-4">
+<div class="form-floating mb-3">
+<input class="form-control" id="phoneon1" placeholder="Enter phone" value="+91 4152 21A45488004">
+<label for="phoneon1">Enter Phone</label>
+</div>
+</div>
+<div class="col-12 col-lg-6 col-xl-4">
+<div class="form-floating mb-3">
+<input type="email" class="form-control" id="emailaddresson1" placeholder="Enter Email Address" value="alex.smith@tgmail.com">
+<label for="emailaddresson1">Email Address</label>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="col-12 col-md-12 col-lg-12 col-xxl-4">
+<p class="h6 mb-3">Patient Photo</p>
+<div class="mb-4">
+<figure class="avatar avatar-80 rounded coverimg m-auto">
+<img src="assets/img/modern-ai-image/user-6.jpg" alt="">
+<button class="btn btn-square btn-accent" onclick="$(this).next().click()">
+<i class="bi bi-upload"></i>
+</button>
+<input type="file" class="d-none">
+</figure>
+</div>
+<div class="row">
+<div class="col-12 col-md-6 col-xxl-12 mb-4">
+<p class="h6 mb-3">Personal Documents</p>
+<div class="row gx-2 mb-3">
+<div class="col-auto">
+<div class="avatar avatar-80 rounded coverimg hover mb-2">
+<img src="assets/img/modern-ai-image/user-1.jpg" alt="">
+<div class="overlay">
+<button class="btn btn-square btn-light text-danger">
+<i class="bi bi-trash"></i>
+</button>
+</div>
+</div>
+<p class="text-secondary fs-12">Home1-present...</p></div>
+<div class="col-auto">
+<div class="avatar avatar-80 rounded coverimg hover mb-2">
+<img src="assets/img/modern-ai-image/modern-bg-3.jpg" alt="">
+<div class="overlay">
+<button class="btn btn-square btn-light text-danger">
+<i class="bi bi-trash"></i>
+</button>
+</div>
+</div>
+<p class="text-secondary fs-12">Home1-present...</p></div>
+<div class="col-auto">
+<div class="avatar avatar-80 rounded coverimg hover mb-2">
+<img src="assets/img/modern-ai-image/modern-bg-1.jpg" alt="">
+<div class="overlay">
+<button class="btn btn-square btn-light text-danger">
+<i class="bi bi-trash">
+</i></button>
+</div>
+</div>
+  {% endblock %}

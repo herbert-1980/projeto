@@ -1,0 +1,89 @@
+{% extends 'base_auth.html' %}
+{% load static %}
+{% block content_auth %}
+
+<header class="header">
+    <h1 class="header-text"><i class="bi bi-stars"></i><a href="{% url 'home' %}">
+        CoophaNews
+    </a><i class="bi bi-stars"></i></h1>
+</header>
+
+<div class="container d-flex justify-content-center align-items-center vh-100">
+    <div class="card p-4 shadow-lg" style="max-width: 400px; width: 100%;">
+
+        <h2 class="text-center mb-3">Vamos Começar? &#128077;</h2>
+        <hr>
+
+        <form method="post" action="{% url 'register' %}">
+            {% csrf_token %}
+            
+            {% if form.errors %}
+                <div class="alert alert-danger">
+                    <strong>Corrija os erros abaixo:</strong>
+                    <ul>
+                        {% for field in form %}
+                            {% for error in field.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        {% endfor %}
+                        {% for error in form.non_field_errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+
+            <!-- Email -->
+            <div class="form-floating mb-3">
+                <input type="email" class="form-control" id="email" name="email" placeholder="Digite seu email" required autofocus>
+                <label for="email">Digite seu Email</label>
+            </div>
+
+            <!-- Nome e Sobrenome -->
+            <div class="row">
+                <div class="col">
+                    <div class="form-floating mb-3">
+                        <input class="form-control" id="name" name="first_name" placeholder="Nome" required>
+                        <label for="name">Nome</label>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-floating mb-3">
+                        <input class="form-control" id="sobrenome" name="last_name" placeholder="Sobrenome" required>
+                        <label for="sobrenome">Sobrenome</label>
+                    </div>
+                </div>
+            </div>
+                
+            <!-- Senha -->
+            <div class="form-floating position-relative mb-3">
+                <input type="password" class="form-control" id="password1" name="password1" placeholder="Senha" required>
+                <label for="password1">Senha</label>
+                <button type="button" class="btn btn-link position-absolute end-0 top-50 translate-middle-y me-2" onclick="togglePassword('password1', this)">
+                    <i class="bi bi-eye"></i>
+                </button>
+            </div>
+            <div id="password-strength" class="text-secondary mb-3"></div>
+
+            <!-- Confirmar Senha -->
+            <div class="form-floating position-relative mb-3">
+                <input type="password" class="form-control" id="password2" name="password2" placeholder="Confirme sua senha" required>
+                <label for="password2">Confirmar Senha</label>
+                <button type="button" class="btn btn-link position-absolute end-0 top-50 translate-middle-y me-2" onclick="togglePassword('password2', this)">
+                    <i class="bi bi-eye"></i>
+                </button>
+            </div>
+
+            <!-- Botão Criar Conta -->
+            <button class="btn btn-primary w-100 mb-4" type="submit">Criar Conta</button>
+
+            <!-- Link para Login -->
+            <div class="text-center">
+                Já tem conta? <a href="{% url 'login' %}" class="text-decoration-none">Login</a> aqui.
+            </div>
+        </form>
+    </div>
+</div>
+
+
+{% endblock %}

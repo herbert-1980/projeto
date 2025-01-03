@@ -1,0 +1,67 @@
+{% load static %}
+<div class="col-lg-4">
+    <!-- Banners -->
+<div class="mb-3">
+    <div class="section-title mb-0">
+        <h4 class="m-0 text-uppercase font-weight-bold">Publicidade</h4>
+    </div>
+    <div class="bg-white border border-top-0 p-3">
+        {% for banner in banners %}
+        <a href="" class="d-block w-100 text-white text-decoration-none mb-3" 
+        style="background: none;"
+        data-bs-toggle="modal" 
+        data-bs-target="#bannerModal" 
+        data-banner-id="{{ banner.id }}" 
+        data-banner-name="{{ banner.fantasia.fantasia }}" 
+        data-banner-image="{{ banner.banner.url }}" 
+        data-banner-description="{{ banner.description }}">
+
+        {% if banner.fantasia.logo %}
+               <!-- Exibindo a logo da empresa -->
+               <img src="{{ banner.fantasia.logo.url }}" class="card-img-top" alt="Logo de {{ banner.fantasia }}" style="max-height: 200px;">
+               {% else %}
+               <!-- Mensagem caso a empresa não tenha logo -->
+               <p class="text-center">Nenhum Logo Cadastrado.</p>
+               {% endif %}
+            </a>
+            {% endfor %}
+    </div>
+
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="bannerModal" tabindex="-1" aria-labelledby="bannerModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="bannerModalLabel">..::CoophaNews - Publicidade::..</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <img src="" alt="Banner" id="modal-banner-image" class="img-fluid mb-3">
+                <h6 id="modal-banner-name">{{ banner.fantasia.fantasia }}</h6>
+                <p id="modal-banner-description"></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Script para carregar os dados no modal ao clicar no link
+    document.addEventListener('DOMContentLoaded', function () {
+        const bannerLinks = document.querySelectorAll('a[data-bs-target="#bannerModal"]');
+        bannerLinks.forEach(link => {
+            link.addEventListener('click', function () {
+                const bannerId = this.getAttribute('data-banner-id');
+                const bannerName = this.getAttribute('data-banner-name');
+                const bannerImage = this.getAttribute('data-banner-image');
+                const bannerDescription = this.getAttribute('data-banner-description');
+
+                // Preencher o modal com os dados do banner
+                document.getElementById('modal-banner-name').textContent = bannerName;
+                document.getElementById('modal-banner-image').src = bannerImage;
+                document.getElementById('modal-banner-description').textContent = bannerDescription;
+            });
+        });
+    });
+</script>

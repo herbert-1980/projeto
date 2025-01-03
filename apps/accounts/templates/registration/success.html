@@ -1,0 +1,61 @@
+{% extends 'base_auth.html' %}
+{% load static %}
+{% block content_auth %}
+<style>
+    .transparent-bg {
+        background-color: rgba(255, 255, 255, 0.8); /* Branco com 80% de opacidade */
+        transition: background-color 0.3s ease; /* Transição suave ao passar o mouse */
+    }
+    
+    .transparent-bg:hover {
+        background-color: rgba(255, 255, 255, 1); /* Fundo totalmente branco ao passar o mouse */
+    }
+    
+</style>
+<header class="header">
+    <h1 class="header-text"><i class="bi bi-stars"></i><a href="{% url 'home' %}">
+        CoophaNews
+    </a><i class="bi bi-stars"></i></h1>
+    <main class="flex-shrink-0 pt-0 h-100">
+        <div class="h-100 py-3 px-3">
+            <div class="row h-100 align-items-center justify-content-center">
+                <div class="col-12 col-md-10 col-lg-8 col-xxl-7 login-box">
+                    <div class="text-center mb-4">
+                        <h1 class="mb-2" style="color: #FFCC00; text-decoration:none;">Parabéns &#129395;</h1>
+                        <p class="lead text-secondary" style="color: #FFCC00; text-decoration:none;">Escolha como deseja prosseguir:</p>
+                    </div>
+
+                    <a href="{% url 'login' %}" class="btn btn-outline-theme h-auto w-100 mb-3 text-start transparent-bg">
+                        <div class="row gx-3 align-items-center p-2">
+                            <div class="col-auto">
+                                <i class="bi bi-person fs-4 h-auto w-auto"></i>
+                            </div>
+                            <div class="col">
+                                <p class="h5 mb-0">Voltar para o site e fazer Login</p>
+                                <p class="opacity-75 small">Caso já esteja pronto para acessar.</p>
+                            </div>
+                            <div class="col-auto">
+                                <i class="bi bi-chevron-right"></i>
+                            </div>
+                        </div>
+                    </a>
+                    <!-- Opção para completar o cadastro como empresário -->
+                        <a href="accounts/complete_user_profile.html" class="btn btn-outline-theme h-auto w-100 mb-3 text-start transparent-bg">
+                            <div class="row gx-3 align-items-center p-2">
+                                <div class="col-auto">
+                                    <i class="bi bi-briefcase fs-4 h-auto w-auto"></i>
+                                </div>
+                                <div class="col">
+                                    <p class="h5 mb-0">Completar cadastro de empresário</p>
+                                    <p class="opacity-75 small">Preencha seu perfil empresarial para aproveitar todos os recursos.</p>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="bi bi-chevron-right"></i>
+                                </div>
+                            </div>
+                        </a>
+        {% include 'components/_footer.html' %}
+
+</main>
+<script src="{% static 'dashboard/js/js.js' %}"></script>
+{% endblock %}

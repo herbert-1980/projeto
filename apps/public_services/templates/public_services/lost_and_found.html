@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% load static %}
+{% block content %}
+<div class="container-xxl py-5">
+    <div class="section-title d-flex justify-content-between align-items-center">
+        <h4 class="m-0 text-uppercase font-weight-bold">Achados e Perdidos</h4>
+        <form method="get" action="" class="d-flex">
+            <input type="text" name="search" placeholder="Pesquisar..." class="form-control mr-2" style="width: 250px;">
+            <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
+        </form>
+    </div>
+
+    <div class="mb-4 text-center">
+        <a href="?category=lost" class="btn btn-outline-primary mx-1">Perdidos</a>
+        <a href="?category=found" class="btn btn-outline-primary mx-1">Achados</a>
+    </div>
+
+    <div class="mb-4">
+        <form method="get" action="" class="row">
+            <div class="col-md-3">
+                <input type="text" name="location" placeholder="Localização" class="form-control">
+            </div>
+            <div class="col-md-3">
+                <select name="status" class="form-control">
+                    <option value="">-- Status --</option>
+                    <option value="pending">Pendente</option>
+                    <option value="resolved">Resolvido</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <input type="date" name="date" class="form-control">
+            </div>
+            <div class="col-md-3 text-right">
+                <button type="submit" class="btn btn-primary w-100"><i class="fa fa-filter"></i> Filtrar</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="row">
+        {% for item in items %}
+            {% if item.is_approved %}  <!-- Verifica se o item está aprovado -->
+            <div class="col-lg-6 mb-4">
+                <div class="position-relative mb-3">
+                    {% if item.image %}
+                        <img class="img-fluid w-100" src="{{ item.image.url }}" style="object-fit: cover; height: 300px;" alt="{{ item.title }}">
+                    {% else %}
+                        <img class="img-fluid w-100" src="{% static 'news/img/default-placeholder.png' %}" style="object-fit: cover; height: 300px;" alt="Sem imagem">
+                    {% endif %}
+                    
+                    <div class="bg-white border border-top-0 p-4">
+                        <h4 class="text-secondary text-uppercase font-weight-bold mb-2">{{ item.title }}</h4>
+                        <p class="mb-2">{{ item.description }}</p>
+                        <p class="mb-2"><strong>Categoria:</strong> {{ item.get_category_display }}</p>
+                        {% if item.location %}
+                            <p class="mb-2"><strong>Local:</strong> {{ item.location }}</p>
+                        {% endif %}
+                        {% if item.contact_info %}
+                            <div class="mb-2">
+                                <strong>Contato:</strong>
+                                <a href="https://wa.me/{{ item.contact_info }}" target="_blank" class="btn btn-success btn-sm">
+                                    <i class="fab fa-whatsapp"></i> WhatsApp
+                                </a>
+                                <a href="https://t.me/{{ item.contact_info }}" target="_blank" class="btn btn-info btn-sm">
+                                    <i class="fab fa-telegram-plane"></i> Telegram
+                                </a>
+                            </div>
+                        {% endif %}
+                        
+                        <p class="mb-2">
+                            <strong>Status:</strong>
+                            {% if item.status == "pending" %}
+                                <span class="badge badge-warning">Pendente</span>
+                            {% elif item.status == "resolved" %}
+                                <span class="badge badge-success">Resolvido</span>
+                            {% endif %}
+                        </p>
+    
+                        <!-- Mapa -->
+                        {% if item.latitude and item.longitude %}
+                            <div id="map-{{ item.id }}" style="height: 400px;"></div>
+                        {% endif %}
+    
+                        <a href="{% url 'download_item' item.id %}" class="btn btn-secondary">
+                            <i class="fas fa-download"></i> Baixar PDF
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        {% empty %}
+        <div class="col-12 text-center">
+            <p class="text-muted">Nenhum item encontrado.</p>
+        </div>
+        {% endfor %}
+    </div>
+    
+
+    <!-- Botão para adicionar item -->
+    <div class="text-center mt-4">
+        <a href="{% url 'add_lost_and_found' %}" class="btn btn-primary btn-lg">
+            <i class="fas fa-plus"></i> Adicionar Item
+        </a>
+    </div>
+</div>
+
+<!-- Script para inicializar os mapas -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        {% for item in items %}
+            {% if item.latitude and item.longitude %}
+                var mapId = 'map-{{ item.id }}';
+                var map = L.map(mapId).setView([{{ item.latitude }}, {{ item.longitude }}], 13);
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+                    maxZoom: 19
+                }).addTo(map);
+                L.marker([{{ item.latitude }}, {{ item.longitude }}])
+                    .addTo(map)
+                    .bindPopup('<b>{{ item.title }}</b><br />{{ item.location }}')
+                    .openPopup();
+            {% endif %}
+        {% endfor %}
+    });
+</script>
+
+{% endblock content %}

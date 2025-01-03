@@ -1,0 +1,113 @@
+{% extends 'base_auth.html' %}
+{% load static %}
+{% block content_auth %}
+
+
+<div class="container">
+    <div class="d-flex justify-content-center h-100">
+        <div class="card">
+			<div class="card-header">
+                <h3>Registrar &#128077;</h3>
+                <a href="{% url 'home' %}" style="color: #FFCC00; text-decoration:none; background:transparent;">
+                    <img src="{% static 'dashboard/img/logo_coophanews1.png' %}" alt="Logo" style="height: 90px;"/> <!-- Ajuste a altura conforme necessário -->
+                </a><!-- Ajuste a altura conforme necessário -->
+                    <div class="d-flex justify-content-end social_icon">
+                        <span><i class="fab fa-facebook-square"></i></span>
+                        <span><i class="fab fa-google-plus-square"></i></span>
+                        <span><i class="fab fa-twitter-square"></i></span>
+                    </div>
+            </div>
+            <div class="card-body">
+                <form method="post" action="{% url 'register' %}" autocomplete="off">
+                    {% csrf_token %}
+                    {% if form.errors %}
+                        <div class="alert alert-danger">
+                            <strong>Corrija os erros abaixo:</strong>
+                            <ul>
+                                {% for field in form %}
+                                    {% for error in field.errors %}
+                                        <li>{{ error }}</li>
+                                    {% endfor %}
+                                {% endfor %}
+                                {% for error in form.non_field_errors %}
+                                    <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% endif %}
+                    
+                    <div class="input-group form-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">
+                                <i class="fas fa-envelope"></i>
+                            </span>
+                        </div>
+                            <input type="email" id="email" name="email" class="form-control" placeholder="Ex: email@email.com.br" required autofocus>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col">
+                            <div class="input-group form-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                </div>
+                                <input type="text" id="first_name" name="first_name" class="form-control" placeholder="Nome" required>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="input-group form-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fas fa-user-tag"></i></span>
+                                </div>
+                                <input type="text" id="last_name" name="last_name" class="form-control" placeholder="Sobrenome" required>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group form-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">
+                                <i class="fas fa-key"></i>
+                            </span>
+                        </div>
+                        <input type="password" id="password1" name="password1" class="form-control" placeholder="Senha" required>
+                        <button type="button" class="btn btn-link position-absolute end-0 top-50 translate-middle-y me-2" style="color: #FFCC00; text-decoration:none; background:transparent;" onclick="togglePassword('password1', this)">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                    </div>
+                    <div id="password-strength" class="text-secondary mb-3"></div>
+                    <div class="input-group form-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">
+                                <i class="fas fa-key"></i>
+                            </span>
+                        </div>
+                        <input type="password" id="password2" name="password2" class="form-control" placeholder="Confirme a Senha" required>
+                        <button type="button" class="btn btn-link position-absolute end-0 top-50 translate-middle-y me-2" style="color: #FFCC00; text-decoration:none; background:transparent;" onclick="togglePassword('password2', this)">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="submit" value="Criar Conta" class="btn float-right login_btn">
+                    </div>
+                </form>
+            </div>
+
+            <div class="card-footer">
+                <div class="d-flex justify-content-center links mb-2">
+                    Já tem Conta? 
+                    <a href="{% url 'login' %}" style="color: #FFCC00; text-decoration:none; background:transparent; margin-left: 5px;">
+                        Logar
+                    </a>
+                </div>
+                <div class="d-flex justify-content-center links mb-2">
+                    <a href="{% url 'password_reset' %}" style="color: #FFCC00; text-decoration:none; background:transparent;">
+                        Esqueceu a senha?
+                    </a>
+                </div>
+            </div>
+            
+    </div>
+</div>
+{% endblock %}

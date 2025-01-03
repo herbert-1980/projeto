@@ -1,0 +1,93 @@
+{% extends "base_dashboard.html" %}
+{% load static %}
+{% load tz %}
+{% load humanize %}
+{% block content_dashboard %}
+
+<main class="adminuiux-content has-sidebar" onclick="contentClick()">
+    <div class="container-fluid mt-3">
+        <div class="bg-theme-1-subtle rounded px-3 py-3">
+            <div class="row gx-3 align-items-center">
+                <div class="col col-sm mb-2 mb-sm-0">
+                    <p class="h5">Editar Perfil: {{ perfil.usuario.first_name }} {{ perfil.usuario.last_name }}</p>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb mb-0">
+                            <li class="breadcrumb-item bi">
+                                <a href="{% url 'dashboard' %}">Home</a>
+                            </li>
+                            <li class="breadcrumb-item bi">
+                                <a href="">Perfil</a>
+                            </li>
+                            <li class="breadcrumb-item active bi" aria-current="page">Editar Perfil</li>
+                        </ol>
+                    </nav>
+                </div>
+                <div class="col-auto py-1"></div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container mt-4" id="main-content">
+        <div class="row">
+            <div class="col-12 col-md-12 col-lg-12 col-xxl-8">
+                <div class="card adminuiux-card mb-4">
+                    <div class="card-body">
+                        <p class="h6 mb-3">Detalhes do Perfil</p>
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {{ form.as_p }}
+                            <div id="company-field" style="display: none;">
+                                <label for="id_company">Empresa:</label>
+                                {{ form.company }}
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary">Atualizar</button>
+                        </form>
+                        <script>
+                            document.addEventListener('DOMContentLoaded', function () {
+                                const isCnpjCheckbox = document.getElementById('id_is_cnpj');
+                                // Função para mostrar ou esconder o campo company
+                                function toggleCompanyField() {
+                                    if (isCnpjCheckbox.checked) {
+                                const companyField = document.getElementById('company-field');
+                        
+                                        companyField.style.display = 'block';
+                                    } else {
+                                        companyField.style.display = 'none';
+                                    }
+                                }
+                        
+                                // Adiciona o listener para mudanças no checkbox
+                                isCnpjCheckbox.addEventListener('change', toggleCompanyField);
+                        
+                                // Chama a função ao carregar a página para definir o estado inicial
+                                toggleCompanyField();
+                            });
+                        </script>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-12 col-lg-12 col-xxl-4">
+                <p class="h6 mb-3">Foto do Perfil</p>
+                <div class="mb-4 position-relative">
+                    <figure class="avatar avatar-80 rounded coverimg m-auto">
+                        {% if perfil.photo and perfil.photo.url %}
+                        <img src="{{ perfil.photo.url }}" alt="" class="img-fluid rounded">
+                        {% else %}
+                        <img src="{% static 'img/modern-ai-image/user-6.jpg' %}" alt="" class="img-fluid rounded">
+                        {% endif %}
+                        <button class="btn btn-square btn-accent position-absolute bottom-0 end-0 m-2" onclick="$(this).next().click()">
+                            <i class="bi bi-upload"></i>
+                        </button>
+                        <input type="file" class="d-none">
+                    </figure>
+                </div>
+                
+                <!-- Adicione mais seções para documentos pessoais ou outras informações aqui -->
+            </div>
+        </div>
+    </div>
+</main>
+
+
+{% endblock %}

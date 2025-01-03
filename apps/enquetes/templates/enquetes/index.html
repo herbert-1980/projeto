@@ -1,0 +1,83 @@
+{% load static %}
+{% block enquete_content %}
+<div class="mb-3">
+    <div class="section-title mb-0">
+        <h4 class="m-0 text-uppercase font-weight-bold">Enquetes</h4>
+    </div>
+    {% include 'enquetes/enquete_form.html' %}
+    <br>
+        {% if enquete.id %}
+        <!-- Link para ver os resultados -->
+        <a href="#resultadoModal" class="btn btn-link view-results" id="viewResults" data-enquete-id="{{ enquete.id }}" data-bs-toggle="modal" data-bs-target="#resultadoModal">Ver resultados</a>
+
+        {% endif %}
+    </div>
+
+    <!-- Modal para Resultados -->
+    <div class="modal fade" id="resultadoModal" tabindex="-1" aria-labelledby="resultadoModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="resultadoModalLabel">Resultados Parciais</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body" id="resultadoContent">
+                    <!-- Os resultados serão carregados dinamicamente aqui -->
+                    <p>Carregando resultados...</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<br>
+    <!-- Modal para Resultado ou Mensagem de Erro -->
+<div class="modal fade" id="votoModal" tabindex="-1" aria-labelledby="votoModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="votoModalLabel">Resultados Parciais</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="votoModalContent">
+                <!-- Mensagem ou Resultados -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const modalContent = document.getElementById("resultadoContent");
+    
+            document.querySelectorAll(".view-results").forEach(button => {
+                button.addEventListener("click", function () {
+                    const enqueteId = this.getAttribute("data-enquete-id");
+                    modalContent.innerHTML = "<p>Carregando resultados...</p>";
+    
+                    fetch(`/enquetes/${enqueteId}/results/`)
+                        .then(response => {
+                            if (!response.ok) throw new Error("Erro ao carregar os resultados.");
+                            return response.json();
+                        })
+                        .then(data => {
+                            modalContent.innerHTML = data.results;
+                        })
+                        .catch(error => {
+                            console.error(error);
+                            modalContent.innerHTML = "<p>Você precisa estar logado para ver os resultados.</p>";
+                        });
+                });
+            });
+        });
+
+        
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+{% endblock %}

@@ -1,0 +1,37 @@
+{% load static %}
+
+<!-- Signos Start -->
+<div class="mb-3">
+    <div class="section-title mb-0">
+        <h4 class="m-0 text-uppercase font-weight-bold">Signos</h4>
+    </div>
+    <form method="post" action="{% url 'descobrir_signo' %}">
+        {% csrf_token %}
+        <div class="bg-white border border-top-0 p-3">
+            <div class="d-flex flex-wrap m-n1">
+                <label for="data_nascimento" class="form-label">Digite sua data de Nascimento</label>
+            <input type="date" class="form-control" id="data_nascimento" name="data_nascimento" placeholder="Ex: 01/01/2000" lang="pt-BR" required>
+        </div>
+
+            <button type="submit" class="btn btn-primary mt-3">Descobrir</button>
+        </div>
+    </form>
+    
+
+    {% if resultado %}
+        <div class="mt-4">
+            <h3>Seu signo é: <strong>
+                <!-- Exibindo o ícone usando a classe armazenada no banco -->
+                <i class="{{ resultado.icone_class }} me-2" style="font-size: 20px;"></i> 
+                {{ resultado.nome }}
+            </strong></h3>
+            <p>{{ resultado.descricao }}</p>
+        </div>
+    {% endif %}
+</div>
+<!-- Signos End -->
+
+        </div>
+    </div>
+</div>
+</div>           

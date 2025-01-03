@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container mt-4">
+    <h4 class="display-4">Detalhes do Banner </h4>
+
+    <div class="card">
+        <div class="card-header">
+          <h4 class="card-title">
+            {{ object.fantasia }}
+            <a class="btn btn-link" data-bs-toggle="collapse" href="#bannerDetails" role="button" aria-expanded="false" aria-controls="bannerDetails">
+              <i class="bi bi-chevron-down"></i>
+            </a>
+          </h4>
+        </div>
+        
+        <div id="bannerDetails" class="collapse">
+            <div class="card-body">
+              <p class="card-text">
+                <strong>Imagem do Banner </strong> {% if banner.banner %}
+                <img src="{{ banner.banner.url }}" alt="Banner Image" style="max-width: 728px; max-height: 90px;">
+              {% else %}
+                No Image
+              {% endif %}
+                </p>
+
+                <p class="card-text">
+                  <strong>Destaque:</strong> {{ object.get_destaque_display }}
+                  </p>
+
+                <p class="card-text">
+                  <strong>Categoria:</strong>
+                  {% for category in banner.company.categories.all %}
+                  {{ category.name_category }}
+                  {% if not forloop.last %}, {% endif %}
+                {% endfor %}
+                  </p>
+
+                  <p class="card-text">
+                    <strong>Data Publicada:</strong> {{ object.data_inicio }}
+                    </p>
+
+                  <p class="card-text">
+                    <strong>Data de Expiração:</strong> {{ object.data_final }}
+                    </p>
+
+            </div>
+          </div>
+        </div>
+  
+  </div>
+{% endblock %}

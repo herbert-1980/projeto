@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>{% block titulo %}CoophaNews - Login{% endblock %}</title>
+    <link rel="icon" type="image/png" href="{% static 'dashboard/img/favicon.png' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <link href="{% static 'dashboard/css/appb5a4.css' %}" rel="stylesheet">
+</head>
+<body>
+    {% block content_auth %}{% endblock %}
+    {% block scripts %}
+        <script src="{% static 'dashboard/js/clinic/clinic-auth.js' %}"></script>
+    {% endblock %}
+</body>
+</html>

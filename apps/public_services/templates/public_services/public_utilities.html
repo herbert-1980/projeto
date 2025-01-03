@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% load humanize %}
+
+{% block content %}
+<div class="container-xxl py-5">
+    <div class="section-title">
+        <h4 class="m-0 text-uppercase font-weight-bold">Utilidade Pública</h4>
+    </div><!-- templates/public_utilities.html -->
+<ul>
+    {% for utility in utilities %}
+        <li>
+            <h2>{{ utility.title }}</h2>
+            <p>{{ utility.description }}</p>
+            {% if utility.contact_info %}
+                <p>Contato: {{ utility.contact_info }}</p>
+            {% endif %}
+        </li>
+    {% endfor %}
+</ul>
+<div id="test-map" style="height: 400px;"></div>
+<script>
+    var map = L.map('test-map').setView([-20.5472739, -54.6664166], 13); // Coordenadas de São Paulo
+    
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        maxZoom: 19
+    }).addTo(map);
+    
+    L.marker([-20.5472739, -54.6664166]).addTo(map)
+        .bindPopup('<b>CoophaNews</b><br />Coophavila 2.')
+        .openPopup();
+</script>
+
+{% endblock content %}

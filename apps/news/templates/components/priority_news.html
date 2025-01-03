@@ -1,0 +1,155 @@
+{% load static %}
+<!-- Start Priority News -->
+{% if not hide_priority_news %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-7 px-0">
+            <div class="owl-carousel main-carousel position-relative">
+                {% for news in priority_news %}
+                <div class="position-relative overflow-hidden" style="height: 500px;">
+                    {% if news.principal_image %}
+                        <img class="img-fluid h-100" 
+                            src="{{ news.principal_image.url }}" 
+                            style="object-fit: cover;" 
+                            alt="Imagem principal de {{ news.title }}">
+                    {% elif news.image %}
+                        <img class="img-fluid h-100" 
+                            src="{{ news.image.url }}" 
+                            style="object-fit: cover;" 
+                            alt="Imagem de {{ news.title }}">
+                    {% endif %}
+                    <div class="overlay">
+                        <div class="mb-2">
+                            {% for category in news.categories.all %}
+                                <a class="badge badge-primary text-uppercase font-weight-semi-bold p-2 mr-2"
+                                href="{% url 'news_detail' slug_title=news.slug_title %}">{{ category.name_category }}</a>
+                            {% endfor %}
+                            <a class="text-white" href="{% url 'news_detail' slug_title=news.slug_title %}">{{ news.published_at|date:"d M, Y" }}</a>
+                        </div>
+                        <a class="h2 m-0 text-white text-uppercase font-weight-bold" href="{% url 'news_detail' slug_title=news.slug_title %}">{{ news.title|slice:":50" }}...</a>
+                    </div>
+                </div>
+                    {% endfor %}
+            </div>
+        </div>
+        <!--Fim do Loop principal-->
+        <div class="col-lg-5 px-0">
+            <div class="row mx-0">
+            <!-- Bloco da Categoria Economia -->
+            {% if economia %}
+                <div class="col-md-6 px-0">
+                    <div class="position-relative overflow-hidden" style="height: 250px;">
+                        <!-- Exibe a imagem da notícia -->
+                        <img class="img-fluid w-100 h-100" src="{{ economia.principal_image.url }}" style="object-fit: cover;" alt="">
+                        <div class="overlay">
+                            <div class="mb-2">
+                                <!-- Itera sobre as categorias da notícia e compara com "Economia" -->
+                                {% for category in economia.categories.all %}
+                                    {% if category.name_category == "Economia" %}
+                                        <!-- Exibe o badge da categoria Economia -->
+                                        <a class="badge badge-primary text-uppercase font-weight-semi-bold p-2 mr-2"
+                                        href="{% url 'news_detail' slug_title=economia.slug_title %}">
+                                            {{ category.name_category }}
+                                        </a>
+                                    {% endif %}
+                                {% endfor %}
+                                <a class="text-white" href=""><small>{{ economia.created_at|date:"d M, Y" }}</small></a>
+                            </div>
+                            <!-- Exibe o título da notícia com link para a página de detalhes -->
+                            <a class="h6 m-0 text-white text-uppercase font-weight-semi-bold" href="{% url 'news_detail' slug_title=economia.slug_title %}">
+                                {{ economia.title|slice:":20" }}{% if economia.title|length > 20 %}...{% endif %}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+            <!-- Bloco da Categoria Bairro-->
+            {% if bairros %}
+                <div class="col-md-6 px-0">
+                    <div class="position-relative overflow-hidden" style="height: 250px;">
+                        <!-- Exibe a imagem da notícia -->
+                        <img class="img-fluid w-100 h-100" src="{{ bairros.principal_image.url }}" style="object-fit: cover;" alt="">
+                        <div class="overlay">
+                            <div class="mb-2">
+                                <!-- Itera sobre as categorias da notícia e compara com "Bairro" -->
+                                {% for category in bairros.categories.all %}
+                                    {% if category.name_category == "Bairros" %}
+                                        <!-- Exibe o badge da categoria Bairro -->
+                                        <a class="badge badge-primary text-uppercase font-weight-semi-bold p-2 mr-2"
+                                        href="{% url 'news_detail' slug_title=bairros.slug_title %}">
+                                            {{ category.name_category }}
+                                        </a>
+                                    {% endif %}
+                                {% endfor %}
+                                <a class="text-white" href=""><small>{{ bairros.created_at|date:"d M, Y" }}</small></a>
+                            </div>
+                            <!-- Exibe o título da notícia com link para a página de detalhes -->
+                            <a class="h6 m-0 text-white text-uppercase font-weight-semi-bold" href="{% url 'news_detail' slug_title=bairros.slug_title %}">
+                                {{ bairros.title|slice:":20" }}{% if bairros.title|length > 20 %}...{% endif %}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+            <!-- Bloco da Categoria Viagens-->
+            {% if viagens %}
+                <div class="col-md-6 px-0">
+                    <div class="position-relative overflow-hidden" style="height: 250px;">
+                        <!-- Exibe a imagem da notícia -->
+                        <img class="img-fluid w-100 h-100" src="{{ viagens.principal_image.url }}" style="object-fit: cover;" alt="">
+                        <div class="overlay">
+                            <div class="mb-2">
+                                <!-- Itera sobre as categorias da notícia e compara com "Viagens" -->
+                                {% for category in viagens.categories.all %}
+                                    {% if category.name_category == "Viagens" %}
+                                        <!-- Exibe o badge da categoria Viagens -->
+                                        <a class="badge badge-primary text-uppercase font-weight-semi-bold p-2 mr-2"
+                                        href="{% url 'news_detail' slug_title=viagens.slug_title %}">
+                                            {{ category.name_category }}
+                                        </a>
+                                    {% endif %}
+                                {% endfor %}
+                                <a class="text-white" href=""><small>{{ viagens.created_at|date:"d M, Y" }}</small></a>
+                            </div>
+                            <!-- Exibe o título da notícia com link para a página de detalhes -->
+                            <a class="h6 m-0 text-white text-uppercase font-weight-semi-bold" href="{% url 'news_detail' slug_title=viagens.slug_title %}">
+                                {{ viagens.title|slice:":20" }}{% if viagens.title|length > 20 %}...{% endif %}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+            <!-- Bloco da Categoria Culinária-->
+            {% if culinaria %}
+                <div class="col-md-6 px-0">
+                    <div class="position-relative overflow-hidden" style="height: 250px;">
+                        <!-- Exibe a imagem da notícia -->
+                        <img class="img-fluid w-100 h-100" src="{{ culinaria.principal_image.url }}" style="object-fit: cover;" alt="">
+                        <div class="overlay">
+                            <div class="mb-2">
+                                <!-- Itera sobre as categorias da notícia e compara com "Culinária" -->
+                                {% for category in culinaria.categories.all %}
+                                    {% if category.name_category == "Culinária" %}
+                                        <!-- Exibe o badge da categoria Tecnologia -->
+                                        <a class="badge badge-primary text-uppercase font-weight-semi-bold p-2 mr-2"
+                                        href="{% url 'news_detail' slug_title=culinaria.slug_title %}">
+                                            {{ category.name_category }}
+                                        </a>
+                                    {% endif %}
+                                {% endfor %}
+                                <a class="text-white" href=""><small>{{ culinaria.created_at|date:"d M, Y" }}</small></a>
+                            </div>
+                            <!-- Exibe o título da notícia com link para a página de detalhes -->
+                            <a class="h6 m-0 text-white text-uppercase font-weight-semi-bold" href="{% url 'news_detail' slug_title=culinaria.slug_title %}">
+                                {{ culinaria.title|slice:":20" }}{% if culinaria.title|length > 20 %}...{% endif %}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Priority News End -->
+ {% endif %}

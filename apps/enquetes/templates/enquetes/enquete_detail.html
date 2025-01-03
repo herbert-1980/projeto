@@ -1,0 +1,23 @@
+<h1>{{ enquete.pergunta }}</h1>
+
+{% if show_results %}
+    <!-- Exibe os resultados da enquete -->
+    <h2>Resultados:</h2>
+    <ul>
+        {% for escolha in enquete.escolha_set.all %}
+            <li>{{ escolha.escolha_text }}: {{ escolha.votos }} votos</li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <!-- Exibe o formulário de votação -->
+    <form method="POST">
+        {% csrf_token %}
+        {% for escolha in enquete.escolha_set.all %}
+            <label>
+                <input type="radio" name="escolha" value="{{ escolha.id }}">
+                {{ escolha.escolha_text }}
+            </label><br>
+        {% endfor %}
+        <button type="submit">Votar</button>
+    </form>
+{% endif %}

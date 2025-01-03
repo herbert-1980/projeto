@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Itens Pendentes</title>
+</head>
+<body>
+    <h1>Itens Pendentes de Aprovação</h1>
+    <ul>
+        {% for item in pending_items %}
+            <li>
+                <strong>{{ item.title }}</strong> - {{ item.description }}
+                <br>
+                Categoria: {{ item.get_category_display }}
+                <br>
+                Enviado em: {{ item.created_at|date:"d/m/Y H:i" }}
+                <br>
+                <a href="{% url 'approve_item' item.id %}">Aprovar</a>
+            </li>
+        {% empty %}
+            <li>Nenhum item pendente de aprovação.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

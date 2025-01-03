@@ -1,0 +1,12 @@
+<!-- promocoes/templates/promocoes/promocoes_list.html -->
+<h1>Lista de Promoções</h1>
+
+<div>
+    {% for promocao in promocoes %}
+        <div>
+            <h2>{{ promocao.titulo }}</h2>
+            <p>{{ promocao.descricao }}</p>
+            <a href="{% url 'promocao_detail' id=promocao.id %}">Ver mais</a>
+        </div>
+    {% endfor %}
+</div>

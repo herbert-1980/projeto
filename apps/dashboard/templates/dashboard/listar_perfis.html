@@ -1,0 +1,28 @@
+{% extends "base_dashboard.html" %}
+{% load static %}
+{% load tz %}
+{% load humanize %}
+{% block content_dashboard %}
+
+
+<h2>Listar Perfis</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Email</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for perfil in perfis %}
+        <tr>
+            <td>{{ perfil.usuario.email }}</td>
+            <td>
+                <a href="{% url 'editar_perfil' perfil.usuario.id %}">Editar</a>
+                <a href="{% url 'excluir_perfil' perfil.usuario.id %}">Excluir</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,72 @@
+{% extends "base_dashboard.html" %}
+{% load static %}
+{% load tz %}
+{% load humanize %}
+{% block content_dashboard %}
+
+<body>
+    <div class="container mt-5">
+        <h2>Formulário de Perfil</h2>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-6">
+                    {{ form.photo.label }} {{ form.photo }}
+                </div>
+                <div class="col-md-6">
+                    {{ form.occupation.label }} {{ form.occupation }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    {{ form.description.label }} {{ form.description }}
+                </div>
+                <div class="col-md-6">
+                    {{ form.gender.label }} {{ form.gender }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    {{ form.phone.label }} {{ form.phone }}
+                </div>
+                <div class="col-md-6">
+                    {{ form.birth_date.label }} {{ form.birth_date }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    {{ form.street.label }} {{ form.street }}
+                </div>
+                <div class="col-md-6">
+                    {{ form.house_number.label }} {{ form.house_number }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    {{ form.neighborhood.label }} {{ form.neighborhood }}
+                </div>
+                <div class="col-md-6">
+                    {{ form.city.label }} {{ form.city }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    {{ form.state.label }} {{ form.state }}
+                </div>
+                <div class="col-md-6">
+                    {{ form.cpf.label }} {{ form.cpf }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    {{ form.rg.label }} {{ form.rg }}
+                </div>
+                <div class="col-md-6">
+                    {{ form.is_cnpj.label }} {{ form.is_cnpj }}
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Salvar</button>
+        </form>
+    </div>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    {% endblock %}

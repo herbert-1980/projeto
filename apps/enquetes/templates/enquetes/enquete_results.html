@@ -1,0 +1,14 @@
+<div>
+    <h5>{{ enquete.pergunta }}</h5>
+    <ul class="list-group">
+        {% for escolha in escolhas %}
+            <li class="list-group-item d-flex align-items-center">
+                <span>{{ escolha.escolha_text }}</span>
+                {% if escolha.imagem %}
+                    <img src="{{ escolha.imagem.url }}" alt="{{ escolha.escolha_text }}" class="img-fluid ms-2" style="max-width: 50px;">
+                {% endif %}
+                <span class="ms-auto">{{ escolha.votos }} votos</span>
+            </li>
+        {% endfor %}
+    </ul>
+</div>

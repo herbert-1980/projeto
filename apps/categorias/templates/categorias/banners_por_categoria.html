@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+Banners - {{ categoria.nome_categoria }}
+{% endblock %}
+
+{% block content %}
+<div class="container-xxl py-5">
+    <div class="section-title">
+        <h4 class="m-0 text-uppercase font-weight-bold">{{ categoria.nome_categoria }}</h4>
+    </div>
+
+    <div class="row">
+        <!-- Lista de Empresas Associadas à Categoria -->
+        <div class="col-lg-12 mb-5">
+            <h5>Empresas Associadas a esta Categoria</h5>
+            <div class="row">
+                {% for empresa in empresas %}
+                    <div class="col-md-4 mb-3">
+                        <div class="card text-center">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ empresa.nome_empresa }}</h5>
+                                <p class="card-text">{{ empresa.descricao|truncatewords:10 }}</p>
+                                <a href="{% url 'detalhes_empresa' empresa.id %}" class="btn btn-primary">Ver Detalhes</a>
+                            </div>
+                        </div>
+                    </div>
+                {% empty %}
+                    <p class="text-center">Nenhuma empresa associada a esta categoria.</p>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Lista de Banners Associados à Categoria -->
+        <div class="col-lg-12">
+            <h5>Banners nesta Categoria</h5>
+            <div class="row">
+                {% if banners %}
+                    {% for banner in banners %}
+                    <div class="col-lg-4 col-md-6 mb-3">
+                        <a href="{{ banner.link }}" class="text-decoration-none">
+                            <div class="card text-center">
+                                <div class="card-body">
+                                    <!-- Verificar se a imagem do banner está disponível -->
+                                    {% if banner.banner %}
+                                        <img class="img-fluid" src="{{ banner.banner.url }}" alt="Banner">
+                                    {% else %}
+                                        <img class="img-fluid" src="{% static 'images/default-banner.jpg' %}" alt="Banner padrão">
+                                    {% endif %}
+                                    <h5 class="card-title">{{ banner.empresa.fantasia }}</h5>
+                                    <p class="card-text">Válido até: {{ banner.data_final|date:"d/m/Y" }}</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-center">Nenhum banner encontrado nesta categoria.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends 'base_dashboard.html' %}
+{% block title %}Completar Cadastro{% endblock %}
+
+{% block content_dashboard %}
+  <div class="container mt-4">
+    <h3>Complete o cadastro para o usuário: {{ usuario.username }}</h3>
+
+    <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      
+      <h4>Dados do Perfil</h4>
+      {{ perfil_form.as_p }}
+
+      <h4>Dados da Empresa</h4>
+      {{ company_form.as_p }}
+
+      <button type="submit" class="btn btn-primary mt-3">Salvar</button>
+    </form>
+  </div>
+{% endblock %}

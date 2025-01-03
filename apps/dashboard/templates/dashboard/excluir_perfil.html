@@ -1,0 +1,15 @@
+{% extends "base_dashboard.html" %}
+{% load static %}
+{% load tz %}
+{% load humanize %}
+{% block content_dashboard %}
+
+
+<h2>Excluir Perfil: {{ perfil.usuario.email }}</h2>
+<p>Tem certeza que deseja excluir este perfil?</p>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Excluir</button>
+    <a href="{% url 'listar_perfis' %}">Cancelar</a>
+</form>
+{% endblock %}

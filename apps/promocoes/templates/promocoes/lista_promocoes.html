@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-xxl py-5">
+    <div class="section-title">
+        <h4 class="m-0 text-uppercase font-weight-bold">Existem {{ total_categories }} Promoções na nossa região!</h4>
+    </div>
+    <div class="row">
+        {% for promocao in promocoes %}
+        <div class="col-md-4">
+            <div class="card">
+                <!--Exibe a Logo da Empresa-->
+                {% if promocao.empresa.logo %}
+                <img src="{{ promocao.empresa.logo.url }}" class="card-img-top" alt="{{ promocao.empresa.fantasia }}">
+                {% else %}
+                <img src="https://via.placeholder.com/300x200.png?text=Sem+Logo" class="card-img-top" alt="Logo não disponível">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ promocao.titulo }}</h5>
+                    <p class="card-text">{{ promocao.descricao|truncatechars:100 }}</p>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalPromocao{{ promocao.id }}">Ver mais</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="modalPromocao{{ promocao.id }}" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{ promocao.titulo }} - {{ promocao.empresa }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="carousel{{ promocao.id }}" class="carousel slide" data-bs-ride="carousel">
+                            <div class="carousel-inner">
+                                <!--Imagem Principal-->
+                                <div class="carousel-item active">
+                                    <img src="{{ promocao.imagem_principal.url }}" class="d-block w-100" alt="{{ promocao.titulo }}">
+                                </div>
+                                {% for imagem in promocao.imagens_da_promocao.all %}
+                                <div class="carousel-item">
+                                    <img src="{{ imagem.imagem.url }}" class="d-block w-100" alt="{{ imagem.legenda }}">
+                                </div>
+                                {% endfor %}
+                            </div>
+                            <button class="carousel-control-prev" type="button" data-bs-target="#carousel{{ promocao.id }}" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Anterior</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#carousel{{ promocao.id }}" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Próximo</span>
+                            </button>
+                        </div>
+                        <p class="mt-3">{{ promocao.descricao }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

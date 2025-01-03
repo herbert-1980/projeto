@@ -1,0 +1,78 @@
+{% extends 'base_auth.html' %}
+{% load static %}
+{% block content_auth %}
+
+<div class="container">
+    <div class="d-flex justify-content-center h-100">
+        <div class="card">
+            <div class="card-header text-center">
+                <h3>Bem Vindos&#9996;</h3>
+                <!-- Apenas o logo dentro do link -->
+                <a href="{% url 'home' %}" style="color: #FFCC00; text-decoration:none; background:transparent;">
+                    <img src="{% static 'dashboard/img/logo_coophanews1.png' %}" alt="Logo" style="height: 90px;"/> <!-- Ajuste a altura conforme necessário -->
+                </a>
+                <div class="d-flex justify-content-end social_icon">
+                    <span><i class="fab fa-facebook-square"></i></span>
+                    <span><i class="fab fa-google-plus-square"></i></span>
+                    <span><i class="fab fa-twitter-square"></i></span>
+                </div>
+            </div>
+            <div class="card-body">
+                <form method="post" action="{% url 'login' %}">
+                    {% csrf_token %}
+
+                    <div class="input-group form-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                        </div>
+                        <input type="email" id="email" name="email" class="form-control" placeholder="Ex: email@email.com.br" required autofocus>
+                    </div>
+                    
+                    <div class="input-group form-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-key"></i></span>
+                        </div>
+                        <input type="password" class="form-control" id="password1" name="password" placeholder="Senha" required>
+                        <button type="button" class="btn btn-link position-absolute end-0 top-50 translate-middle-y me-2" style="color: #FFCC00; text-decoration:none; background:transparent;" onclick="togglePassword('password', this)">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                    </div>
+
+                    <!-- Campo Lembrar -->
+                    <div class="row align-items-center remember">
+                        <input type="checkbox" style="color: #FFCC00; text-decoration:none; background:transparent;" id="remember_me" name="remember_me">
+                        Lembrar Senha
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Login" id="loginBtn" class="btn float-right login_btn">
+                    </div>
+                </form>
+
+                {% if form.errors %}
+                <div class="alert alert-danger mt-4">
+                    <ul class="mb-0">
+                        {% for field in form %}
+                        {% for error in field.errors %}
+                        <li>{{ error }}</li>
+                        {% endfor %}
+                        {% endfor %}
+                        {% for error in form.non_field_errors %}
+                        <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+            </div>
+            <div class="card-footer">
+                <div class="d-flex justify-content-center links">
+                    Não tem conta? <a href="{% url 'register' %}" style="color: #FFCC00; text-decoration:none; background:transparent;">Criar Conta</a>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <a href="{% url 'password_reset' %}" style="color: #FFCC00; text-decoration:none; background:transparent;">Esqueceu a Senha?</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

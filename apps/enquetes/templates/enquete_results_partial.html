@@ -1,0 +1,8 @@
+<!-- poll_results_partial.html -->
+
+<h4>Resultados da Enquete</h4>
+<ul>
+    {% for escolha in enquete.escolha.all %}
+    <li>{{ escolha.escolha_text }}: {{ escolha.votos }} votos</li>
+    {% endfor %}
+</ul>

@@ -1,0 +1,31 @@
+<!-- Popular News Slider Start -->
+<div class="container-fluid pt-5 mb-3">
+    <div class="container">
+        <div class="section-title">
+            <h4 class="m-0 text-uppercase font-weight-bold">Notícias Populares</h4>
+        </div>
+        {% if news_list %}
+        <div class="owl-carousel news-carousel carousel-item-4 position-relative">
+            {% for news in news_list %}
+            <div class="position-relative overflow-hidden" style="height: 300px;">
+                {% if news.principal_image %}
+                    <img class="img-fluid h-100" src="{{ news.principal_image.url }}" style="object-fit: cover;">
+                {% else %}
+                    <img class="img-fluid h-100" src="" style="object-fit: cover;">
+                {% endif %}
+                <div class="overlay">
+                    <div class="mb-2">
+                        <a class="badge badge-primary text-uppercase font-weight-semi-bold p-2 mr-2" href="{% url 'news_detail' slug_title=news.slug_title %}">{{ news.categories.first.name_category }}</a>
+                        <a class="text-white" href=""><small>{{ news.published_at|date:"M d, Y" }}</small></a>
+                    </div>
+                    <a class="h6 m-0 text-white text-uppercase font-weight-semi-bold" href="{% url 'news_detail' slug_title=news.slug_title %}">{{ news.title|slice:":50" }}{% if news.title|length > 50 %}...{% endif %}</a>
+                </div>
+            </div>
+            {% empty %}
+            <p>Não há notícias populares no momento.</p>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+</div>
+<!-- Popular News Slider End -->

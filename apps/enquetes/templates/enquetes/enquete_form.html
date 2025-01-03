@@ -1,0 +1,28 @@
+<div class="bg-white text-left border border-top-0 p-3">
+    <h6>{{ enquete.pergunta }}</h6>
+
+    {% if form %}
+    <form method="post" action="{% url 'enquetes:enquete_vote' enquete.id %}" id="voteForm">
+        {% csrf_token %}
+        <div class="form-group">
+            {% for escolha in form.escolha.field.queryset %}
+                <div class="form-check">
+                    <input type="radio" 
+                           class="form-check-input" 
+                           id="escolha_{{ escolha.id }}" 
+                           name="escolha" 
+                           value="{{ escolha.id }}">
+                    <label class="form-check-label" for="escolha_{{ escolha.id }}">
+                        {{ escolha.escolha_text }}
+                        {% if escolha.imagem %}
+                            <img src="{{ escolha.imagem.url }}" alt="{{ escolha.escolha_text }}" class="img-fluid ms-2" style="max-width: 25px;">
+                        {% endif %}
+                    </label>
+                </div>
+            {% endfor %}
+        </div>
+        <button type="submit" class="btn btn-primary">Votar</button>
+    </form>
+{% else %}
+    <p>Não há enquete ativa no momento.</p>
+{% endif %}

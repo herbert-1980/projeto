@@ -1,0 +1,9 @@
+<h2>Reviews para {{ content_object }}</h2>
+
+<ul>
+    {% for review in reviews %}
+        <li>{{ review.user }} - {{ review.rating }} estrelas - {{ review.comment }}</li>
+    {% empty %}
+        <li>Sem avaliações ainda.</li>
+    {% endfor %}
+</ul>

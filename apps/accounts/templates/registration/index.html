@@ -1,0 +1,83 @@
+{% extends 'base_auth.html' %}
+{% load static %}
+{% block content_auth %}
+<div class="h-100 py-4 px-3">
+    <div class="row h-100 align-items-center justify-content-center mt-md-4">
+        <div class="col-12 col-md-10 col-lg-8 col-xxl-6 login-box">
+            <div class="text-center mb-4">
+                <h1 class="mb-2">Bem Vindos&#9996;</h1>
+                <p class="lead text-secondary">Entre com suas credenciais</p>
+            </div>
+
+            <form method="post" action="{% url 'login' %}" class="bordered-form p-4">
+                {% csrf_token %}
+                {% if form.errors %}
+                <div class="alert alert-danger">
+                    <strong>Corrija os erros abaixo:</strong>
+                    <ul>
+                        {% for field in form %}
+                            {% for error in field.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        {% endfor %}
+                        {% for error in form.non_field_errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+
+                <div class="form-floating mb-3">
+                    <input type="email" name="email" class="form-control" id="email" placeholder="Enter email address" autofocus="">
+                    <label for="email">Email</label>
+                </div>
+                <div class="position-relative">
+                    <div class="form-floating mb-3">
+                        <input type="password" name="password" class="form-control" id="password" placeholder="Digite sua senha" required>
+                        <label for="password">Senha</label>
+                    </div>
+                    <button class="btn btn-square btn-link text-theme-1 position-absolute end-0 top-0 mt-2 me-2">
+                        <i class="bi bi-eye"></i>
+                    </button>
+                </div>
+                <div class="row align-items-center mb-3">
+                    <div class="col">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="rememberme" id="rememberme">
+                            <label class="form-check-label" for="rememberme">Lembrar</label>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <a href="{% url 'password_reset' %}" class="">Esqueceu a Senha?</a>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-lg btn-theme w-100 mb-4">Entrar</button>
+                <div class="text-center mb-3">Não tem conta? <a href="{% url 'register' %}" class="">Criar Conta</a></div>
+                <div class="row align-items-center mb-3">
+                    <div class="col">
+                        <hr>
+                    </div>
+                    <div class="col-auto">
+                                            <p class="text-secondary">OU Continue com</p>
+                                        </div>
+                                        <div class="col"><hr class=""></div>
+                                    </div>
+                                    <div class="row align-items-center">
+                                        <div class="col">
+                                            <button class="btn btn-lg btn-outline-theme w-100 mb-3 text-start">
+                                                <img src="{% static 'dashboard/img/g-logo.png' %}" alt="" class="me-2"> Google
+                                            </button>
+                                        </div>
+                                        <div class="col">
+                                            <button class="btn btn-lg btn-outline-theme w-100 mb-3 text-start">
+                                                <img src="{% static 'dashboard/img/f-logo.png' %}" alt="" class="me-2"> Facebook
+                                            </button>
+                                        </div>
+                                    </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% include 'components/_footer.html' %}
+
+{% endblock %}

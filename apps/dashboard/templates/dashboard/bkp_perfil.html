@@ -1,0 +1,252 @@
+{% extends "base_dashboard.html" %}
+{% load static %}
+{% load humanize %}
+{% block content_dashboard %}
+
+<main class="adminuiux-content has-sidebar" onclick="contentClick()">
+  <div class="container-fluid mt-3">
+    <div class="bg-theme-1-subtle rounded px-3 py-3">
+      <div class="row gx-3 align-items-center">
+        <div class="col col-sm mb-2 mb-sm-0">
+          <p class="h5">Meu Perfil</p>
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0">
+              <li class="breadcrumb-item bi">
+                <a href="{% url 'dashboard' %}">Home</a>
+              </li>
+              <li class="breadcrumb-item active bi" aria-current="page">
+                Meu Perfil
+              </li>
+            </ol>
+          </nav>
+        </div>
+        <div class="col-auto py-1 ms-auto">
+          <button class="btn btn-theme">
+            <i data-feather="edit" class="me-1"></i> Editar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container mt-4" id="main-content">
+    <div class="coverimg height-250 w-100 rounded position-relative">
+      <img
+        src="{% static 'dashboard/img/modern-ai-image/modern-bg-4.jpg' %}"
+        alt=""
+        class="d-none"
+      />
+    </div>
+    <div class="row z-index-1 mb-4 mt--75 position-relative">
+      <div class="col-12 col-md-auto text-center">
+        <figure class="avatar avatar-150 rounded-circle coverimg mx-3">
+          {% if request.user.is_authenticated %}
+          <img
+            src="{{ request.user.perfil.photo.url }}"
+            alt=""
+            class="d-none"
+          />
+          {% else %}
+          <img
+            src="{% static 'dashboard/img/modern-ai-image/user-6.jpg' %}"
+            alt=""
+            class="d-none"
+          />
+          {% endif %}
+        </figure>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 col-md-12 col-lg-12 col-xxl-8">
+        <div class="row">
+          <div class="col mb-3">
+            <p class="h4 mb-1">
+              <span class="position-relative"
+                >{{ request.user.first_name}} {{ request.user.last_name}}
+                <span
+                  class="position-absolute top-50 start-100 translate-middle p-1 bg-success rounded-circle mx-2"
+                ></span
+              ></span>
+            </p>
+            <p class="text-secondary mb-1">
+              {{ perfil.occupation }} <span class="mx-2">|</span>
+              <i class="bi bi-clock"></i> Full Time
+              <span class="mx-2">|</span> <i class="bi bi-coin"></i> $150
+              - $ 500
+            </p>
+            <p class="">
+              {{ perfil.street }}, {{ perfil.house_number }}, {{ perfil.neighborhood }}, {{ perfil.city }}, {{ perfil.state }},
+              {{ user.email }}
+              <a href="#" class="btn btn-link">Obter Localização</a>
+            </p>
+          </div>
+          <div class="col-auto mb-3 text-end">
+            <p class="h5 mb-1">
+              <i class="bi bi-star-fill text-warning"></i> 5.0<br />
+            </p>
+            <p class="text-secondary small">150 Reviews</p>
+          </div>
+        </div>
+        <div class="row align-items-center mb-4">
+          <div class="col-auto">
+            <p class="h5">{{ idade }}<small> Anos</small></p>
+            <p class="text-secondary small">
+              <i class="bi bi-cake me-1"></i> {{ perfil.birth_date }}
+            </p>
+          </div>
+          <div class="col-auto">
+            <p class="h5">B+</p>
+            <p class="text-secondary small">
+              <i class="bi bi-droplet-half"></i> Blood Group
+            </p>
+          </div>
+          <div class="col-auto">
+            <p class="h5">52</p>
+            <p class="text-secondary small">
+              <i class="bi bi-speedometer"></i> Weight
+            </p>
+          </div>
+        </div>
+        <div class="mb-3">
+          <a
+            href="clinic-add-appointment.html"
+            class="btn btn-accent mb-2"
+            ><i data-feather="plus" class="me-1"></i>
+            <span>Book Appointment</span> </a
+          ><button class="btn btn-outline-success mx-2 mb-2">
+            <i data-feather="phone"></i> <span>Make a Call</span>
+          </button>
+          <button class="btn btn-outline-warning mb-2">
+            <i data-feather="message-circle"></i>
+            <span>Send Message</span>
+          </button>
+        </div>
+        <hr class="mt-0 mb-4" />
+        <p class="h6 mb-3">Biografia</p>
+        <p>
+          {{ perfil.description }}
+        </p>
+        <hr class="mt-0 mb-4" />
+        <p class="h6 mb-3">Academic qualification</p>
+        <p>
+          MBBS, Medical University, New Delhi<br />MS Skincare, Medical
+          Institute, Mumbai<br />Skincare, Medical College and Hospital,
+          Ranchi
+        </p>
+        <hr class="mt-0 mb-4" />
+        <p class="h6 mb-3">Industrial experience</p>
+        <div class="card adminuiux-card mb-4">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-auto">
+                <figure class="coverimg avatar avatar-80 rounded">
+                  <img
+                    src="{% static 'dashboard/img/modern-ai-image/kids-1.jpg' %}"
+                    alt=""
+                    class="d-none"
+                  />
+                </figure>
+              </div>
+              <div class="col">
+                <p class="h6">Tickosia Medical services</p>
+                <p class="text-secondary mb-1">
+                  Skincare Specialist <span class="mx-2">|</span>
+                  <i class="bi bi-clock"></i> Full Time
+                  <span class="mx-2">|</span>
+                  <i class="bi bi-calendar"></i> 2021 - 2023, 3 year
+                </p>
+                <p class="">
+                  Villamore Hospital, 12, Featherstone Street, Ward,
+                  London, NG25 5AY, United Kingdom
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card adminuiux-card mb-4">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-auto">
+                <figure class="coverimg avatar avatar-80 rounded">
+                  <img
+                    src="{% static 'dashboard/img/modern-ai-image/kids-2.jpg' %}"
+                    alt=""
+                    class="d-none"
+                  />
+                </figure>
+              </div>
+              <div class="col">
+                <p class="h6">AJ Hospital</p>
+                <p class="text-secondary mb-1">
+                  Skincare Specialist <span class="mx-2">|</span>
+                  <i class="bi bi-clock"></i> Full Time
+                  <span class="mx-2">|</span>
+                  <i class="bi bi-calendar"></i> 2020 - 2021, 1 year
+                </p>
+                <p class="">
+                  12, Featherstone Street, Ward, London, NG25 5AY, United
+                  Kingdom
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="col-12 col-md-12 col-lg-12 col-xxl-4 position-sticky"
+        style="top: 5.5rem"
+      >
+        <div class="card adminuiux-card mb-4">
+          <div class="card-header">
+            <p class="h6">Specialized treatment</p>
+          </div>
+          <div class="card-body">
+            <ul class="list-group adminuiux-list-group bg-none border-0">
+              <li class="list-group-item">Skin decease</li>
+              <li class="list-group-item">Skin problem</li>
+              <li class="list-group-item">Skin whitening</li>
+              <li class="list-group-item">Lesser treatment</li>
+              <li class="list-group-item">Hair problem</li>
+              <li class="list-group-item">Facial Acne</li>
+              <li class="list-group-item">Facial Cleaning</li>
+              <li class="list-group-item">and many more...</li>
+            </ul>
+          </div>
+        </div>
+        <div class="card border-0 position-relative overflow-hidden mb-4">
+          <figure
+            class="coverimg position-absolute w-100 h-100 start-0 top-0 m-0 z-index-0"
+          >
+            <img
+              src="{% static 'dashboard/img/modern-ai-image/modern-bg-3.jpg' %}"
+              class="mw-100"
+              alt=""
+              style="display: none"
+            />
+          </figure>
+          <div class="card-body position-relative z-index-1">
+            <div class="row">
+              <div class="col-7">
+                <div
+                  class="bg-theme-1 text-white text-center p-3 rounded"
+                >
+                  <h2 class="mb-2">20% <small>OFF</small></h2>
+                  <p class="h5">Holiday Season</p>
+                  <p class="opacity-75 small">
+                    Price including with our launch offer get 5% Extra
+                  </p>
+                  <button
+                    class="copy-text btn btn-sm btn-rounded btn-outline-dashed text-white border-white"
+                  >
+                    GOSEASON
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+{% endblock content_dashboard %}

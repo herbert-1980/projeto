@@ -1,0 +1,13 @@
+{% extends "base_dashboard.html" %}
+{% load static %}
+{% load tz %}
+{% load humanize %}
+{% block content_dashboard %}
+
+<h2>Criar Notícia</h2>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Criar</button>
+</form>
+{% endblock %}

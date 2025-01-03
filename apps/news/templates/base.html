@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  {% load static %}
+  <head>
+    <title>
+      {% block titulo %}CoophaNews - Notícias, Publicidades{% endblock %}
+    </title>
+    {% include 'components/_head.html' %} 
+    {% block extra_css %}
+    <link rel="stylesheet" href="{% static 'news/css/style.css' %}" />
+    {% endblock %}
+  </head>
+
+  <body>
+    {% include 'components/_navNews.html' %} 
+    {% include 'components/logout.html' %} 
+    {% block content %} 
+    {% include 'components/_messages.html' %} 
+    {% endblock %} 
+    {% include 'components/_footerNews.html' %} 
+  </body>
+</html>

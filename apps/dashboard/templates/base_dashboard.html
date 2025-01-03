@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  {% load static %}
+  <head>
+    <title>{% block titulo %}CoophaNews - Dashboard{% endblock %}</title>
+    {% include 'components/_headDashboard.html' %} {% block extra_css %}
+  
+    {% endblock %}
+  </head>
+<body>
+  <!-- <body data-layout="horizontal"> -->
+
+        <!-- Begin page -->
+        <div id="layout-wrapper">
+
+  
+    {% include 'components/_headerDashboard.html' %}
+    {% include 'components/_navbarDashboard.html' %}
+    {% include 'components/logout.html' %}
+    {% include 'components/_messages.html' %}
+    {% block content_dashboard %} 
+    {% endblock %} 
+    
+    {% block scripts %}
+    <script>
+      var modal = document.getElementById("mainModal");
+      var loginBtn = document.getElementById("loginBtn");
+      var registerBtn = document.getElementById("registerBtn");
+      var logoutBtn = document.getElementById("logoutBtn");
+      var closeBtn = document.getElementsByClassName("close")[0];
+
+      var loginSection = document.getElementById("loginSection");
+      var registerSection = document.getElementById("registerSection");
+      var logoutSection = document.getElementById("logoutSection");
+
+      loginBtn.onclick = function () {
+        modal.style.display = "block";
+        loginSection.style.display = "block";
+        registerSection.style.display = "none";
+        logoutSection.style.display = "none";
+      };
+
+      registerBtn.onclick = function () {
+        modal.style.display = "block";
+        loginSection.style.display = "none";
+        registerSection.style.display = "block";
+        logoutSection.style.display = "none";
+      };
+
+      logoutBtn.onclick = function () {
+        modal.style.display = "block";
+        loginSection.style.display = "none";
+        registerSection.style.display = "none";
+        logoutSection.style.display = "block";
+      };
+
+      closeBtn.onclick = function () {
+        modal.style.display = "none";
+      };
+
+      window.onclick = function (event) {
+        if (event.target == modal) {
+          modal.style.display = "none";
+        }
+      };
+    </script>
+    {% endblock scripts %} 
+    
+    {% include 'components/_footerDashboard.html' %}
+    
+  </body>
+</html>

@@ -1,0 +1,28 @@
+{% block priority_banner %}
+{{ banner_global }}
+{% endblock %}
+
+<div class="banner-global">
+    {% if banner_global %}
+    {% for banner in banner_global %}
+        <a href="{{ banner_global.link }}">
+            <img src="{{ banner_global.image.url }}" alt="Banner Global" style="width: 728px; height: 90px;">
+        </a>
+        {% endfor %}
+    {% else %}
+        <p>Não há banners VIP disponíveis no momento.</p>
+    {% endif %}
+</div>
+
+<div class="banners-vip">
+    {% if banners_vip %}
+        {% for banner in banners_vip %}
+            <a href="{{ banner.link }}">
+                <img class="img-fluid" src="{{ banner.image.url }}" alt="Banner VIP" style="width: 728px; height: 90px;">
+            </a>
+        {% endfor %}
+    {% else %}
+        <p>Não há banners VIP disponíveis no momento.</p>
+    {% endif %}
+</div>
+

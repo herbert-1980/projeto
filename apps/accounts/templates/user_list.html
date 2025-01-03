@@ -1,0 +1,108 @@
+{% extends 'base_dashboard.html' %}
+{% load static %}
+{% block title %}Lista de Usuários{% endblock %}
+{% block content_dashboard %}
+
+
+
+<div class="main-content">
+    <div class="page-content">
+        <div class="container-fluid">
+
+            <!-- Start Page Title -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                        <h4 class="mb-sm-0 font-size-18">Lista de Usuários</h4>
+                        <div class="page-title-right">
+                            <ol class="breadcrumb m-0">
+                                <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                                <li class="breadcrumb-item active">Usuários</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End Page Title -->
+
+            <!-- User List Section -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">Lista de Usuários</h4>
+                            <p class="card-title-desc">Gerencie os usuários cadastrados no sistema.</p>
+                        </div>
+                        <div class="card-body p-4">
+                            <!-- Botão de Adicionar -->
+                            <div class="mb-3 text-end">
+                                <a class="btn btn-primary" href="{% url 'user_add' %}">
+                                    <i class="fas fa-user-plus me-2"></i>Adicionar Novo Usuário
+                                </a>
+                            </div>
+
+                            <!-- Tabela -->
+                            <table class="table table-hover table-bordered align-middle">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Foto</th>
+                                        <th>Nome Completo</th>
+                                        <th>E-mail</th>
+                                        <th>Data de Criação</th>
+                                        <th>Status</th>
+                                        <th>Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for usuario in lista_usuarios %}
+                                    <tr>
+                                        <td>{{ usuario.id }}</td>
+                                        <td>
+                                            {% if usuario.perfil.foto %}
+                                            <img src="{{ usuario.perfil.foto.url }}" class="img-thumbnail rounded-circle" width="40" alt="">
+                                            {% else %}
+                                            <img src="{% static 'images/perfil/foto-padrao.jpg' %}" class="img-thumbnail rounded-circle" width="40" alt="">
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ usuario.first_name }} {{ usuario.last_name }}</td>
+                                        <td>{{ usuario.email }}</td>
+                                        <td>{{ usuario.date_joined|date:"d/m/Y" }}</td>
+                                        <td>
+                                            {% if usuario.is_active %}
+                                            <span class="badge bg-success">Ativo</span>
+                                            {% else %}
+                                            <span class="badge bg-danger">Inativo</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <a href="{% url 'view_user' usuario.id %}" class="btn btn-sm btn-info text-white">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                            <a href="{% url 'update_user' usuario.id %}" class="btn btn-sm btn-warning text-white">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <a href="{% url 'delete_user' usuario.id %}" class="btn btn-sm btn-danger text-white">
+                                                <i class="fas fa-trash"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    {% empty %}
+                                    <tr>
+                                        <td colspan="7" class="text-center">Nenhum usuário cadastrado.</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End User List Section -->
+
+        </div> <!-- container-fluid -->
+    </div>
+    <!-- End Page-content -->
+</div>
+
+{% endblock %}

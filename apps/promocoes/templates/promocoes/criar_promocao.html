@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Criar Promoção</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="mb-3">
+            {{ promocao_form.empresa.label_tag }} {{ promocao_form.empresa }}
+        </div>
+        <div class="mb-3">
+            {{ promocao_form.titulo.label_tag }} {{ promocao_form.titulo }}
+        </div>
+        <div class="mb-3">
+            {{ promocao_form.descricao.label_tag }} {{ promocao_form.descricao }}
+        </div>
+        <div class="mb-3">
+            {{ promocao_form.imagem_principal.label_tag }} {{ promocao_form.imagem_principal }}
+        </div>
+        <div class="mb-3">
+            {{ promocao_form.data_inicio.label_tag }} {{ promocao_form.data_inicio }}
+        </div>
+        <div class="mb-3">
+            {{ promocao_form.data_fim.label_tag }} {{ promocao_form.data_fim }}
+        </div>
+        
+        <h4>Adicionar Imagens Adicionais</h4>
+        <div class="mb-3">
+            {{ imagem_form.imagem.label_tag }} {{ imagem_form.imagem }}
+        </div>
+        <div class="mb-3">
+            {{ imagem_form.legenda.label_tag }} {{ imagem_form.legenda }}
+        </div>
+
+        <button type="submit" class="btn btn-primary">Salvar Promoção</button>
+    </form>
+</div>
+{% endblock %}

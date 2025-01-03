@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% load humanize %}
+
+{% block content %}
+<div class="container-xxl py-5">
+    <div class="section-title">
+        <h4 class="m-0 text-uppercase font-weight-bold">Resultados da Busca</h4>
+    </div>
+    
+    {% if object_list %}
+        <div class="row">
+            {% for news in object_list %}
+            <div class="job-item p-4 mb-4">
+                <div class="row g-4">
+                    <div class="col-sm-12 col-md-8 d-flex align-items-center">
+                        {% if news.principal_image %}
+                            <img class="flex-shrink-0 img-fluid border rounded" src="{{ news.principal_image.url }}" alt="Imagem de {{ news.title }}" style="width: 80px; height: 80px;">
+                        {% elif news.image %}
+                            <img class="flex-shrink-0 img-fluid border rounded" src="{{ news.image.url }}" alt="Imagem de {{ news.title }}" style="width: 80px; height: 80px;">
+                        {% endif %}
+                        <div class="text-start ps-4">
+                            <h5 class="mb-3">
+                                <a href="{% url 'news_detail' slug_title=news.slug_title %}">{{ news.title }}</a>
+                            </h5>
+                            {% if news.resume %}
+                                <span class="text-truncate me-3">Resumo: 
+                                    {{ news.resume|slice:":20" }}{% if news.resume|length > 20 %}...{% endif %}
+                                </span>
+                            {% endif %}
+                            <span class="text-truncate me-3">
+                                <i class="far fa-eye text-primary me-2"></i>{{ news.views }} Visualizações
+                            </span>
+                            <span class="text-truncate me-0">
+                                <i class="far fa-comment text-primary me-2"></i>{{ news.comment_count }} Comentários
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
+                        <div class="d-flex mb-3">
+                            <a class="btn btn-primary" href="{% url 'news_detail' slug_title=news.slug_title %}">Leia mais</a>
+                        </div>
+                        <small class="text-truncate">
+                            <i class="far fa-calendar-alt text-primary me-2"></i>{{ news.published_at|naturalday|title }}
+                        </small>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="d-flex justify-content-center mt-4">
+            {% include 'components/_pagination.html' %}
+        </div>
+    {% else %}
+        <p>Nenhum resultado encontrado para a sua busca.</p>
+    {% endif %}
+</div>
+
+{% endblock %}

@@ -1,0 +1,62 @@
+<div class="container d-flex justify-content-center align-items-center vh-100">
+    <div class="card p-4 shadow-lg" style="max-width: 400px; width: 100%;">
+        
+        
+        
+        <h2 class="text-center mb-3">Bem Vindos&#9996;</h2>
+        <hr>
+        <p class="lead text-secondary text-center mb-4">Entre com suas credenciais</p>
+
+        <form method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+            {% if form.errors %}
+                <div class="alert alert-danger">
+                    <strong>Corrija os erros abaixo:</strong>
+                    <ul>
+                        {% for field in form %}
+                            {% for error in field.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        {% endfor %}
+                        {% for error in form.non_field_errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+
+            <!-- Email -->
+            <div class="form-floating mb-3">
+                <input type="email" class="form-control" id="email" name="email" placeholder="Digite seu email" required autofocus>
+                <label for="email">Digite seu Email</label>
+            </div>
+                
+            <!-- Senha -->
+            <div class="form-floating position-relative mb-3">
+                <input type="password" class="form-control" id="password" name="password" placeholder="Senha" required>
+                <label for="password">Senha</label>
+                <button type="button" class="btn btn-link position-absolute end-0 top-50 translate-middle-y me-2" onclick="togglePassword('password', this)">
+                    <i class="bi bi-eye"></i>
+                </button>
+            </div>
+            <div id="password-strength" class="text-secondary mb-3"></div>
+
+            <!-- Campo Lembrar -->
+            <div class="mb-3">
+                <input type="checkbox" id="remember_me" name="remember_me">
+                <label for="remember_me">Lembrar Senha</label>
+               
+            </div>
+
+            <!-- Botão Criar Conta -->
+            <button class="btn btn-primary w-100 mb-4" type="submit">Entrar5</button>
+        </form>
+        <!-- Link para Login -->
+        <div class="text-center mb-3">Não tem conta?1 <a href="{% url 'register' %}" class="">Criar Conta</a></div>
+        <!--Esqueceu a Senha -->
+        <div class="text-center">
+            <a href="{% url 'password_reset' %}" class="text-decoration-none">Esqueceu a Senha?</a>
+        </div>
+    </div>
+</div>
+
