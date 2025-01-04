@@ -1,2 +1,8 @@
 .env
 .venv/
+.idea/
+venv/
+
+# Ignorar arquivos .pyc (Pycache)
+**/__pycache__
+*.pyc
