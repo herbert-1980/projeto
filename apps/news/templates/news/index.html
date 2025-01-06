@@ -3,48 +3,10 @@
 {% load humanize %}
 {% block content %}
 
-{% include 'components/priority_news.html' %}
-
-{% if not is_news_detail %}
-    <!-- Breaking News Start -->
-    {% include 'components/breaking_news.html' %}
-    <!-- Breaking News End -->
-{% endif %}
-                <!-- Featured News Slider Start -->
-                {% include 'news/news_featured.html' %}
-                <!-- Featured News Slider End -->
-
-                <!-- News With Sidebar Start -->
-                {% include 'news/news_sidebar_start.html' %}
-                <!-- News With Sidebar  End -->
-
-                <!-- News With Sidebar Diferente -->
-                {% include 'news/news_sidebar.html' %}
-                <!-- News With Sidebar Diferente End -->
-
-                <!-- Social Follow Start -->
-                {% include 'components/_publicidades.html' %}
-                <!-- Social Follow End -->
-
-                <!-- Ads Start -->
-                {% include 'components/publicidade.html' %}
-                <!-- Ads End -->
-               
-                <!-- Popular News Start -->
-                {% include 'news/news_popular.html' %}
-                <!-- Popular News End -->
-
-                <!-- Newsletter Start -->
-                {% include 'components/_newsletter.html' %}
-                <!-- Newsletter End -->
-
-                <!-- Enquetes Start -->
-                {% include 'enquetes/index.html' %}
-                <!-- Enquetes End -->
-
-                <!-- Signos Start -->
-                {% include 'signos/descobrir_signo.html' %}
-                <!-- Signos End -->
-
-<!-- News With Sidebar End -->
+    {% include 'components/content_live_score.html' %}
+    {% include 'components/content_explore_products.html' %}
+    {% include 'components/content_sidebar.html' %}
+    {% include 'components/content_live_videos.html' %}
+    {% include 'components/content_discovery.html' %}
+    
 {% endblock %}

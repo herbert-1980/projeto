@@ -22,6 +22,8 @@ from apps.banners.models import Banner
 from django.views import View
 from django.utils import timezone
 from django.shortcuts import render, redirect
+from django.contrib.auth.mixins import LoginRequiredMixin
+#from apps.news.models import Article
 
 
 class NewsIndex(ListView):
@@ -353,3 +355,27 @@ class DashboardNewsView(View):
             print("Erros do Formulário:", form.errors)
             context = self.get_context(form)
             return render(request, self.template_name, context)
+
+class DashboardNewsListView(LoginRequiredMixin, ListView):
+    model = News
+    template_name = 'dashboard/listar_noticias.html'  # Template para o dashboard
+    paginate_by = 10
+    context_object_name = 'news_list'
+
+    def get_queryset(self):
+        """Filtra as notícias para exibição no dashboard."""
+        queryset = super().get_queryset()
+        # Você pode ajustar os filtros aqui, por exemplo, exibir todas as notícias
+        # ou apenas as publicadas.
+        return queryset.order_by('-published_at')  # Ordena por data de publicação
+
+    def get_context_data(self, **kwargs):
+        """Adiciona informações adicionais ao contexto, se necessário."""
+        context = super().get_context_data(**kwargs)
+        context['title'] = "Lista de Notícias"
+        return context
+
+"""def article_detail(request, article_id):
+    article = get_object_or_404(Article, id=article_id)
+    related_articles = Article.objects.filter(tags__in=article.tags.all()).exclude(id=article.id).distinct()
+    return render(request, 'news/article_detail.html', {'article': article, 'related_articles': related_articles})"""

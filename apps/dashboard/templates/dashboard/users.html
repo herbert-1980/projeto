@@ -103,7 +103,7 @@
                                                 {% if user.perfil.photo %}
                                                 <img src="{{ user.perfil.photo.url }}" alt="" class="avatar-sm rounded-circle me-2">
                                                 {% else %}
-                                                <img src="{% static 'assets/images/users/avatar-2.jpg' %}" alt="" class="avatar-sm rounded-circle me-2">
+                                                <img src="{% static 'dashboard/img/users/avatar-1.jpg' %}" alt="" class="avatar-sm rounded-circle me-2">
                                                 {% endif %}
                                                 <a href="{% url 'perfil' user.username %}" class="text-body">{{ user.first_name }} {{ user.last_name }}</a>
                                             </td>

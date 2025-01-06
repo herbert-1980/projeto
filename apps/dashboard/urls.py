@@ -3,7 +3,7 @@ from . import views
 from apps.accounts.views import logout_view, list_users_dashboard
 from . views import excluir_usuario
 from apps.perfil.views import editar_perfil, perfil_view
-from apps.news.views import DashboardNewsView
+from apps.news.views import DashboardNewsView, DashboardNewsListView
 
 
 urlpatterns = [
@@ -15,5 +15,6 @@ urlpatterns = [
     path('users/', list_users_dashboard, name='list_users_dashboard'),
     path('usuarios/excluir/<int:user_id>/', excluir_usuario, name='excluir_usuario'), 
     path('news/create/', DashboardNewsView.as_view(), name='create_news'),
+    path('news/', DashboardNewsListView.as_view(), name='dashboard_news_list'),
 
 ]

@@ -32,7 +32,42 @@
     
     </style>
 <!-- News With Sidebar Start -->
-
+    <!--=================================
+    Banner -->
+    <section class="news-latest-posts blog-single-04">
+        <div class="container-fluid p-0">
+          <div class="row g-0">
+           <div class="col-lg-12">
+             <div class="blog-post post-style-01 mb-0">
+               <div class="blog-image rounded-0">
+                 {% if news.principal_image %}
+                 <img class="img-fluid w-100" src="{{ news.principal_image.url }}" alt="Imagem Principal de {{ news.title }}">
+                 {% elif news.image %}
+                 <img class="img-fluid w-100" src="{{ news.image.url }}" alt="Imagem Principal de {{ news.title }}">
+                 {% endif %}
+               </div>
+               <div class="blog-post-details text-center">
+                  {% for category in news.categories.all %}
+                 <span class="badge badge-large bg-primary">{{ category.name_category }}</span>
+                 {% endfor %}
+                 <h3 class="blog-title"><a href="">{{ news.title }}</a></h3>
+                 <p>{{ news.subtitle }}</p>
+                 <div class="blog-post-meta justify-content-center">
+                     <div class="blog-post-author">
+                       <span><a href="#"><img src="images/avatar/03.jpg" alt="">Percy Kewshun</a></span>
+                     </div>
+                     <div class="blog-post-time">
+                       <a href="#"><i class="fa-solid fa-calendar-days"></i>{{ news.published_at|date:"d M, Y" }}</a>
+                     </div>
+                 </div>
+               </div>
+             </div>
+           </div>
+         </div>
+       </div>
+     </section>
+       <!--=================================
+       Banner -->
 
 <div class="container-fluid">
     

@@ -6,6 +6,12 @@ from apps.categorias.models import Categoria
 from django.urls import reverse
 
 
+"""class Tag(models.Model):
+    name = models.CharField(max_length=30, unique=True, verbose_name='Nome da Tag')
+
+    def __str__(self):
+        return self.name"""
+    
 class News(models.Model):
     STATUS_CHOICES = [
         ('draft', 'Rascunho'),
@@ -33,6 +39,7 @@ class News(models.Model):
 
     # Categorias e Tags
     categorias = models.ManyToManyField(Categoria, related_name='news', verbose_name='Escolha as Categorias')
+    #tags = models.ManyToManyField(Tag, related_name='news', verbose_name='Escolha as Tags', blank=True)
 
     # Publicação e Datas
     published_at = models.DateTimeField(default=timezone.now, verbose_name='Publicada em')
@@ -66,3 +73,25 @@ class Rating(models.Model):
         db_table = 'ratings'
         verbose_name = 'Rating'
         verbose_name_plural = 'Ratings'
+
+class Tag(models.Model):
+    name = models.CharField(max_length=30, unique=True, verbose_name='Nome da Tag')
+
+    def __str__(self):
+        return self.name
+
+"""class Article(models.Model):
+    title = models.CharField(max_length=200)
+    content = models.TextField()
+    tags = models.ManyToManyField(Tag, related_name='articles')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def get_related_articles(self):
+        return 
+
+Article.objects.filter(tags__in=self.tags.all()).exclude(id=self.id).distinct()
+
+    def __str__(self):
+        return self.title"""
+
+    

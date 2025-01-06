@@ -20,11 +20,11 @@ class CustomUserCreationForm(UserCreationForm):
             'last_name': 'Sobrenome',
         }
         
-    """def clean_email(self):
+    def clean_email(self):
         email = self.cleaned_data('email')
         if MyUser.objects.filter(email=email).exists():
             raise ValidationError("Esse email já esta cadastrado")
-        return email"""
+        return email
     
     def clean_password2(self):
         # Verifica se as senhas coincidem

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import News
+from .models import News, Tag
 from django_summernote.admin import SummernoteModelAdmin
 
 
@@ -24,5 +24,17 @@ class NewsAdmin(SummernoteModelAdmin):
     def display_categorias(self, obj):
         return ", ".join([categorias.nome for categorias in obj.categorias.all()])
     display_categorias.short_description = 'categorias'
+
+"""@admin.register(Tag)
+class TagAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name')
+    search_fields = ('name',)
+    list_display_links = ('name',)
+    prepopulated_fields = {'slug_title': ('name',)}
+    fieldsets = (
+        (None, {
+            'fields': ('name',)
+        }),
+    )"""
 
 admin.site.register(News, NewsAdmin)

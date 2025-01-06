@@ -144,6 +144,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'core.context_processors.current_date',
+				'core.context_processors.local_date',
                 'accounts.context_processors.user_count',
                 'banners.context_processors.banner_global',
                 'dashboard.context_processors.greeting_processor',

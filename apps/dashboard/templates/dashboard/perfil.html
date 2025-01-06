@@ -51,15 +51,21 @@
                       <div>
                         <h5 class="font-size-16 mb-1">{{ perfil.usuario.get_full_name }}</h5>
                         <p class="text-muted font-size-13">{{ perfil.occupation }}</p>
-                        <p class="text-muted font-size-13">{{ perfil.birth_date }}</p>
+                        <p class="text-muted font-size-13">{{ perfil.birth_date }} 
+                          {% if idade %}
+                          <span class="badge bg-success font-size-12">{{ idade }} Anos</span>
+                          {% else %}
+                          <span class="badge bg-danger font-size-12">Idade Não informada</span>
+                          {% endif %}
+                        </p>
+                        <p class="text-muted font-size-13">{{ perfil.usuario.email }}</p>
 
                         <div class="d-flex flex-wrap align-items-start gap-2 gap-lg-3 text-muted font-size-13">
-                          <div><i class="mdi mdi-circle-medium me-1 text-success align-middle"></i>{{ perfil.street }},</div>
+                          <div><i class="mdi mdi-circle-medium me-1 text-success align-middle"></i>{{ perfil.street }}</div>
                           <div><i class="mdi mdi-circle-medium me-1 text-success align-middle"></i>{{ perfil.house_number }}</div>
                           <div><i class="mdi mdi-circle-medium me-1 text-success align-middle"></i>{{ perfil.neighborhood }}</div>
                           <div><i class="mdi mdi-circle-medium me-1 text-success align-middle"></i>{{ perfil.city }}</div>
                           <div><i class="mdi mdi-circle-medium me-1 text-success align-middle"></i>{{ perfil.state }}</div>
-                          <div><i class="mdi mdi-circle-medium me-1 text-success align-middle"></i>{{ perfil.usuario.email }}</div>
                         </div>
                       </div>
                     </div>
@@ -68,11 +74,7 @@
                 <div class="col-sm-auto order-1 order-sm-2">
                   <div class="d-flex align-items-start justify-content-end gap-2">
                     <div>
-                      {% if idade %}
-                      <button type="button" class="btn btn-soft-light"><i class="me-1"></i>{{ idade }}<small>Anos</small></button>
-                      {% else %}
-                      <button type="button" class="btn btn-soft-light"><i class="me-1"></i>Idade Não informada</button>
-                      {% endif %}
+                      <button type="button" class="btn btn-soft-light"><i class="me-1"></i>Mensagem</button>
                     </div>
                     <div>
                       <div class="dropdown">
@@ -108,10 +110,10 @@
           <!-- end card -->
 
           <div class="tab-content">
-            <div class="tab-pane active" id="sobre" role="tabpanel">
+            <div class="tab-pane active" id="resumo" role="tabpanel">
               <div class="card">
                 <div class="card-header">
-                  <h5 class="card-title mb-0">Sobre</h5>
+                  <h5 class="card-title mb-0">Resumo</h5>
                 </div>
                 <div class="card-body">
                   <div>
@@ -190,7 +192,7 @@
                           </div>
 
                           <div class="position-relative">
-                            <img src="assets/images/small/img-3.jpg" alt="" class="img-thumbnail">
+                            <img src="{% static 'dashboard/img/small/img-3.jpg' %}" alt="" class="img-thumbnail">
                           </div>
 
                           <div class="p-3">
@@ -243,7 +245,7 @@
                           </div>
 
                           <div class="position-relative">
-                            <img src="assets/images/small/img-1.jpg" alt="" class="img-thumbnail">
+                            <img src="{% static 'dashboard/img/small/img-1.jpg' %}" alt="" class="img-thumbnail">
                           </div>
 
                           <div class="p-3">
@@ -297,7 +299,7 @@
                           </div>
 
                           <div class="position-relative">
-                            <img src="assets/images/small/img-5.jpg" alt="" class="img-thumbnail">
+                            <img src="{% static 'dashboard/img/small/img-5.jpg' %}" alt="" class="img-thumbnail">
                           </div>
 
                           <div class="p-3">
@@ -334,7 +336,7 @@
             </div>
             <!-- end tab pane -->
 
-            <div class="tab-pane" id="resumo" role="tabpanel">
+            <div class="tab-pane" id="sobre" role="tabpanel">
               <div class="card">
                 <div class="card-header">
                   <h5 class="card-title mb-0">Sobre</h5>
@@ -342,36 +344,23 @@
                 <div class="card-body">
                   <div>
                     <div class="pb-3">
-                      <h5 class="font-size-15">Bio :</h5>
+                      <h5 class="font-size-15">Tipo Sanguíneo</h5>
                       <div class="text-muted">
                         <p class="mb-2">{{ perfil.group_blood }}
-
-                        <ul class="list-unstyled mb-0">
-                          <li class="py-1"><i class="mdi mdi-circle-medium me-1 text-success align-middle"></i>Donec
-                            vitae sapien ut libero venenatis faucibus</li>
-                          <li class="py-1"><i class="mdi mdi-circle-medium me-1 text-success align-middle"></i>Quisque
-                            rutrum aenean imperdiet</li>
-                          <li class="py-1"><i class="mdi mdi-circle-medium me-1 text-success align-middle"></i>Integer
-                            ante a consectetuer eget</li>
-                        </ul>
                       </div>
                     </div>
 
                     <div class="pt-3">
-                      <h5 class="font-size-15">Experience :</h5>
+                      <h5 class="font-size-15">Fator RH:</h5>
                       <div class="text-muted">
-                        <p>Fator Rh {{ perfil.rh_factor }} {{ perfil.weight }}</p>
+                        <p>Fator Rh {{ perfil.rh_factor }}</p>
+                      </div>
+                    </div>
 
-                        <ul class="list-unstyled mb-0">
-                          <li class="py-1"><i class="mdi mdi-circle-medium me-1 text-success align-middle"></i>Donec
-                            vitae sapien ut libero venenatis faucibus</li>
-                          <li class="py-1"><i class="mdi mdi-circle-medium me-1 text-success align-middle"></i>Quisque
-                            rutrum aenean imperdiet</li>
-                          <li class="py-1"><i class="mdi mdi-circle-medium me-1 text-success align-middle"></i>Integer
-                            ante a consectetuer eget</li>
-                          <li class="py-1"><i class="mdi mdi-circle-medium me-1 text-success align-middle"></i>Phasellus
-                            nec sem in justo pellentesque</li>
-                        </ul>
+                    <div class="pt-3">
+                      <h5 class="font-size-15">Peso:</h5>
+                      <div class="text-muted">
+                        <p>{{ perfil.weight }} Kg</p>
                       </div>
                     </div>
                   </div>
@@ -465,7 +454,7 @@
                           </div>
 
                           <div class="position-relative mt-3">
-                            <img src="assets/images/small/img-3.jpg" alt="" class="img-thumbnail">
+                            <img src="{% static 'dashboard/img/small/img-3.jpg' %}" alt="" class="img-thumbnail">
                           </div>
 
                           <div class="pt-3">
@@ -642,7 +631,7 @@
                 <a href="#" class="list-group-item list-group-item-action">
                   <div class="d-flex align-items-center">
                     <div class="avatar-sm flex-shrink-0 me-3">
-                      <img src="assets/images/users/avatar-1.jpg" alt="" class="img-thumbnail rounded-circle">
+                      <img src="{% static 'dashboard/img/users/avatar-1.jpg' %}" alt="" class="img-thumbnail rounded-circle">
                     </div>
                     <div class="flex-grow-1">
                       <div>
@@ -655,7 +644,7 @@
                 <a href="#" class="list-group-item list-group-item-action">
                   <div class="d-flex align-items-center">
                     <div class="avatar-sm flex-shrink-0 me-3">
-                      <img src="assets/images/users/avatar-3.jpg" alt="" class="img-thumbnail rounded-circle">
+                      <img src="{% static 'dashboard/img/users/avatar-3.jpg' %}" alt="" class="img-thumbnail rounded-circle">
                     </div>
                     <div class="flex-grow-1">
                       <div>

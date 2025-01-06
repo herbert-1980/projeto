@@ -1,0 +1,99 @@
+{% load static %}
+
+<section class="news-latest-posts">
+  <div class="container">
+    <div class="row">
+ <!-- Exibir Notícias Prioritárias -->
+ <div class="col-lg-6">
+  {% if priority_news %}
+      {% for news in priority_news %}
+      <div class="blog-post post-style-01">
+          <div class="blog-image">
+              {% if news.principal_image %}
+                  <img class="img-fluid" src="{{ news.principal_image.url }}" alt="Imagem principal de {{ news.title }}">
+              {% elif news.image %}
+                  <img class="img-fluid" src="{{ news.image.url }}" alt="Imagem de {{ news.title }}">
+              {% endif %}
+          </div>
+          <div class="blog-post-details">
+            {% for categoria in news.categorias.first.nome_categoria %}
+              <span class="badge badge-large bg-primary">{{ news.categoria.nome_categoria }}</span>
+              {% endfor %}
+              <h3 class="blog-title"><a href="{% url 'news_detail' slug_title=news.slug_title %}">{{ news.title }}</a></h3>
+              <div class="blog-post-meta">
+                  <div class="blog-post-author">
+                      <span><a href="#"><img src="images/avatar/04.jpg" alt="">{{ news.author }}</a></span>
+                  </div>
+                  <div class="blog-post-time">
+                      <a href="#"><i class="fa-solid fa-calendar-days"></i>{{ news.published_at|date:"d M, Y" }}</a>
+                  </div>
+              </div>
+          </div>
+      </div>
+      {% endfor %}
+  {% else %}
+      <p>Nenhuma notícia prioritária disponível.</p>
+  {% endif %}
+</div>
+<!-- Fim das Notícias Prioritárias -->
+
+      <!-- Blocos de Categorias -->
+      <div class="col-lg-6">
+        <div class="row">
+          {% if economia %}
+          <div class="col-lg-12 mb-4">
+            <div class="blog-post post-style-01">
+              <div class="blog-image">
+                <img class="img-fluid" src="{{ economia.principal_image.url }}" alt="Imagem de Economia">
+              </div>
+              <div class="blog-post-details">
+                <span class="badge badge-large bg-yellow">Economia</span>
+                <h4 class="blog-title">
+                  <a href="{% url 'news_detail' slug_title=economia.slug_title %}">
+                    {{ economia.title|slice:":50" }}{% if economia.title|length > 50 %}...{% endif %}
+                  </a>
+                </h4>
+              </div>
+            </div>
+          </div>
+          {% endif %}
+          {% if bairros %}
+          <div class="col-sm-6">
+            <div class="blog-post post-style-01">
+              <div class="blog-image">
+                <img class="img-fluid" src="{{ bairros.principal_image.url }}" alt="Imagem de Bairros">
+              </div>
+              <div class="blog-post-details">
+                <span class="badge badge-large bg-purple">Bairros</span>
+                <h4 class="blog-title">
+                  <a href="{% url 'news_detail' slug_title=bairros.slug_title %}">
+                    {{ bairros.title|slice:":30" }}{% if bairros.title|length > 30 %}...{% endif %}
+                  </a>
+                </h4>
+              </div>
+            </div>
+          </div>
+          {% endif %}
+          {% if viagens %}
+          <div class="col-sm-6">
+            <div class="blog-post post-style-01">
+              <div class="blog-image">
+                <img class="img-fluid" src="{{ viagens.principal_image.url }}" alt="Imagem de Viagens">
+              </div>
+              <div class="blog-post-details">
+                <span class="badge badge-large bg-orange">Viagens</span>
+                <h4 class="blog-title">
+                  <a href="{% url 'news_detail' slug_title=viagens.slug_title %}">
+                    {{ viagens.title|slice:":30" }}{% if viagens.title|length > 30 %}...{% endif %}
+                  </a>
+                </h4>
+              </div>
+            </div>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
