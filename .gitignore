@@ -1,2 +1,12 @@
 .env
 .venv/
+.idea/
+venv/
+info.log
+*.log
+#Ignoring the virtual environment folder and the .env file
+.venv 
+
+#Ignoring the .pyc (Pycache)
+**/__pycache__
+*.pyc
