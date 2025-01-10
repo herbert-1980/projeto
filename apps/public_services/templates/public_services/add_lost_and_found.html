@@ -1,18 +1,12 @@
-{% extends "base.html" %}
+{% load static %}
 {% load humanize %}
 
-{% block content %}
-<div class="container-xxl py-5">
-    <div class="section-title">
-        <h4 class="m-0 text-uppercase font-weight-bold">Adicionar Item - Achados e Perdidos</h4>
-        <h1>Obter Coordenadas Atuais</h1>
+        <h6>Obter Coordenadas Atuais</h6>
         <button onclick="getLocation()">Obter Coordenadas</button>
         <p id="coordenadas"></p>
 
         <!-- Aqui você pode adicionar o mapa com Leaflet -->
         <div id="map" style="height: 400px;"></div>
-
-    </div>
 
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
@@ -24,7 +18,6 @@
 
         <button type="submit" class="btn btn-primary">Salvar</button>
     </form>
-</div>
 
 <script>
     let map;
@@ -84,4 +77,3 @@
         }
     }
 </script>
-{% endblock content %}

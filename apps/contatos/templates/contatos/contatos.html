@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<!--=================================
+    Inner Header -->
+<section class="inner-header">
+  <div class="container">
+    <div class="row ">
+      <div class="col-md-12">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="{% url 'contato' %}"><i class="fas fa-home me-1"></i>Contatos</a></li>
+          <li class="breadcrumb-item active"><i class="fa-solid fa-chevron-right me-2"></i><span>Envie-nos seu
+              comentário Dúvida</span></li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+<!--=================================
+      Inner Header -->
+
+<!--=================================
+      Blog -->
+<section class="space-ptb">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-7">
+        <div class="contact-info">
+          <div class="section-title">
+            <h2 class="title mb-0"><i class="fa-solid fa-bolt-lightning"></i>Get in touch with us. We love talking about
+              digital strategy</h2>
+          </div>
+          <div class="row">
+            <div class="col-sm-6 mb-4 mb-md-5">
+              <div class="map-info">
+                <div class="map">
+                  <!-- iframe START -->
+                  <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3736.229174232565!2d-54.67023782542577!3d-20.537802057521585!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9486e4588e6681a7%3A0xaa0c0485e3c3cc0c!2sMesquita%20Net!5e0!3m2!1spt-BR!2sbr!4v1736396095103!5m2!1spt-BR!2sbr"
+                    width="700" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade"></iframe>
+                  <!-- iframe END -->
+                </div>
+                <h4>Campo Grande - MS</h4>
+                <p class="mb-0">Av. Marinha, 1035 Coophavila 2</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-5 mt-5 mt-lg-0">
+        <div class="form-info bg-light">
+          <h3>Dúvidas? Escreva-nos</h3>
+          <form class="mt-4" id="contact-form" name="contact-form" method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+              <input type="text" class="form-control" id="exampleInputName" name='nome' placeholder="Seu Nome">
+            </div>
+            <div class="mb-3">
+              <input type="text" class="form-control" id="exampleInputEmail" name='email'
+                placeholder="Seu Melhor Email">
+            </div>
+            <div class="mb-4">
+              <textarea class="form-control" id="exampleInputEnquiry-Description"
+                placeholder="Escreva sua mensagem aqui..." rows="7"></textarea>
+            </div>
+            <div class="mb-0">
+              <button type="submit" class="btn btn-primary">Enviar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-5">
+      <div class="col-lg-4 mb-4 mb-lg-0">
+        <div class="contact-chat h-100">
+          <h5 class="text-white">Chat to us online</h5>
+          <p class="mb-0 text-white">Get our latest news straight into your inbox.</p>
+          <div class="mb-0">
+            <button type="submit" class="btn btn-primary">Start web chat</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4 mb-4 mb-lg-0">
+        <div class="contact-online h-100">
+          <h5 class="text-white">Call us</h5>
+          <p class="mb-0 text-white">Get our latest news straight into your inbox.</p>
+          <h4>(123) 345-6789</h4>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="contact-us h-100">
+          <h5>Contact us now to lock rate</h5>
+          <p class="mb-0">Please describe what you need Contact us now to lock in your rate.</p>
+          <h4>(123) 345-6789</h4>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!--=================================
+      Blog -->
+{% endblock %}

@@ -82,6 +82,7 @@ INSTALLED_APPS = [
 	'apps.perfil',
 	'apps.signos',
 	'apps.reviews',
+	'apps.contatos',
 ]
 
 MIDDLEWARE = [

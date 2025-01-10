@@ -19,7 +19,7 @@ class BannerView(ListView):
     def get_queryset(self):
         
         # Filtra apenas os banners do tipo 'Destaque' (destaque=2) e ativos
-        return Banner.objects.filter(destaque=2, data_inicio__lte=timezone.now(), data_final__gte=timezone.now())
+        return Banner.objects.filter(destaque=2, data_inicio__lte=timezone.now(), data_final__gte=timezone.now()).prefetch_related('categorias')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -27,6 +27,11 @@ class BannerView(ListView):
         context['banner_count'] = self.get_queryset().count()
         context['current_datetime'] = timezone.now()
         context['total_empresas'] = Empresa.objects.count()
+        context['total_banners'] = Banner.objects.count()
+        context['total_categorias'] = Categoria.objects.count()
+        context['hide_breaking_news'] = True
+        context['hide_latest_posts'] = True  # Adiciona o contexto para esconder o componente
+        context['hide_top_stories'] = True
         return context
 
 
@@ -53,7 +58,7 @@ class BannerDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         # Adiciona categorias associadas ao banner
-        context['company_categorias'] = self.object.categorias.all()
+        context['empresa_categorias'] = self.object.categorias.all()
         return context
 
     def get_object(self, queryset=None):

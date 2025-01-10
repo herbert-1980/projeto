@@ -18,7 +18,7 @@
                             <a class="nav-link text-body small" href="{% url 'termos_de_uso' %}"><i class="fas fa-question-circle text-primary me-2"></i>Termos de Uso</a>
                         </li>
                     <li class="nav-item border-right border-secondary">
-                        <a class="nav-link text-body small" href="https://wa.me/5567991363900" target="_blank"><i class="fas fa-address-book text-primary me-2"></i>Contatos</a>
+                        <a class="nav-link text-body small" href="{% url 'contatos' %}" target="_blank"><i class="fas fa-address-book text-primary me-2"></i>Contatos</a>
                     </li>
                     {% if not user.is_authenticated %}
                     <li class="nav-item border-right border-secondary">

@@ -1,32 +1,26 @@
 {% load static %}
-<div class="col-lg-4">
-    <!-- Banners -->
-<div class="mb-3">
-    <div class="section-title mb-0">
-        <h4 class="m-0 text-uppercase font-weight-bold">Publicidade</h4>
-    </div>
-    <div class="bg-white border border-top-0 p-3">
+<div class="widget sidebar-category">
+    <h6 class="widget-title">Publicidades</h6>
+  <div class="widget">
+    <div class="add-banner">
         {% for banner in banners %}
-        <a href="" class="d-block w-100 text-white text-decoration-none mb-3" 
-        style="background: none;"
-        data-bs-toggle="modal" 
-        data-bs-target="#bannerModal" 
-        data-banner-id="{{ banner.id }}" 
-        data-banner-name="{{ banner.fantasia.fantasia }}" 
-        data-banner-image="{{ banner.banner.url }}" 
-        data-banner-description="{{ banner.description }}">
-
-        {% if banner.fantasia.logo %}
-               <!-- Exibindo a logo da empresa -->
-               <img src="{{ banner.fantasia.logo.url }}" class="card-img-top" alt="Logo de {{ banner.fantasia }}" style="max-height: 200px;">
-               {% else %}
-               <!-- Mensagem caso a empresa não tenha logo -->
-               <p class="text-center">Nenhum Logo Cadastrado.</p>
-               {% endif %}
-            </a>
-            {% endfor %}
+        <a href="#" 
+           data-bs-toggle="modal" 
+           data-bs-target="#bannerModal" 
+           data-banner-id="{{ banner.id }}" 
+           data-banner-name="{{ banner.fantasia.fantasia }}" 
+           data-banner-image="{{ banner.banner.url }}" 
+           data-banner-description="{{ banner.description }}">
+            {% if banner.fantasia.logo %}
+            <!-- Exibindo a logo da empresa -->
+            <img class="img-fluid w-100" src="{{ banner.fantasia.logo.url }}" alt="Logo de {{ banner.fantasia.fantasia }}">
+            {% else %}
+            <!-- Imagem de fallback caso a empresa não tenha logo -->
+            <img class="img-fluid w-100" src="images/default-logo.jpg" alt="Nenhum Logo Disponível">
+            {% endif %}
+        </a>
+        {% endfor %}
     </div>
-
 </div>
 
 <!-- Modal -->
