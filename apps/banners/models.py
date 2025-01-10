@@ -39,7 +39,7 @@ class Banner(models.Model):
     data_inicio = models.DateTimeField()
     data_final = models.DateTimeField()
     letra = models.CharField(max_length=1, choices=LETTER_CHOICES, default='A')
-    categorias = models.ManyToManyField(Categoria, related_name='banners')
+    categorias = models.ManyToManyField(Categoria, related_name='banners', verbose_name='Categorias')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

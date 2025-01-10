@@ -8,7 +8,7 @@ from django.utils import timezone
 
 class EmpresaListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     model = models.Empresa
-    template_name = 'company_list.html'
+    template_name = 'empresa_list.html'
     context_object_name = 'empresas'
     paginate_by = 10
     permission_required = 'empresas.view_empresa'
@@ -16,11 +16,24 @@ class EmpresaListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     def get_queryset(self):
         queryset = super().get_queryset()
         fantasia = self.request.GET.get('fantasia')
-
         if fantasia:
             queryset = queryset.filter(fantasia__icontains=fantasia)
+            return queryset.prefetch_related('horarios')
 
         return queryset
+
+    def is_open(self, current_datetime=None):
+        if current_datetime is None:
+            current_datetime = timezone.localtime()
+        
+        dia_semana = current_datetime.strftime('%a')[:3]  # Pega os primeiros 3 caracteres do dia da semana
+        hora_atual = current_datetime.time()
+
+        horarios = self.horarios.filter(dia_da_semana=dia_semana, fechado=False)
+        for horario in horarios:
+            if horario.abertura <= hora_atual <= horario.fechamento:
+                return True
+        return False
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -29,9 +42,8 @@ class EmpresaListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
         # Filtrar empresas que estão abertas no momento
         now = timezone.localtime() # Horário Local Atual
         empresas = context['empresas']
-        for empresa in empresas:
+        for empresa in context['empresas']:
             empresa.is_open_now = empresa.is_open(now)
-        
         return context
 
 # Create

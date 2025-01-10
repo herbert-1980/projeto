@@ -1,0 +1,320 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+{% load static %}
+{% load humanize %}
+<style>
+    .summernote img {
+        max-width: 100% !important;
+        height: auto !important;
+    }
+    .share-links a:hover {
+        color: #E1306C; /* Cor rosa característica do Instagram */
+        transform: scale(1.1); /* Zoom ao passar o mouse */
+        transition: all 0.3s ease-in-out;
+    }
+    a:hover {
+        color: #E1306C; /* Cor de destaque */
+        transform: scale(1.1); /* Aumenta o ícone ligeiramente */
+        transition: all 0.3s ease-in-out;
+    }
+    
+    </style>
+
+<div class="container-fluid">
+    
+    <div class="container summernote">
+        <div class="row">
+            <div class="col-lg-8">
+                <!-- News Detail Start -->
+                <div class="position-relative mb-3">
+                    {% if news.principal_image %}
+                    <img class="img-fluid w-100" src="{{ news.principal_image.url }}" style="object-fit: cover;" alt="Imagem Principal de {{ news.title }}">
+                    {% elif news.image %}
+                <img class="img-fluid w-100" src="{{ news.image.url }}" style="object-fit: cover;" alt="Imagem de {{ news.title }}">
+                {% endif %}
+                    <div class="bg-white border border-top-0 p-4">
+                        <div class="mb-3">
+                            {% for category in news.categories.all %}
+                            <a class="badge badge-primary text-uppercase font-weight-semi-bold p-2 mr-2"
+                                href="#">{{ category.name_category }}</a>
+                            {% endfor %}
+                            <a class="text-body" href="">{{ news.published_at|date:"d M, Y" }}</a>
+                        </div>
+                        <h1 class="mb-3 text-secondary text-uppercase font-weight-bold">{{ news.title }}</h1>
+                        <p>{{ news.subtitle }}</p>
+                        <p class="summernote">{{ news.content|safe }}</p>
+                        <p>{% if news.video %}
+                            {% with news.video|slice:":-11" as video_id %}
+                                <div class="video-container">
+                                    <iframe width="560" height="315" src="https://www.youtube.com/embed/{{ video_id }}"  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                </div>
+                            {% endwith %}
+                        {% endif %}
+
+                         <!-- Barra de compartilhamento -->
+                        <div id="share-bar" style="display: none; position: fixed; bottom: 10px; left: 10px; background-color: #f1f1f1; padding: 10px; border-radius: 5px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); z-index: 1000; max-width: 90%; word-wrap: break-word;">
+                            <span id="share-message">Compartilhe este link:</span>
+
+                            <!-- Campo que contém a URL da notícia -->
+                            <input type="text" id="share-url" value="{{ request.build_absolute_uri }}" readonly style="width: 300px; margin-right: 10px;">
+
+                            <button onclick="copyToClipboard()">Copiar link</button>
+
+                            <!-- Botões de Compartilhamento em Redes Sociais -->
+                            <div class="d-flex justify-content-start gap-3">
+                                <div class="d-flex justify-content-start gap-3">
+                                    <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}" target="_blank" style="color: #FFCC00; text-decoration:none;">
+                                        <i class="fab fa-facebook fa-lg"></i> Facebook
+                                    </a>
+                                    <a href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}" target="_blank" style="color: #FFCC00; text-decoration:none;">
+                                        <i class="fab fa-twitter fa-lg"></i> Twitter
+                                    </a>
+                                    <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ request.build_absolute_uri }}" target="_blank" style="color: #FFCC00; text-decoration:none;">
+                                        <i class="fab fa-linkedin fa-lg"></i> LinkedIn
+                                    </a>
+                                    <a href="https://www.instagram.com/" target="_blank" style="color: #FFCC00; text-decoration:none;">
+                                        <i class="fab fa-instagram fa-lg"></i> Instagram
+                                    </a>
+                                </div>
+                                
+                            </div>
+                            
+                        </div>
+                        <!-- Fim da Barra de Compartilhamento -->
+                        <!-- More content here -->
+                    </div>
+                    <div class="d-flex justify-content-between bg-white border border-top-0 p-4 align-items-center">
+                        <!-- Informações do autor -->
+                        <div class="d-flex align-items-center">
+                            {% if news.author.perfil.photo %}
+                                <img class="rounded-circle mr-2" src="{{ news.author.perfil.photo.url }}" width="35" height="35" alt="Imagem de {{ news.author.username }}">
+                            {% else %}
+                                <img class="rounded-circle mr-2" src="{% static 'news/img/user.jpg' %}" width="35" height="35" alt="Imagem padrão">
+                            {% endif %}
+                            <span>{{ news.author.first_name }} {{ news.author.last_name }}</span>
+                        </div>
+                    
+                        <!-- Estatísticas e ações -->
+                        <div class="d-flex align-items-center gap-3">
+                            <span class="d-flex align-items-center">
+                                <i class="far fa-eye me-2"></i>{{ news.views }}
+                            </span>
+                            <span class="d-flex align-items-center">
+                                <i class="fas fa-share me-2"></i>{{ news.share }}
+                            </span>
+                    
+                            <!-- Botão compartilhar -->
+                            <a href="" class="d-flex align-items-center text-decoration-none" onclick="toggleShareBar(event)" title="Compartilhar" style="color: #FFCC00;">
+                                <i class="fas fa-share-alt fa-lg"></i>
+                            </a>
+                    
+                            <!-- Comentários -->
+                            <span class="d-flex align-items-center">
+                                <i class="far fa-comment me-2"></i>{{ comment_count }} Comentários
+                            </span>
+                    
+                            <!-- Fonte -->
+                            {% if news.source %}
+                            <span class="d-flex align-items-center">
+                                <i class="fas fa-link me-2"></i>
+                                <a href="{{ news.source }}" target="_blank" class="text-decoration-none" style="color: #FFCC00;">Fonte</a>
+                            </span>
+                            {% else %}
+                            <span class="d-flex align-items-center">
+                                <i class="fas fa-link me-2"></i> Fonte não disponível
+                            </span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                </div>
+                <!-- News Detail End -->
+<!-- Comment List Start -->
+<div class="mb-3">
+    <div class="section-title mb-0">
+        <h4 class="m-0 text-uppercase font-weight-bold">Comentários</h4>
+    </div>
+    <div class="bg-white border border-top-0 p-4">
+        {% for comment in comments %}
+        <!-- Comentário Individual -->
+        <div class="comment mb-4 p-3 bg-light rounded">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <!-- Foto do Autor e Nome -->
+                <div class="d-flex align-items-center">
+                    <!-- Foto do perfil -->
+                    <div class="d-flex align-items-center mb-2">
+                        {% if comment.comment_user and comment.comment_user.perfil.photo %}
+                            <img class="rounded-circle me-2" src="{{ comment.comment_user.perfil.photo.url }}" width="35" height="35" alt="Imagem de {{ comment.comment_user.username }}">
+                        {% else %}
+                            <img class="rounded-circle me-2" src="{% static 'news/img/user.jpg' %}" width="35" height="35" alt="Imagem padrão">
+                        {% endif %}
+                        <span>{{ reply.comment_user.first_name }} {{ reply.comment_user.last_name }}</span>
+                    </div>
+                    
+                    
+                    <!-- Nome do Autor -->
+                    {% if comment.comment_user %}
+                    <strong class="me-2">{{ comment.comment_user.first_name }} {{ comment.comment_user.last_name }}</strong>
+                    {% else %}
+                    <strong class="me-2">{{ comment.comment_name }}</strong>
+                    {% endif %}
+                    
+                    <!-- Data do comentário -->
+                    <small class="text-muted">{{ comment.comment_date|date:"d M, Y - H:i" }}</small>
+                </div>
+
+                <!-- Link da notícia comentada -->
+                {% if comment.comment_news %}
+                <div>
+                    <a href="{{ comment.comment_news.get_absolute_url }}" class="text-decoration-none text-primary">
+                        {{ comment.comment_news.title }}
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+            
+            <!-- Conteúdo do comentário -->
+            <p class="mb-2 text-dark">{{ comment.comment }}</p>
+            
+            <!-- Botões de interação -->
+            <div class="d-flex align-items-center">
+                <button class="btn btn-sm btn-outline-secondary me-2">
+                    <i class="far fa-thumbs-up"></i> Curtir
+                </button>
+                <button class="btn btn-sm btn-outline-secondary" onclick="toggleReplyForm({{ comment.id }})">
+                    <i class="far fa-reply"></i> Responder
+                </button>
+            </div>
+
+            <!-- Formulário de resposta -->
+            <div id="reply-form-{{ comment.id }}" class="reply-form mt-3" style="display:none;">
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="parent_id" value="{{ comment.id }}">
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-primary">Enviar Resposta</button>
+                </form>
+            </div>
+
+            <!-- Respostas aos comentários -->
+            {% for reply in comment.replies.all %}
+            <div class="comment-reply mt-3 p-3 bg-light rounded">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <!-- Foto do autor da resposta -->
+                    <div class="d-flex align-items-center mb-2">
+                        {% if reply.comment_user and reply.comment_user.perfil.photo %}
+                            <img class="rounded-circle me-2" src="{{ reply.comment_user.perfil.photo.url }}" width="35" height="35" alt="Imagem de {{ reply.comment_user.username }}">
+                        {% else %}
+                            <img class="rounded-circle me-2" src="{% static 'news/img/user.jpg' %}" width="35" height="35" alt="Imagem padrão">
+                        {% endif %}
+                        <span>{{ reply.comment_user.first_name }} {{ reply.comment_user.last_name }}</span>
+                    </div>
+                    
+                    
+                    <!-- Nome do autor da resposta -->
+                    <strong>{{ reply.comment_user.first_name }} {{ reply.comment_user.last_name }}</strong>
+                    <small class="text-muted">{{ reply.comment_date|date:"d M, Y - H:i" }}</small>
+                </div>
+                <!-- Conteúdo da resposta -->
+                <p class="text-dark">{{ reply.comment }}</p>
+            </div>
+            {% endfor %}
+        </div>
+        {% empty %}
+        <p class="text-muted">Seja o primeiro a comentar!</p>
+        {% endfor %}
+    </div>
+</div>
+<!-- Comment List End -->
+
+<!-- Comment Form Start -->
+<div class="mb-3">
+    <div class="section-title mb-0">
+        <h4 class="m-0 text-uppercase font-weight-bold">Deixe um Comentário</h4>
+    </div>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <div class="bg-white border border-top-0 p-4">
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div class="g-recaptcha" data-sitekey="6Lc9gmsqAAAAANI8Gx7b5IOSupkIpTXm0SOphH-M"></div><br>
+            <button type="submit" class="btn btn-primary">Enviar Comentário</button>
+        </form>
+    </div>
+</div>
+<!-- Comment Form End -->
+
+<script>
+    function toggleReplyForm(commentId) {
+        var form = document.getElementById('reply-form-' + commentId);
+        form.style.display = (form.style.display === 'none' || form.style.display === '') ? 'block' : 'none';
+    }
+</script>
+
+
+
+            </div>
+
+
+                <!-- Social Follow Start -->
+                {% include 'components/_publicidades.html' %}
+                <!-- Social Follow End -->
+
+                <!-- Ads Start -->
+                <div class="mb-3">
+                    <div class="section-title mb-0">
+                        <h4 class="m-0 text-uppercase font-weight-bold">Anúncios</h4>
+                    </div>
+                    <div class="bg-white text-center border border-top-0 p-3">
+                        <a href=""><img class="img-fluid" src="{% static 'news/img/news-800x500-2.jpg' %}" alt=""></a>
+                    </div>
+                </div>
+                <!-- Ads End -->
+
+                        <!-- Popular News Start -->
+                        {% block popular_news_block %}
+                        {% include 'news/news_popular.html' %}
+                        {% endblock %}
+                    <!-- Popular News End -->
+                     <!-- Enquetes Start -->
+                      {% block enquetes %}
+
+                    <!-- Enquetes End -->
+                    {% endblock %}
+        </div>
+    </div>
+</div>
+<!-- News With Sidebar End -->
+<script>
+    // Função para exibir/ocultar a barra de compartilhamento
+    function toggleShareBar(event) {
+      event.preventDefault(); // Evita o comportamento padrão do link
+      var shareBar = document.getElementById("share-bar");
+      if (shareBar.style.display === "none") {
+        shareBar.style.display = "block";
+      } else {
+        shareBar.style.display = "none";
+      }
+    }
+
+    // Função para copiar a URL para a área de transferência
+    function copyToClipboard() {
+      var copyText = document.getElementById("share-url");
+      copyText.select();
+      copyText.setSelectionRange(0, 99999);  // Para dispositivos móveis
+      document.execCommand("copy");
+
+      // Exibir uma mensagem de sucesso
+      var shareMessage = document.getElementById("share-message");
+      shareMessage.textContent = "Link copiado para a área de transferência!";
+
+      // Ocultar a barra após 2 segundos
+      setTimeout(function() {
+        document.getElementById("share-bar").style.display = "none";
+      }, 2000);
+    }
+  </script>
+
+
+{% endblock %}

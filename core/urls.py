@@ -18,6 +18,8 @@ urlpatterns = [
     path('enquetes/', include(('enquetes.urls', 'enquetes'), namespace='enquetes')),
     path('reviews/', include(('reviews.urls', 'reviews'), namespace='reviews')),
     path('signos/', include('signos.urls')), 
+    path('empresas/', include('empresas.urls')),
+    path('contato/', include('contatos.urls')),
 
 ]
 if settings.DEBUG:

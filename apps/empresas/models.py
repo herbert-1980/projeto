@@ -77,7 +77,20 @@ class Empresa(models.Model):
     mapa_url = models.TextField(null=True, blank=True)
 
     def __str__(self):
-        return f'{self.fantasia} ({self.cnpj})'
+        return f'{self.fantasia}'
+    
+    def is_open(self, current_datetime=None):
+        if current_datetime is None:
+            current_datetime = timezone.localtime()
+        dia_semana = current_datetime.strftime('%a')[:3]
+        hora_atual = current_datetime.time()
+
+        horarios = self.horarios.filter(dia_da_semana=dia_semana, fechado=False)
+        for horario in horarios:
+            if horario.abertura <= hora_atual <= horario.fechamento:
+                return True
+        return False
+    
     
     class Meta:
         verbose_name = "Empresa"
@@ -96,30 +109,11 @@ class HorarioFuncionamento(models.Model):
         ('Dom', 'Domingo'),
     ]
 
-    empresa = models.ForeignKey(
-        'empresas.Empresa',
-        on_delete=models.CASCADE,
-        related_name='horarios'
-    )
-    dia_da_semana = models.CharField(
-        max_length=3,
-        choices=DIA_DA_SEMANA_CHOICES,
-        verbose_name="Dia da Semana"
-    )
-    abertura = models.TimeField(
-        null=True, 
-        blank=True, 
-        verbose_name="Horário de Abertura"
-    )
-    fechamento = models.TimeField(
-        null=True, 
-        blank=True, 
-        verbose_name="Horário de Fechamento"
-    )
-    fechado = models.BooleanField(
-        default=False,
-        verbose_name="Fechado"
-    )
+    empresa = models.ForeignKey('Empresa', on_delete=models.CASCADE, related_name='horarios')
+    dia_da_semana = models.CharField(max_length=3, choices=DIA_DA_SEMANA_CHOICES, verbose_name="Dia da Semana")
+    abertura = models.TimeField(null=True, blank=True, verbose_name="Horário de Abertura")
+    fechamento = models.TimeField(null=True, blank=True, verbose_name="Horário de Fechamento")
+    fechado = models.BooleanField(default=False, verbose_name="Fechado")
 
     class Meta:
         db_table = 'empresas'
@@ -130,8 +124,8 @@ class HorarioFuncionamento(models.Model):
 
     def __str__(self):
         if self.fechado:
-            return f'{self.empresa.razao} - {self.get_dia_da_semana_display()}: Fechado'
-        return f'{self.empresa.razao} - {self.get_dia_da_semana_display()}: {self.abertura} às {self.fechamento}'
+            return f'{self.empresa.fantasia} - {self.get_dia_da_semana_display()}: Fechado'
+        return f'{self.empresa.fantasia} - {self.get_dia_da_semana_display()}: {self.abertura} às {self.fechamento}'
     
     
 

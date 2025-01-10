@@ -13,7 +13,7 @@
                       <li><a href="#">Advertise</a></li>
                       <li><a href="#">Write Us</a></li>
                       <li><a href="#">Sobre</a></li>
-                      <li><a href="https://wa.me/5567991363900" target="_blank">Contatos</a></li>
+                      <li><a href="{% url 'contato' %}">Contatos</a></li>
                     </ul>
                   </div>
                 </div>
@@ -21,9 +21,20 @@
                   <div class="topbar-right ms-auto justify-content-center"> 
                     {% if not user.is_authenticated %}
                     <span class="user">
-                      <a href="{% url 'login' %}"><img src="{% static 'news/images/user.png' %}" alt="#">Login</a>
+                      <a href="{% url 'login' %}"><img src="{% static 'news/images/user.png' %}" alt="#">Logar</a>
+                    </span>
+                    <span class="user">
+                      <a href="{% url 'register' %}"><img src="{% static 'news/images/user.png' %}" alt="#">Registrar</a>
                     </span>
                     {% endif %}
+                    {% if user.is_authenticated %}
+                    <span class="user">
+                      <a href="{% url 'dashboard' %}"><img src="{% static 'news/images/user.png' %}" alt="#">Dashboard</a>
+                    </span>
+                    <span class="user">
+                      <a data-bs-toggle="modal" href="#logoutModal" id="logoutBtn"><img src="{% static 'news/images/user.png' %}" alt="#">Sair</a>
+                    </span>
+                      {% endif %}
                   <div class="dropdown right-menu d-inline-flex news-language">
                     <a class="dropdown-toggle" href="#" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <img class="img-fluid country-flag" src="{% static 'news/images/country-flags/02.jpg' %}" alt=""> English<i class="fas fa-chevron-down fa-xs"></i> </a>
                     <div class="dropdown-menu mt-0" aria-labelledby="dropdownMenuButton2">
@@ -46,6 +57,9 @@
                       </li>
                       <li>
                         <a href="#"> <i class="fab fa-instagram"></i> </a>
+                      </li>
+                      <li>
+                        <a href="https://wa.me/5567991363900"><i class="fab fa-whatsapp"></i></a>
                       </li>
                     </ul>
                   </div>

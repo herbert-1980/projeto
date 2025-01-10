@@ -2,40 +2,165 @@
 {% load humanize %}
 {% load static %}
 {% block content %}
-<div class="container-xxl py-5">
-    <div class="section-title d-flex justify-content-between align-items-center">
-        <h4 class="m-0 text-uppercase font-weight-bold">Achados e Perdidos</h4>
-        <form method="get" action="" class="d-flex">
-            <input type="text" name="search" placeholder="Pesquisar..." class="form-control mr-2" style="width: 250px;">
-            <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
-        </form>
-    </div>
 
-    <div class="mb-4 text-center">
-        <a href="?category=lost" class="btn btn-outline-primary mx-1">Perdidos</a>
-        <a href="?category=found" class="btn btn-outline-primary mx-1">Achados</a>
-    </div>
+<!-- Inner Header -->
+    <section class="inner-header">
+        <div class="container">
+          <div class="row ">
+            <div class="col-md-12">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/"><i class="fas fa-home me-1"></i>Utilidade Publica</a></li>
+                <li class="breadcrumb-item active"><i class="fa-solid fa-chevron-right me-2"></i><span>Achados e Perdidos</span></li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </section>
+<!-- Inner Header -->
 
-    <div class="mb-4">
-        <form method="get" action="" class="row">
-            <div class="col-md-3">
-                <input type="text" name="location" placeholder="Localização" class="form-control">
+<!--=================================
+    Blog -->
+    <section class="space-ptb">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-7">
+              <div class="contact-info">
+              <div class="section-title">
+                <h2 class="title mb-0"><i class="fa-solid fa-bolt-lightning"></i>Bem vindos(as)! a sessão de Achados e Perdidos</h2>
+              </div>
+              <div class="row">
+                <div class="col-sm-6 mb-4 mb-md-5">
+                  <div class="map-info">
+                    <div class="map">
+                      <!-- iframe START -->
+                      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d158857.72810784922!2d-0.24168043751141846!3d51.52877184053823!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47d8a00baf21de75%3A0x52963a5addd52a99!2sLondon%2C%20UK!5e0!3m2!1sen!2sin!4v1657524630590!5m2!1sen!2sin" style="border:0; border-radius: 6px; width: 100%; height: 100%" allowfullscreen=""></iframe>
+                      <!-- iframe END -->
+                    </div>
+                  <h4>London</h4>
+                  <p class="mb-0">214 West Arnold St. New York, NY 10002</p>
+                </div>
+                </div>
+                <div class="col-sm-6 mb-4 mb-md-5">
+                  <div class="map-info">
+                    <div class="map">
+                      <!-- iframe START -->
+                      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13004082.928417291!2d-104.65713107818928!3d37.275578278180674!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x54eab584e432360b%3A0x1c3bb99243deb742!2sUnited%20States!5e0!3m2!1sen!2sin!4v1657524695458!5m2!1sen!2sin" style="border:0; border-radius: 6px; width: 100%; height: 100%" allowfullscreen=""></iframe>
+                      <!-- iframe END -->
+                    </div>
+                    <h4>USA</h4>
+                    <p class="mb-0">Fairground St. North Bergen, NJ</p>
+                 </div>
+                </div>
+                <div class="col-sm-6 mb-4 mb-sm-0">
+                  <div class="map-info">
+                    <div class="map">
+                      <!-- iframe START -->
+                      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15280120.483704528!2d73.72876181077612!3d20.771124736526268!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30635ff06b92b791%3A0xd78c4fa1854213a6!2sIndia!5e0!3m2!1sen!2sin!4v1657524736029!5m2!1sen!2sin" style="border:0; border-radius: 6px; width: 100%; height: 100%" allowfullscreen=""></iframe>
+                      <!-- iframe END -->
+                    </div>
+                    <h4>India</h4>
+                    <p class="mb-0">West Indian Summer St. Missoula</p>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="map-info">
+                    <div class="map">
+                      <!-- iframe START -->
+                      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d29624158.06758288!2d115.22492796537003!3d-24.992291572825835!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2b2bfd076787c5df%3A0x538267a1955b1352!2sAustralia!5e0!3m2!1sen!2sin!4v1657524768356!5m2!1sen!2sin" style="border:0; border-radius: 6px; width: 100%; height: 100%" allowfullscreen=""></iframe>
+                      <!-- iframe END -->
+                    </div>
+                    <h4>Australia</h4>
+                    <p class="mb-0">Virginia Drive Temple Hills</p>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="col-md-3">
-                <select name="status" class="form-control">
-                    <option value="">-- Status --</option>
-                    <option value="pending">Pendente</option>
-                    <option value="resolved">Resolvido</option>
-                </select>
             </div>
-            <div class="col-md-3">
-                <input type="date" name="date" class="form-control">
+            <div class="col-lg-5 mt-5 mt-lg-0">
+              <div class="form-info bg-light">
+                <h3>Quer Contribuir? Você precisa estar logado</h3>
+                {% include 'public_services/add_lost_and_found.html' %}
+              </div>
             </div>
-            <div class="col-md-3 text-right">
-                <button type="submit" class="btn btn-primary w-100"><i class="fa fa-filter"></i> Filtrar</button>
+          </div>
+          <div class="row mt-5">
+            <div class="col-lg-4 mb-4 mb-lg-0">
+              <div class="contact-chat h-100">
+                <h5 class="text-white">Achados e Perdidos</h5>
+                <p class="mb-0 text-white">Sejamos Honestos! Colaborar não custa nada. Pode ser que você encontre aqui no nosso portal um documento, ou algo que te pertence.</p>
+                <div class="mb-0">
+                    A sessão de <strong>Achados e Perdidos</strong> é um espaço destinado ao registro, organização e divulgação de itens que foram encontrados ou perdidos por pessoas em uma determinada área ou comunidade. Seu principal objetivo é facilitar a devolução de objetos ou documentos a seus proprietários legítimos, promovendo a colaboração e a solidariedade entre os membros da comunidade.
+                    <a href="?category=found" class="btn btn-primary">Achados</a>
+                    <a href="?category=lost" class="btn btn-primary">Perdidos</a>
+                  </div>
+              </div>
+              
             </div>
-        </form>
-    </div>
+            <div class="col-lg-4 mb-4 mb-lg-0">
+              <div class="contact-online h-100">
+                <h5 class="text-white">Entre em Contato em caso de dúvidas</h5>
+                <p class="mb-0 text-white">Descreva bastante detalhes sobre o que você quer abordar.</p>
+                <div class="mb-0">
+                    <p>67 99136-3900</p>
+                  </div>
+              </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="contact-us h-100">
+                    <h5 class="mb-3">Buscar por Filtros</h5>
+                    
+                    <!-- Campo de busca simples -->
+                    <form method="get" action="" class="mb-3">
+                        <div class="input-group">
+                            <input type="text" name="search" placeholder="Pesquisar..." class="form-control" aria-label="Pesquisar">
+                            <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
+                        </div>
+                    </form>
+                    
+                    <hr>
+                    
+                    <!-- Formulário de filtros -->
+                    <form method="get" action="">
+                        <div class="row gy-3">
+                            <!-- Campo de localização -->
+                            <div class="col-12">
+                                <label for="location" class="form-label">Localização</label>
+                                <input type="text" id="location" name="location" placeholder="Digite a localização" class="form-control">
+                            </div>
+                            
+                            <!-- Campo de status -->
+                            <div class="col-12">
+                                <label for="status" class="form-label">Status</label>
+                                <select id="status" name="status" class="form-control">
+                                    <option value="">-- Selecione o Status --</option>
+                                    <option value="pending">Pendente</option>
+                                    <option value="resolved">Resolvido</option>
+                                </select>
+                            </div>
+                            
+                            <!-- Campo de data -->
+                            <div class="col-12">
+                                <label for="date" class="form-label">Data</label>
+                                <input type="date" id="date" name="date" class="form-control">
+                            </div>
+                            
+                            <!-- Botão de filtragem -->
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary w-100">
+                                    <i class="fa fa-filter"></i> Aplicar Filtros
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            </div>
+          </div>
+        </div>
+      </section>
+      <!--=================================
+      Blog -->
 
     <div class="row">
         {% for item in items %}
@@ -49,7 +174,7 @@
                     {% endif %}
                     
                     <div class="bg-white border border-top-0 p-4">
-                        <h4 class="text-secondary text-uppercase font-weight-bold mb-2">{{ item.title }}</h4>
+                        <h4 class="text-secondary text-uppercase font-weight-bold">{{ item.title }}</h4>
                         <p class="mb-2">{{ item.description }}</p>
                         <p class="mb-2"><strong>Categoria:</strong> {{ item.get_category_display }}</p>
                         {% if item.location %}
@@ -96,32 +221,26 @@
     </div>
     
 
-    <!-- Botão para adicionar item -->
-    <div class="text-center mt-4">
-        <a href="{% url 'add_lost_and_found' %}" class="btn btn-primary btn-lg">
-            <i class="fas fa-plus"></i> Adicionar Item
-        </a>
-    </div>
-</div>
-
+   </div>
 <!-- Script para inicializar os mapas -->
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        {% for item in items %}
-            {% if item.latitude and item.longitude %}
-                var mapId = 'map-{{ item.id }}';
-                var map = L.map(mapId).setView([{{ item.latitude }}, {{ item.longitude }}], 13);
-                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-                    maxZoom: 19
-                }).addTo(map);
-                L.marker([{{ item.latitude }}, {{ item.longitude }}])
-                    .addTo(map)
-                    .bindPopup('<b>{{ item.title }}</b><br />{{ item.location }}')
-                    .openPopup();
-            {% endif %}
-        {% endfor %}
-    });
-</script>
+{% for item in items %}
+    {% if item.latitude and item.longitude %}
+    <script>
+        function initMap() {
+            var myLatLng = {
+                lat: {{ item.latitude }}, lng: {{ item.longitude }}};
+            var map = new google.maps.Map(document.getElementById('map-{{ item.id }}'), {
+                zoom: 15,
+                center: myLatLng
+            });
+            var marker = new google.maps.Marker({
+                position: myLatLng,
+                map: map,
+                title: '{{ item.title }}'
+            });
+        }
+    </script>
+    {% endif %}
+{% endfor %}
 
 {% endblock content %}

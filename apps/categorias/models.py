@@ -12,7 +12,7 @@ class Categoria(models.Model):
     def save(self, *args, **kwargs):
         # Se o slug estiver vazio, gera automaticamente
         if not self.slug_categoria:
-            self.slug_categoria = slugify(self.name_categoria)
+            self.slug_categoria = slugify(self.nome_categoria)
         super().save(*args, **kwargs)
 
     class Meta:

@@ -1,298 +1,548 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load humanize %}
+{% if not hide_latest_posts %}
+{% endif %}
 {% block content %}
-{% if not hide_priority_news %}
-    <!-- Componente priority_news -->
-    <div class="_priority-news">
-        <!-- Conteúdo do priority_news -->
-    </div>
-{% endif %}
-    {% if not hide_featured_news %}
-    <!-- Componente priority_news -->
-    <div class="_featured-news">
-        <!-- Conteúdo do priority_news -->
-         {% include 'news/news_featured.html' %}
-    </div>
-{% endif %}
+
 <style>
     .summernote img {
         max-width: 100% !important;
         height: auto !important;
     }
-    .share-links a:hover {
-        color: #E1306C; /* Cor rosa característica do Instagram */
-        transform: scale(1.1); /* Zoom ao passar o mouse */
-        transition: all 0.3s ease-in-out;
-    }
-    a:hover {
-        color: #E1306C; /* Cor de destaque */
-        transform: scale(1.1); /* Aumenta o ícone ligeiramente */
-        transition: all 0.3s ease-in-out;
-    }
-    
-    </style>
-<!-- News With Sidebar Start -->
-    <!--=================================
-    Banner -->
-    <section class="news-latest-posts blog-single-04">
-        <div class="container-fluid p-0">
-          <div class="row g-0">
-           <div class="col-lg-12">
-             <div class="blog-post post-style-01 mb-0">
-               <div class="blog-image rounded-0">
-                 {% if news.principal_image %}
-                 <img class="img-fluid w-100" src="{{ news.principal_image.url }}" alt="Imagem Principal de {{ news.title }}">
-                 {% elif news.image %}
-                 <img class="img-fluid w-100" src="{{ news.image.url }}" alt="Imagem Principal de {{ news.title }}">
-                 {% endif %}
-               </div>
-               <div class="blog-post-details text-center">
-                  {% for category in news.categories.all %}
-                 <span class="badge badge-large bg-primary">{{ category.name_category }}</span>
-                 {% endfor %}
-                 <h3 class="blog-title"><a href="">{{ news.title }}</a></h3>
-                 <p>{{ news.subtitle }}</p>
-                 <div class="blog-post-meta justify-content-center">
-                     <div class="blog-post-author">
-                       <span><a href="#"><img src="images/avatar/03.jpg" alt="">Percy Kewshun</a></span>
-                     </div>
-                     <div class="blog-post-time">
-                       <a href="#"><i class="fa-solid fa-calendar-days"></i>{{ news.published_at|date:"d M, Y" }}</a>
-                     </div>
-                 </div>
-               </div>
-             </div>
-           </div>
-         </div>
-       </div>
-     </section>
-       <!--=================================
-       Banner -->
 
-<div class="container-fluid">
-    
-    <div class="container summernote">
+    .share-links a:hover {
+        color: #E1306C;
+        /* Cor rosa característica do Instagram */
+        transform: scale(1.1);
+        /* Zoom ao passar o mouse */
+        transition: all 0.3s ease-in-out;
+    }
+
+    a:hover {
+        color: #E1306C;
+        /* Cor de destaque */
+        transform: scale(1.1);
+        /* Aumenta o ícone ligeiramente */
+        transition: all 0.3s ease-in-out;
+    }
+</style>
+<!-- Inner Header -->
+<section class="inner-header">
+    <div class="container">
         <div class="row">
-            <div class="col-lg-8">
-                <!-- News Detail Start -->
-                <div class="position-relative mb-3">
-                    {% if news.principal_image %}
-                    <img class="img-fluid w-100" src="{{ news.principal_image.url }}" style="object-fit: cover;" alt="Imagem Principal de {{ news.title }}">
-                    {% elif news.image %}
-                <img class="img-fluid w-100" src="{{ news.image.url }}" style="object-fit: cover;" alt="Imagem de {{ news.title }}">
-                {% endif %}
-                    <div class="bg-white border border-top-0 p-4">
-                        <div class="mb-3">
-                            {% for category in news.categories.all %}
-                            <a class="badge badge-primary text-uppercase font-weight-semi-bold p-2 mr-2"
-                                href="#">{{ category.name_category }}</a>
-                            {% endfor %}
-                            <a class="text-body" href="">{{ news.published_at|date:"d M, Y" }}</a>
+            <div class="col-md-12">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/"><i class="fas fa-home me-1"></i>Início</a></li>
+                    <li class="breadcrumb-item active"><i class="fa-solid fa-chevron-right me-2"></i><span>{{ news.title }}</span></li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Notícias -->
+<section class="space-ptb">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-7 col-xl-8 blog-single">
+                <div class="blog-post-info">
+                    <div class="blog-content pb-0">
+                        <div class="blog-post-image mb-4">
+                            {% if news.principal_image %}
+                            <img class="img-fluid" src="{{ news.principal_image.url }}"
+                                alt="Imagem Principal de {{ news.title }}">
+                            {% elif news.image %}
+                            <img class="img-fluid" src="{% static 'news/images/blog/politician/01.jpg' %}"
+                                alt="Imagem de {{ news.title }}">
+                            {% endif %}
                         </div>
-                        <h1 class="mb-3 text-secondary text-uppercase font-weight-bold">{{ news.title }}</h1>
-                        <p>{{ news.subtitle }}</p>
+                        <div class="blog-post-title">
+                            <h3 class="mb-0"><a href="#">{{ news.title }}</a></h3>
+                            {% if news.subtitle %}
+                            <p>{{ news.subtitle }}</p>
+                            {% endif %}
+                        </div>
+                        <div class="blog-post post-style-07 border-0 py-4 px-0">
+                            <div class="blog-post-details">
+                                <div class="blog-post-meta p-0">
+                                    <div class="blog-post-user">
+                                        {% if news.author.perfil.photo %}
+                                        <a href="#">Por:<img class="img-fluid" src="{{ news.author.perfil.photo.url }}"
+                                                alt="">{{ news.author.first_name }} {{ news.author.last_name }}</a>
+                                        {% else %}
+                                        <a href="#">Por:<img class="img-fluid" src="" alt="">{{ news.author.first_name
+                                            }} {{ news.author.last_name }}</a>
+                                        {% endif %}
+                                    </div>
+                                    <div class="blog-post-time">
+                                        <a href="#"><i class="fa-solid fa-calendar-days"></i>
+                                            {{ news.published_at|date:"d M, Y" }}</a>
+                                    </div>
+                                    <div class="blog-post-comment">
+                                        <a href="#"><i class="fa-regular fa-comment"></i>{{ comment_count }}</a>
+                                    </div>
+                                    <div class="blog-post-share">
+                                        <div class="share-box">
+                                            <a href="#"><i class="fa-solid fa-share-nodes"></i>Compartilhar</a>
+                                            <ul class="list-unstyled share-box-social">
+                                                <li> <a href="#"><i class="fab fa-facebook-f"></i></a> </li>
+                                                <li> <a href="#"><i class="fab fa-twitter"></i></a> </li>
+                                                <li> <a href="#"><i class="fa-brands fa-linkedin-in"></i></a> </li>
+                                                <li> <a href="#"><i class="fab fa-instagram"></i></a> </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <p class="summernote">{{ news.content|safe }}</p>
                         <p>{% if news.video %}
                             {% with news.video|slice:":-11" as video_id %}
-                                <div class="video-container">
-                                    <iframe width="560" height="315" src="https://www.youtube.com/embed/{{ video_id }}"  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                                </div>
-                            {% endwith %}
+                        <div class="video-container">
+                            <iframe width="560" height="315" src="https://www.youtube.com/embed/{{ video_id }}"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowfullscreen></iframe>
+                        </div>
+                        {% endwith %}
                         {% endif %}
-
-                         <!-- Barra de compartilhamento -->
-                        <div id="share-bar" style="display: none; position: fixed; bottom: 10px; left: 10px; background-color: #f1f1f1; padding: 10px; border-radius: 5px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); z-index: 1000; max-width: 90%; word-wrap: break-word;">
-                            <span id="share-message">Compartilhe este link:</span>
-
-                            <!-- Campo que contém a URL da notícia -->
-                            <input type="text" id="share-url" value="{{ request.build_absolute_uri }}" readonly style="width: 300px; margin-right: 10px;">
-
-                            <button onclick="copyToClipboard()">Copiar link</button>
-
-                            <!-- Botões de Compartilhamento em Redes Sociais -->
-                            <div class="d-flex justify-content-start gap-3">
-                                <div class="d-flex justify-content-start gap-3">
-                                    <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}" target="_blank" style="color: #FFCC00; text-decoration:none;">
-                                        <i class="fab fa-facebook fa-lg"></i> Facebook
-                                    </a>
-                                    <a href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}" target="_blank" style="color: #FFCC00; text-decoration:none;">
-                                        <i class="fab fa-twitter fa-lg"></i> Twitter
-                                    </a>
-                                    <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ request.build_absolute_uri }}" target="_blank" style="color: #FFCC00; text-decoration:none;">
-                                        <i class="fab fa-linkedin fa-lg"></i> LinkedIn
-                                    </a>
-                                    <a href="https://www.instagram.com/" target="_blank" style="color: #FFCC00; text-decoration:none;">
-                                        <i class="fab fa-instagram fa-lg"></i> Instagram
-                                    </a>
+                        <div
+                            class="blog-post-share-box d-flex flex-wrap justify-content-between align-items-center mt-4">
+                            <div class="blog-post post-style-07 border-0 ps-0">
+                                <div class="blog-post-details">
+                                    <div class="blog-post-meta p-0">
+                                        <div class="blog-post-share">
+                                            <div class="share-box">
+                                                <a href="#"><i class="fa-solid fa-share-nodes"></i>Compartilhe</a>
+                                                <ul class="list-unstyled share-box-social">
+                                                    <li> <a href="#"><i class="fab fa-facebook-f"></i></a> </li>
+                                                    <li> <a href="#"><i class="fab fa-twitter"></i></a> </li>
+                                                    <li> <a href="#"><i class="fa-brands fa-linkedin-in"></i></a> </li>
+                                                    <li> <a href="#"><i class="fab fa-instagram"></i></a> </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                
                             </div>
-                            
-                        </div>
-                        <!-- Fim da Barra de Compartilhamento -->
-                        <!-- More content here -->
-                    </div>
-                    <div class="d-flex justify-content-between bg-white border border-top-0 p-4 align-items-center">
-                        <!-- Informações do autor -->
-                        <div class="d-flex align-items-center">
-                            {% if news.author.perfil.photo %}
-                                <img class="rounded-circle mr-2" src="{{ news.author.perfil.photo.url }}" width="35" height="35" alt="Imagem de {{ news.author.username }}">
-                            {% else %}
-                                <img class="rounded-circle mr-2" src="{% static 'news/img/user.jpg' %}" width="35" height="35" alt="Imagem padrão">
-                            {% endif %}
-                            <span>{{ news.author.first_name }} {{ news.author.last_name }}</span>
-                        </div>
-                    
-                        <!-- Estatísticas e ações -->
-                        <div class="d-flex align-items-center gap-3">
-                            <span class="d-flex align-items-center">
-                                <i class="far fa-eye me-2"></i>{{ news.views }}
-                            </span>
-                            <span class="d-flex align-items-center">
-                                <i class="fas fa-share me-2"></i>{{ news.share }}
-                            </span>
-                    
-                            <!-- Botão compartilhar -->
-                            <a href="" class="d-flex align-items-center text-decoration-none" onclick="toggleShareBar(event)" title="Compartilhar" style="color: #FFCC00;">
-                                <i class="fas fa-share-alt fa-lg"></i>
-                            </a>
-                    
-                            <!-- Comentários -->
-                            <span class="d-flex align-items-center">
-                                <i class="far fa-comment me-2"></i>{{ comment_count }} Comentários
-                            </span>
-                    
                             <!-- Fonte -->
                             {% if news.source %}
                             <span class="d-flex align-items-center">
                                 <i class="fas fa-link me-2"></i>
-                                <a href="{{ news.source }}" target="_blank" class="text-decoration-none" style="color: #FFCC00;">Fonte</a>
+                                <a href="{{ news.source }}" target="_blank">Fonte</a>
                             </span>
                             {% else %}
                             <span class="d-flex align-items-center">
                                 <i class="fas fa-link me-2"></i> Fonte não disponível
                             </span>
                             {% endif %}
+                            <div class="badges">
+                                <a href="#" class="btn-primary btn">idea</a>
+                                <a href="#" class="btn-primary  btn">Creative</a>
+                            </div>
+                        </div>
+                        <nav class="navigation post-navigation py-2 py-lg-3">
+                            <div class="nav-links d-sm-flex justify-content-between">
+                                {% if previous_news %}
+                                <div class="nav-previous">
+                                    <a class="d-flex align-items-center justify-content-start justify-content-md-between" 
+                                    href="{% url 'news_detail' slug_title=previous_news.slug_title %}">
+                                    <div class="align-self-center nav-left ml-2">
+                                        <span class="d-inline-block btn btn-link px-0">
+                                            <i class="fas fa-chevron-left pe-2"></i> Notícia Anterior
+                                        </span>
+                                        <span class="nav-title d-block font-weight-normal">{{ previous_news.title }}</span>
+                                        </div>
+                                        <div class="blog-post-nav-media d-none d-md-block">
+                                            {% if previous_news.principal_image %}
+                                            <img class="img-fluid" src="{{ previous_news.principal_image.url }}"
+                                            alt="Imagem Principal de {{ previous_news.title }}">
+                                            {% elif previous_news.image %}
+                                            <img class="img-fluid" src="{% static 'news/images/blog/02.jpg' %}">
+                                            {% endif %}
+                                          </div>
+                                    </a>
+                                </div>
+                                {% endif %}
+                                
+                                {% if next_news %}
+                                        <div class="nav-next">
+                                            <a class="d-flex align-items-center justify-content-end justify-content-md-between" 
+                                            href="{% url 'news_detail' slug_title=next_news.slug_title %}">
+                                              <div class="blog-post-nav-media ml-2 d-none d-md-block">
+                                                {% if next_news.principal_image %}
+                                                <img class="img-fluid" src="{{ next_news.principal_image.url }}"
+                                            alt="Imagem Principal de {{ next_news.title }}">
+                                            {% elif next_news.image %}
+                                            <img class="img-fluid" src="{% static 'news/images/blog/02.jpg' %}">
+                                            {% endif %}
+                                              </div>
+                                              <div class="align-self-center text-right nav-right">
+                                                <span class="d-inline-block btn btn-link px-0">
+                                            Próxima Notícia <i class="fas fa-chevron-right ps-2"></i>
+                                        </span>
+                                        <span class="nav-title d-block font-weight-normal">{{ next_news.title }}</span>
+                                        </div>
+                                    </a>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </nav>
+                        
+                        <div class="bg-white mb-4 mt-4">
+                            <h6 class="widget-title text-uppercase fw-bolder">Faça um Comentário!</h6>
+                            <div class="blog-sidebar-post-divider mb-4">
+                            </div>
+                            <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+                            <form class="row" method="post">
+                                {% csrf_token %}
+                                <!-- Nome e Email na mesma linha com tamanhos iguais -->
+                                <div class="col-lg-6 mb-3">
+                                    <input type="text" class="form-control" id="comment_name"
+                                        placeholder="Digite Seu Nome">
+                                </div>
+                                <div class="col-lg-6 mb-3">
+                                    <input type="email" class="form-control" id="comment_email" placeholder="Seu Email">
+                                </div>
+                                <!-- Campo de comentário -->
+                                <div class="col-lg-12 mb-3">
+                                    <textarea class="form-control" rows="3" id="comment"
+                                        placeholder="Escreva seu Comentário"></textarea>
+                                </div>
+                                <!-- Recaptcha e botão -->
+                                <div class="col-lg-12 mb-3">
+                                    <div class="g-recaptcha" data-sitekey="6Lc9gmsqAAAAANI8Gx7b5IOSupkIpTXm0SOphH-M">
+                                    </div><br>
+                                    <button type="submit" class="btn btn-primary">Enviar Comentário</button>
+                                </div>
+                            </form>
+                        </div>
+                        <!-- Divisão do código 1 parte-->
+                        <div class="bg-white mt-4">
+                            <div class="section-title">
+                                <h2 class="mb-0"><i class="fa-solid fa-bolt-lightning"></i>Most Views News</h2>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="owl-carousel arrow-styel-02 owl-loaded owl-drag" data-nav-dots="false"
+                                        data-nav-arrow="true" data-items="3" data-xl-items="3" data-lg-items="2"
+                                        data-md-items="2" data-sm-items="2" data-xs-items="1" data-xx-items="1"
+                                        data-autoheight="true">
+                                        <!-- item-01 -->
+                                        <div class="item">
+                                            <div class="blog-post post-style-02">
+                                                <div class="blog-image"> <img class="img-fluid"
+                                                        src="{% static 'news/images/blog/01.jpg' %}" alt=""> </div>
+                                                <span class="badge badge-large bg-red">Photography</span>
+                                                <div class="blog-post-details">
+                                                    <h6 class="blog-title"><a href="#">Photography is about
+                                                            simplicity</a></h6>
+                                                    <div class="blog-post-time"> <a href="#"><i
+                                                                class="fa-solid fa-calendar-days"></i>Jan 17 2022</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- item-02 -->
+                                        <div class="item">
+                                            <div class="blog-post post-style-02">
+                                                <div class="blog-image"> <img class="img-fluid"
+                                                        src="{% static 'news/images/blog/02.jpg' %}" alt=""> </div>
+                                                <span class="badge badge-large bg-skyblue">Comic</span>
+                                                <div class="blog-post-details">
+                                                    <h6 class="blog-title"><a href="#">You'll believe a man can fly</a>
+                                                    </h6>
+                                                    <div class="blog-post-time"> <a href="#"><i
+                                                                class="fa-solid fa-calendar-days"></i>Feb 2 2022</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- item-03 -->
+                                        <div class="item">
+                                            <div class="blog-post post-style-02">
+                                                <div class="blog-image"> <img class="img-fluid"
+                                                        src="{% static 'news/images/blog/03.jpg' %}" alt=""> </div>
+                                                <span class="badge badge-large bg-blue">Painting</span>
+                                                <div class="blog-post-details">
+                                                    <h6 class="blog-title"><a href="#">Painting makes us feel alive</a>
+                                                    </h6>
+                                                    <div class="blog-post-time"> <a href="#"><i
+                                                                class="fa-solid fa-calendar-days"></i>Mar 19 2022</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- item-04 -->
+                                        <div class="item">
+                                            <div class="blog-post post-style-02">
+                                                <div class="blog-image"> <img class="img-fluid"
+                                                        src="{% static 'news/images/blog/04.jpg' %}" alt=""> </div>
+                                                <span class="badge badge-large bg-pink">Lifestyle</span>
+                                                <div class="blog-post-details">
+                                                    <h6 class="blog-title"><a href="#">A lifestyle that you will
+                                                            love</a></h6>
+                                                    <div class="blog-post-time"> <a href="#"><i
+                                                                class="fa-solid fa-calendar-days"></i>Apr 20 2022</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    
                 </div>
-                <!-- News Detail End -->
-<!-- Comment List Start -->
-<div class="mb-3">
-    <div class="section-title mb-0">
-        <h4 class="m-0 text-uppercase font-weight-bold">Comentários</h4>
-    </div>
-    <div class="bg-white border border-top-0 p-4">
-        {% for comment in comments %}
-        <!-- Comentário Individual -->
-        <div class="comment mb-4 p-3 bg-light rounded">
-            <div class="d-flex justify-content-between align-items-center mb-2">
-                <!-- Foto do Autor e Nome -->
-                <div class="d-flex align-items-center">
-                    <!-- Foto do perfil -->
-                    <div class="d-flex align-items-center mb-2">
-                        {% if comment.comment_user and comment.comment_user.perfil.photo %}
-                            <img class="rounded-circle me-2" src="{{ comment.comment_user.perfil.photo.url }}" width="35" height="35" alt="Imagem de {{ comment.comment_user.username }}">
-                        {% else %}
-                            <img class="rounded-circle me-2" src="{% static 'news/img/user.jpg' %}" width="35" height="35" alt="Imagem padrão">
-                        {% endif %}
-                        <span>{{ reply.comment_user.first_name }} {{ reply.comment_user.last_name }}</span>
+            </div>
+            <div class="col-lg-5 col-xl-4">
+                <div class="sidebar mt-lg-0">
+                    <div class="widget post-widget">
+                        <h6 class="widget-title">Notícias Relacionadas</h6>
+                        <div class="news-tab">
+                            <ul class="nav nav-pills" id="pills-tab03" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link active" id="pills-latest-tab" data-bs-toggle="pill"
+                                        data-bs-target="#pills-latest" type="button" role="tab"
+                                        aria-controls="pills-latest" aria-selected="true">Latest</button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="pills-trending-tab" data-bs-toggle="pill"
+                                        data-bs-target="#pills-trending" type="button" role="tab"
+                                        aria-controls="pills-trending" aria-selected="false"
+                                        tabindex="-1">Trending</button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="pills-videos-tab" data-bs-toggle="pill"
+                                        data-bs-target="#pills-videos" type="button" role="tab"
+                                        aria-controls="pills-videos" aria-selected="false"
+                                        tabindex="-1">Popular</button>
+                                </li>
+                            </ul>
+                            <div class="tab-content" id="pills-tabContent03">
+                                <div class="tab-pane fade show active" id="pills-latest" role="tabpanel"
+                                    aria-labelledby="pills-latest-tab" tabindex="0">
+                                    <div class="blog-post post-style-04">
+                                        <div class="blog-image"> <img class="img-fluid"
+                                                src="{% static 'news/images/blog/latest/01.jpg' %}" alt=""> </div>
+                                        <div class="blog-post-details"> <span class="badge text-primary">Show</span>
+                                            <h6 class="blog-title"><a href="#">Reach out to the show</a></h6>
+                                            <div class="blog-post-meta">
+                                                <div class="blog-post-time"> <a href="#"><i
+                                                            class="fa-solid fa-calendar-days"></i>Jan 12 2022</a> </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="blog-post post-style-04">
+                                        <div class="blog-image"> <img class="img-fluid"
+                                                src="{% static 'news/images/blog/latest/02.jpg' %}" alt=""> </div>
+                                        <div class="blog-post-details"> <span
+                                                class="badge text-primary">Photography</span>
+                                            <h6 class="blog-title"><a href="#">Photography is the art of moments frozen
+                                                    in time</a></h6>
+                                            <div class="blog-post-meta">
+                                                <div class="blog-post-time"> <a href="#"><i
+                                                            class="fa-solid fa-calendar-days"></i>Feb 17 2022</a> </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="blog-post post-style-04">
+                                        <div class="blog-image"> <img class="img-fluid"
+                                                src="{% static 'news/images/blog/latest/03.jpg' %}" alt=""> </div>
+                                        <div class="blog-post-details"> <span class="badge text-primary">Food</span>
+                                            <h6 class="blog-title"><a href="#">Don’t be rude, donate some food</a></h6>
+                                            <div class="blog-post-meta">
+                                                <div class="blog-post-time"> <a href="#"><i
+                                                            class="fa-solid fa-calendar-days"></i>Mar 15 2022</a> </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="pills-trending" role="tabpanel"
+                                    aria-labelledby="pills-trending-tab" tabindex="0">
+                                    <div class="blog-post post-style-04">
+                                        <div class="blog-image"> <img class="img-fluid"
+                                                src="{% static 'news/images/blog/latest/04.jpg' %}" alt=""> </div>
+                                        <div class="blog-post-details"> <span class="badge text-primary">series</span>
+                                            <h6 class="blog-title"><a href="#">Time Is Greater Than Money</a></h6>
+                                            <div class="blog-post-meta">
+                                                <div class="blog-post-time"> <a href="#"><i
+                                                            class="fa-solid fa-calendar-days"></i>Feb 2 2022</a> </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="blog-post post-style-04">
+                                        <div class="blog-image"> <img class="img-fluid"
+                                                src="{% static 'news/images/blog/latest/05.jpg' %}" alt=""> </div>
+                                        <div class="blog-post-details"> <span class="badge text-primary">crypto</span>
+                                            <h6 class="blog-title"><a href="#">I Do Think Bitcoin Is The First That Has
+                                                    The Potential To Do Something Like Changing The World</a></h6>
+                                            <div class="blog-post-meta">
+                                                <div class="blog-post-time"> <a href="#"><i
+                                                            class="fa-solid fa-calendar-days"></i>Mar 4 2022</a> </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="blog-post post-style-04">
+                                        <div class="blog-image"> <img class="img-fluid"
+                                                src="{% static 'news/images/blog/latest/06.jpg' %}" alt=""> </div>
+                                        <div class="blog-post-details"> <span
+                                                class="badge text-primary">politician</span>
+                                            <h6 class="blog-title"><a href="#">Leadership, Experience, Values Means
+                                                    Something</a></h6>
+                                            <div class="blog-post-meta">
+                                                <div class="blog-post-time"> <a href="#"><i
+                                                            class="fa-solid fa-calendar-days"></i>May 6 2022</a> </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- VIdeos-->
+                                <div class="tab-pane fade" id="pills-videos" role="tabpanel"
+                                    aria-labelledby="pills-videos-tab" tabindex="0">
+                                    <div class="blog-post post-style-04">
+                                        <div class="blog-image"> <img class="img-fluid"
+                                                src="{% static 'news/images/blog/latest/07.jpg' %}" alt=""> </div>
+                                        <div class="blog-post-details"> <span class="badge text-primary">electric</span>
+                                            <h6 class="blog-title"><a href="#">Everyday Vehicles That Aren’t</a></h6>
+                                            <div class="blog-post-meta">
+                                                <div class="blog-post-time"> <a href="#"><i
+                                                            class="fa-solid fa-calendar-days"></i>Apr 11 2022</a> </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="blog-post post-style-04">
+                                        <div class="blog-image"> <img class="img-fluid"
+                                                src="{% static 'news/images/blog/latest/08.jpg' %}" alt=""> </div>
+                                        <div class="blog-post-details"> <span class="badge text-primary">crypto</span>
+                                            <h6 class="blog-title"><a href="#">Blockchain is the most promising
+                                                    technology since the internet</a></h6>
+                                            <div class="blog-post-meta">
+                                                <div class="blog-post-time"> <a href="#"><i
+                                                            class="fa-solid fa-calendar-days"></i>May 8 2022</a> </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="blog-post post-style-04">
+                                        <div class="blog-image"> <img class="img-fluid"
+                                                src="{% static 'news/images/blog/latest/09.jpg' %}" alt=""> </div>
+                                        <div class="blog-post-details"> <span class="badge text-primary">security</span>
+                                            <h6 class="blog-title"><a href="#">Professional Security wasn’t Available…
+                                                    So we fixed it</a></h6>
+                                            <div class="blog-post-meta">
+                                                <div class="blog-post-time"> <a href="#"><i
+                                                            class="fa-solid fa-calendar-days"></i>Jun 6 2022</a> </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    
-                    
-                    <!-- Nome do Autor -->
-                    {% if comment.comment_user %}
-                    <strong class="me-2">{{ comment.comment_user.first_name }} {{ comment.comment_user.last_name }}</strong>
-                    {% else %}
-                    <strong class="me-2">{{ comment.comment_name }}</strong>
-                    {% endif %}
-                    
-                    <!-- Data do comentário -->
-                    <small class="text-muted">{{ comment.comment_date|date:"d M, Y - H:i" }}</small>
-                </div>
+                    <!--divisao 2 parte -->
+                    {% include 'components/_publicidades.html' %}
 
-                <!-- Link da notícia comentada -->
-                {% if comment.comment_news %}
-                <div>
-                    <a href="{{ comment.comment_news.get_absolute_url }}" class="text-decoration-none text-primary">
-                        {{ comment.comment_news.title }}
-                    </a>
-                </div>
-                {% endif %}
-            </div>
-            
-            <!-- Conteúdo do comentário -->
-            <p class="mb-2 text-dark">{{ comment.comment }}</p>
-            
-            <!-- Botões de interação -->
-            <div class="d-flex align-items-center">
-                <button class="btn btn-sm btn-outline-secondary me-2">
-                    <i class="far fa-thumbs-up"></i> Curtir
-                </button>
-                <button class="btn btn-sm btn-outline-secondary" onclick="toggleReplyForm({{ comment.id }})">
-                    <i class="far fa-reply"></i> Responder
-                </button>
-            </div>
-
-            <!-- Formulário de resposta -->
-            <div id="reply-form-{{ comment.id }}" class="reply-form mt-3" style="display:none;">
-                <form method="post">
-                    {% csrf_token %}
-                    <input type="hidden" name="parent_id" value="{{ comment.id }}">
-                    {{ form.as_p }}
-                    <button type="submit" class="btn btn-primary">Enviar Resposta</button>
-                </form>
-            </div>
-
-            <!-- Respostas aos comentários -->
-            {% for reply in comment.replies.all %}
-            <div class="comment-reply mt-3 p-3 bg-light rounded">
-                <div class="d-flex justify-content-between align-items-center mb-2">
-                    <!-- Foto do autor da resposta -->
-                    <div class="d-flex align-items-center mb-2">
-                        {% if reply.comment_user and reply.comment_user.perfil.photo %}
-                            <img class="rounded-circle me-2" src="{{ reply.comment_user.perfil.photo.url }}" width="35" height="35" alt="Imagem de {{ reply.comment_user.username }}">
-                        {% else %}
-                            <img class="rounded-circle me-2" src="{% static 'news/img/user.jpg' %}" width="35" height="35" alt="Imagem padrão">
-                        {% endif %}
-                        <span>{{ reply.comment_user.first_name }} {{ reply.comment_user.last_name }}</span>
+                    <div class="widget sidebar-category">
+                        <h6 class="widget-title">Categories</h6>
+                        <ul>
+                            <li>
+                                <a href="#">
+                                    <div class="category">
+                                        <div class="category-image">
+                                            <img class="img-fluid" src="{% static 'news/images/category/06.jpg' %}"
+                                                alt="">
+                                        </div>
+                                        <div class="category-name">
+                                            <h6>Sport<span>(3)</span></h6>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <div class="category">
+                                        <div class="category-image">
+                                            <img class="img-fluid" src="{% static 'news/images/category/07.jpg' %}"
+                                                alt="">
+                                        </div>
+                                        <div class="category-name">
+                                            <h6>Travel<span>(5)</span></h6>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <div class="category">
+                                        <div class="category-image">
+                                            <img class="img-fluid" src="{% static 'news/images/category/08.jpg' %}"
+                                                alt="">
+                                        </div>
+                                        <div class="category-name">
+                                            <h6>Lifestyle<span>(8)</span></h6>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <div class="category">
+                                        <div class="category-image">
+                                            <img class="img-fluid" src="{% static 'news/images/category/20.jpg' %}"
+                                                alt="">
+                                        </div>
+                                        <div class="category-name">
+                                            <h6>Games<span>(9)</span></h6>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <div class="category">
+                                        <div class="category-image">
+                                            <img class="img-fluid" src="{% static 'news/images/category/19.jpg' %}"
+                                                alt="">
+                                        </div>
+                                        <div class="category-name">
+                                            <h6>Video<span>(8)</span></h6>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
                     </div>
-                    
-                    
-                    <!-- Nome do autor da resposta -->
-                    <strong>{{ reply.comment_user.first_name }} {{ reply.comment_user.last_name }}</strong>
-                    <small class="text-muted">{{ reply.comment_date|date:"d M, Y - H:i" }}</small>
+                    <div class="widget">
+                        <h6 class="widget-title">Assine nossas Notícias</h6>
+                        <div class="newsletter">
+                            <i class="fa-solid fa-envelope-open-text"></i>
+                            <p>Inscreva-se para receber nossas últimas notícias e atualizações.</p>
+                            <div class="newsletter-box">
+                                <input type="email" class="form-control" placeholder="E-Mail Address">
+                                <button type="submit" class="btn btn-primary">Inscrever</button>
+                            </div>
+                            <small>Não enviamos Span!</small>
+                        </div>
+                    </div>
+                    <div class="widget widget-tag mb-0">
+                        <h6 class="widget-title">Tags</h6>
+                        <ul class="list-unstyled">
+                            <li><a href="#"> Games</a></li>
+                            <li><a href="#"> Lifestyle</a></li>
+                            <li><a href="#"> Technology</a></li>
+                            <li><a href="#"> Travel</a></li>
+                            <li><a href="#"> Sport</a></li>
+                            <li><a href="#"> Movie</a></li>
+                        </ul>
+                    </div>
                 </div>
-                <!-- Conteúdo da resposta -->
-                <p class="text-dark">{{ reply.comment }}</p>
             </div>
-            {% endfor %}
         </div>
-        {% empty %}
-        <p class="text-muted">Seja o primeiro a comentar!</p>
-        {% endfor %}
     </div>
-</div>
-<!-- Comment List End -->
-
-<!-- Comment Form Start -->
-<div class="mb-3">
-    <div class="section-title mb-0">
-        <h4 class="m-0 text-uppercase font-weight-bold">Deixe um Comentário</h4>
-    </div>
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-    <div class="bg-white border border-top-0 p-4">
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <div class="g-recaptcha" data-sitekey="6Lc9gmsqAAAAANI8Gx7b5IOSupkIpTXm0SOphH-M"></div><br>
-            <button type="submit" class="btn btn-primary">Enviar Comentário</button>
-        </form>
-    </div>
-</div>
-<!-- Comment Form End -->
-
+</section>
+<!--=================================
+      Blog -->
 <script>
     function toggleReplyForm(commentId) {
         var form = document.getElementById('reply-form-' + commentId);
@@ -300,69 +550,37 @@
     }
 </script>
 
-
-
-            </div>
-
-
-                <!-- Social Follow Start -->
-                {% include 'components/_publicidades.html' %}
-                <!-- Social Follow End -->
-
-                <!-- Ads Start -->
-                <div class="mb-3">
-                    <div class="section-title mb-0">
-                        <h4 class="m-0 text-uppercase font-weight-bold">Anúncios</h4>
-                    </div>
-                    <div class="bg-white text-center border border-top-0 p-3">
-                        <a href=""><img class="img-fluid" src="{% static 'news/img/news-800x500-2.jpg' %}" alt=""></a>
-                    </div>
-                </div>
-                <!-- Ads End -->
-
-                        <!-- Popular News Start -->
-                        {% block popular_news_block %}
-                        {% include 'news/news_popular.html' %}
-                        {% endblock %}
-                    <!-- Popular News End -->
-                     <!-- Enquetes Start -->
-                      {% block enquetes %}
-
-                    <!-- Enquetes End -->
-                    {% endblock %}
-        </div>
-    </div>
+</div>
+</div>
 </div>
 <!-- News With Sidebar End -->
 <script>
     // Função para exibir/ocultar a barra de compartilhamento
     function toggleShareBar(event) {
-      event.preventDefault(); // Evita o comportamento padrão do link
-      var shareBar = document.getElementById("share-bar");
-      if (shareBar.style.display === "none") {
-        shareBar.style.display = "block";
-      } else {
-        shareBar.style.display = "none";
-      }
+        event.preventDefault(); // Evita o comportamento padrão do link
+        var shareBar = document.getElementById("share-bar");
+        if (shareBar.style.display === "none") {
+            shareBar.style.display = "block";
+        } else {
+            shareBar.style.display = "none";
+        }
     }
 
     // Função para copiar a URL para a área de transferência
     function copyToClipboard() {
-      var copyText = document.getElementById("share-url");
-      copyText.select();
-      copyText.setSelectionRange(0, 99999);  // Para dispositivos móveis
-      document.execCommand("copy");
+        var copyText = document.getElementById("share-url");
+        copyText.select();
+        copyText.setSelectionRange(0, 99999);  // Para dispositivos móveis
+        document.execCommand("copy");
 
-      // Exibir uma mensagem de sucesso
-      var shareMessage = document.getElementById("share-message");
-      shareMessage.textContent = "Link copiado para a área de transferência!";
+        // Exibir uma mensagem de sucesso
+        var shareMessage = document.getElementById("share-message");
+        shareMessage.textContent = "Link copiado para a área de transferência!";
 
-      // Ocultar a barra após 2 segundos
-      setTimeout(function() {
-        document.getElementById("share-bar").style.display = "none";
-      }, 2000);
+        // Ocultar a barra após 2 segundos
+        setTimeout(function () {
+            document.getElementById("share-bar").style.display = "none";
+        }, 2000);
     }
-  </script>
-
-
+</script>
 {% endblock %}

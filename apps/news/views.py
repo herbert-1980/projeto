@@ -23,6 +23,8 @@ from django.views import View
 from django.utils import timezone
 from django.shortcuts import render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
+
+from apps.public_services.forms import LostAndFoundForm
 #from apps.news.models import Article
 
 
@@ -186,9 +188,6 @@ class NewsDetail(DetailView):
     slug_url_kwarg = 'slug_title'
 
     def get(self, request, form=None, *args, **kwargs):
-        """if not form:
-            form = CommentForm
-        return render(request, self.template_name, {'form': form, 'object': self.get_object()})"""
         # Obtém o objeto de notícia
         self.object = self.get_object()
 
@@ -202,8 +201,17 @@ class NewsDetail(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['hide_priority_news'] = True  # Adiciona o contexto para esconder o componente
-        context['hide_featured_news'] = True
+        # Pegar a notícia atual
+        current_news = self.object
+
+        previous_news = News.objects.filter(id__lt=current_news.id, status='published', is_published=True).order_by('-published_at').first()
+        next_news = News.objects.filter(id__gt=current_news.id, status='published', is_published=True).order_by('published_at').first()
+        context['previous_news'] = previous_news
+        context['next_news'] = next_news
+
+        context['hide_latest_posts'] = True  # Adiciona o contexto para esconder o componente
+        context['hide_top_stories'] = True
+        context['hide_breaking_news'] = True
         context['is_news_detail'] = True
         context['search_news'] = True
         context['form'] = CommentForm()
@@ -379,3 +387,16 @@ class DashboardNewsListView(LoginRequiredMixin, ListView):
     article = get_object_or_404(Article, id=article_id)
     related_articles = Article.objects.filter(tags__in=article.tags.all()).exclude(id=article.id).distinct()
     return render(request, 'news/article_detail.html', {'article': article, 'related_articles': related_articles})"""
+
+def add_lost_and_found_item(request):
+    if request.method == 'POST':
+        form = LostAndFoundForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Item adicionado com sucesso!')
+            return redirect('lost_and_found')  # Redireciona para a página de lista
+    else:
+        form = LostAndFoundForm()
+
+    return render(request, 'public_services/add_lost_and_found.html', {'form': form})
+

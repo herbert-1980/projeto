@@ -1,148 +1,166 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}
-CPNews - Comércios
-{% endblock %}
-
+{% block title %}CoophaNews - Comércios {% endblock %}
 {% block content %}
 <style>
     .offer-thumb .thumbImg {
         position: absolute;
-        bottom: 10px; /* Ajuste para posicionar a logo */
-        right: 10px; /* Ajuste para posicionar a logo */
-        width: 75px; /* Tamanho da logo como marca d'água */
-        height: auto; /* Mantém a proporção da imagem */
-        opacity: 0.5; /* Torna a logo translúcida para parecer uma marca d'água */
-        z-index: 1; /* Garante que a logo fique sobreposta */
+        bottom: 10px;
+        /* Ajuste para posicionar a logo */
+        right: 10px;
+        /* Ajuste para posicionar a logo */
+        width: 75px;
+        /* Tamanho da logo como marca d'água */
+        height: auto;
+        /* Mantém a proporção da imagem */
+        opacity: 0.5;
+        /* Torna a logo translúcida para parecer uma marca d'água */
+        z-index: 1;
+        /* Garante que a logo fique sobreposta */
     }
-  
+
     .offer-card {
-        position: relative; /* Necessário para posicionar a logo dentro do card */
+        position: relative;
+        /* Necessário para posicionar a logo dentro do card */
     }
+
     .zoom-example {
-        zoom: 0.8; /* Substitua por transform: scale(0.8) */
+        zoom: 0.8;
+        /* Substitua por transform: scale(0.8) */
     }
-  </style>
-  
-<div class="mb-3">
-    <div class="section-title">
-        <h4 class="m-0 text-uppercase font-weight-bold">Faça como estas {{ total_empresas }} Empresas Cadastradas:</h4>
+</style>
+
+<!-- Inner Header -->
+<section class="inner-header">
+    <div class="container">
+        <div class="row ">
+            <div class="col-md-12">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'banners' %} "><i
+                                class="fas fa-home me-1"></i>Banners</a></li>
+                    <li class="breadcrumb-item active"><i class="fa-solid fa-chevron-right me-2"></i><span>Faça como
+                            estas {{ total_empresas }} Empresas Cadastradas. <a href="">Cadastre-se</a> e aproveite as oportunidades.</span></li>
+                </ol>
+            </div>
+        </div>
     </div>
-</div>
+</section>
+<!-- Inner Header -->
 
 <div class="container mt-4">
-  <div class="row">
-      {% for banner in banners %}
-      <div class="col-md-4 mb-3">
-          <!-- Miniatura do banner -->
-          <div class="card">
-               {% if banner.fantasia.logo %}
-            <img src="{{ banner.fantasia.logo.url }}" class="card-img-top" alt="Logo de {{ banner.fantasia.fantasia }}" style="max-height: 200px;">
-        {% else %}
-            <img src="{% static 'images/default-logo.png' %}" class="card-img-top" alt="Logo não disponível" style="max-height: 200px;">
-        {% endif %}
-              <div class="card-body">
-                  <h6 class="card-title">{{ banner.fantasia.fantasia }}</h6>
-                  
-                  <!-- Status da empresa -->
-                  <p><strong>Status:</strong> 
-                      {% if banner.fantasia.is_open_now %}
-                        <span class="text-success">Aberto</span>
-                      {% else %}
-                        <span class="text-danger">Fechado</span>
-                      {% endif %}
-                  </p>
-                  
-                  <!-- Botão para expandir -->
-                  <a class="btn btn-outline-primary" data-bs-toggle="collapse" href="#bannerDetail{{ banner.id }}" role="button" aria-expanded="false" aria-controls="bannerDetail{{ banner.id }}">
-                      Mais Informações
-                  </a>
-              </div>
-          </div>
+    <div class="row">
+        {% for banner in banners %}
+        <div class="col-md-4 mb-3">
+            <!-- Miniatura do banner -->
+            <div class="card">
+                {% if banner.fantasia.logo %}
+                <img src="{{ banner.fantasia.logo.url }}" class="card-img-top"
+                    alt="Logo de {{ banner.fantasia.fantasia }}" style="max-height: 200px;">
+                {% else %}
+                <img src="{% static 'images/default-logo.png' %}" class="card-img-top" alt="Logo não disponível"
+                    style="max-height: 200px;">
+                {% endif %}
+                <div class="card-body">
+                    <h6 class="card-title">{{ banner.fantasia.fantasia }}</h6>
 
-          <!-- Detalhes do banner -->
-          <div class="collapse mt-2" id="bannerDetail{{ banner.id }}">
-              <div class="card card-body">
-                  <h5>Detalhes da Empresa</h5>
-                  <p>
-                    <i class="fab fa-whatsapp text-primary me-2"></i>
-                    <strong>
-                      <a href="https://wa.me/55{{ banner.fantasia.telefone }}" target="_blank">
-                        Enviar mensagem via WhatsApp
-                      </a>
-                    </strong>
-                  </p>
-                  
-                  <p><strong>Endereço:</strong> {{ banner.fantasia.rua }}, {{ banner.fantasia.num }}</p>
-                  <p><strong>Bairro:</strong> {{ banner.fantasia.bairro }}</p>
-                  <p><strong>Categorias:</strong> 
-                      {% for category in banner.categories.all %}
-                          {{ category.name_category }}
-                      {% if not forloop.last %}, {% endif %}
-                      {% endfor %}
-                  </p>
-                  
-                  <p><i class="fa fa-map-marker-alt mr-2"></i><strong>Localização</strong></p>
-                  <!-- Mapa com OpenStreetMap -->
-                  <div id="map" style="height: 400px; width: 100%;">
-                      <iframe
-                          width="100%"
-                          height="400px"
-                          frameborder="0" 
-                          scrolling="no" 
-                          marginheight="0" 
-                          marginwidth="0"
-                          src="{{ companies.mapa_url|safe }}">
-                      </iframe>
-                  </div>
-                  
-                  <!-- Ofertas específicas para este banner -->
-                  <div class="mt-4">
-                      <h5 class="text-uppercase font-weight-bold">Ofertas Relacionadas</h5>
-                      <div class="offer-section fix bg-color3">
-                          <div class="offer-wrapper">
-                              <div class="container">
-                                  <div class="row gy-4">
-                                      <div class="col-lg-12">
-                                          <div class="offer-card style1 wow fadeInUp"
-                                              data-wow-delay="0.2s">
-                                              <div class="offer-content">
-                                                  <h6>{{ banner.title|default:"OFERTA DA SEMANA" }}</h6>
-                                                  <h4>{{ banner.fantasia.fantasia }}</h4>
-                                                  <p>{{ banner.description|truncatewords:10|default:"Aproveite agora mesmo!" }}</p>
-                                                  <a href="#" class="theme-btn style4" 
-   data-bs-toggle="modal" 
-   data-bs-target="#bannerModal" 
-   data-banner-id="{{ banner.id }}" 
-   data-banner-name="{{ banner.fantasia.fantasia }}" 
-   data-banner-image="{{ banner.banner.url }}" 
-   data-banner-description="{{ banner.description }}"
-   data-banner-images="{{ banner.bannerimage_set.all|json_script:'banner-images' }}">
-   Ver Promoções
-</a>
+                    <!-- Status da empresa -->
+                    <p><strong>Status:</strong>
+                        {% if empresa.is_open_now %}
+                            <span class="text-success">Aberto</span>
+                        {% else %}
+                            <span class="text-danger">Fechado</span>
+                        {% endif %}
+                    </p>
+                    
+                    
 
+                    <!-- Botão para expandir -->
+                    <a class="btn btn-primary" data-bs-toggle="collapse" href="#bannerDetail{{ banner.id }}"
+                        role="button" aria-expanded="false" aria-controls="bannerDetail{{ banner.id }}">
+                        Mais Informações
+                    </a>
+                </div>
+            </div>
 
+            <!-- Detalhes do banner -->
+            <div class="collapse mt-2" id="bannerDetail{{ banner.id }}">
+                <div class="card card-body">
+                    <h5>Detalhes da Empresa</h5>
+                    <p>
+                        <i class="fab fa-whatsapp text-primary me-2"></i>
+                        <strong>
+                            <a href="https://wa.me/55{{ banner.fantasia.telefone }}" target="_blank">
+                                Enviar mensagem via WhatsApp
+                            </a>
+                        </strong>
+                    </p>
 
-                                              </div>
-                                              <div class="offer-thumb">
-                                                  {% if banner.fantasia.logo %}
-                                                  <img class="thumbImg" src="{{ banner.fantasia.logo.url }}" alt="Logo de {{ banner.fantasia.fantasia }}">
-                                                  {% else %}
-                                                  <p class="text-center">Nenhum Logo Cadastrado.</p>
-                                                  {% endif %}
-                                              </div>
-                                          </div>
-                                      </div>
-                                  </div>
-                              </div>
-                          </div>
+                    <p><strong>Endereço:</strong> {{ banner.fantasia.rua }}, {{ banner.fantasia.num }}</p>
+                    <p><strong>Bairro:</strong> {{ banner.fantasia.bairro }}</p>
+                    <p><strong>Categorias:</strong> {{ banner.fantasia.categorias.all|join:", " }}</p>
+                        
+
+                    <p><i class="fa fa-map-marker-alt mr-2"></i><strong>Localização</strong></p>
+                    <!-- Mapa com OpenStreetMap -->
+                    <div class="map-info">
+                        <div class="map">
+                          <!-- iframe START -->
+                          <iframe 
+                            src="{{ empresas.mapa_url|default:'#' }}" 
+                            style="border:0; border-radius: 6px; width: 100%; height: 100%;" 
+                            allowfullscreen="">
+                          </iframe>
+                          <!-- iframe END -->
+                        </div>
+                        <h4>{{ empresa.razao }}</h4>
+                        <p class="mb-0">{{ empresa.endereco }}</p>
                       </div>
-                  </div>
-              </div>
-          </div>
-      </div>
-      {% endfor %}
-  </div>
+                      
+
+                    <!-- Ofertas específicas para este banner -->
+                    <div class="mt-4">
+                        <h5 class="text-uppercase font-weight-bold">Ofertas Relacionadas</h5>
+                        <div class="offer-section fix bg-color3">
+                            <div class="offer-wrapper">
+                                <div class="container">
+                                    <div class="row gy-4">
+                                        <div class="col-lg-12">
+                                            <div class="offer-card style1 wow fadeInUp" data-wow-delay="0.2s">
+                                                <div class="offer-content">
+                                                    <h6>{{ banner.title|default:"OFERTA DA SEMANA" }}</h6>
+                                                    <h4>{{ banner.fantasia.fantasia }}</h4>
+                                                    <a href="#" class="theme-btn style4" data-bs-toggle="modal"
+                                                        data-bs-target="#bannerModal" data-banner-id="{{ banner.id }}"
+                                                        data-banner-name="{{ banner.fantasia.fantasia }}"
+                                                        data-banner-image="{{ banner.banner.url }}"
+                                                        data-banner-description="{{ banner.description }}"
+                                                        data-banner-images="{{ banner.bannerimage_set.all|json_script:'banner-images' }}">
+                                                        Ver Promoções
+                                                    </a>
+
+
+
+                                                </div>
+                                                <div class="offer-thumb">
+                                                    {% if banner.fantasia.logo %}
+                                                    <img class="thumbImg" src="{{ banner.fantasia.logo.url }}"
+                                                        alt="Logo de {{ banner.fantasia.fantasia }}">
+                                                    {% else %}
+                                                    <p class="text-center">Nenhum Logo Cadastrado.</p>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
 </div>
 
 <!-- Modal -->
@@ -160,37 +178,41 @@ CPNews - Comércios
                     </div>
                 </div>
                 <!-- Carrossel de Imagens -->
-<div class="carousel slide" id="carouselBanner{{ banner.id }}" data-bs-ride="carousel">
-    <div class="carousel-inner" id="modal-carousel-inner">
-        <!-- Imagem principal -->
-        <div class="carousel-item active">
-            <img src="{{ banner.banner.url }}" class="d-block w-100" alt="Imagem principal de {{ banner.fantasia.fantasia }}">
-        </div>
-        <!-- Imagens adicionais -->
-        {% for image in banner.bannerimage_set.all %}
-        <div class="carousel-item">
-            <img src="{{ image.additional_images.url }}" class="d-block w-100" alt="Imagem adicional de {{ banner.fantasia.fantasia }}">
-        </div>
-        {% endfor %}
-    </div>
-    <!-- Controles do Carousel -->
-    <button class="carousel-control-prev" type="button" data-bs-target="#carouselBanner{{ banner.id }}" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Anterior</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#carouselBanner{{ banner.id }}" data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Próximo</span>
-    </button>
-</div>
+                <div class="carousel slide" id="carouselBanner{{ banner.id }}" data-bs-ride="carousel">
+                    <div class="carousel-inner" id="modal-carousel-inner">
+                        <!-- Imagem principal -->
+                        <div class="carousel-item active">
+                            <img src="{{ banner.banner.url }}" class="d-block w-100"
+                                alt="Imagem principal de {{ banner.fantasia.fantasia }}">
+                        </div>
+                        <!-- Imagens adicionais -->
+                        {% for image in banner.banner_image_set.all %}
+                        <div class="carousel-item">
+                            <img src="{{ image.additional_images.url }}" class="d-block w-100"
+                                alt="Imagem adicional de {{ banner.fantasia.fantasia }}">
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <!-- Controles do Carousel -->
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselBanner{{ banner.id }}"
+                        data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Anterior</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselBanner{{ banner.id }}"
+                        data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Próximo</span>
+                    </button>
+                </div>
 
-                
+
                 <p id="modal-banner-description"></p>
             </div>
         </div>
     </div>
 </div>
-
+</section>
 <script>
     // Script para carregar os dados no modal ao clicar no botão "ORDER NOW"
     document.addEventListener('DOMContentLoaded', function () {
@@ -201,15 +223,15 @@ CPNews - Comércios
                 const bannerImage = this.getAttribute('data-banner-image');
                 const bannerDescription = this.getAttribute('data-banner-description');
                 const bannerImages = JSON.parse(this.getAttribute('data-banner-images')); // Recebe as URLs das imagens adicionais
-    
+
                 // Preencher o nome do banner e a descrição
                 document.getElementById('modal-banner-name').textContent = bannerName;
                 document.getElementById('modal-banner-description').textContent = bannerDescription;
-    
+
                 // Preencher o carrossel com as imagens
                 const carouselInner = document.getElementById('modal-carousel-inner');
                 carouselInner.innerHTML = ''; // Limpar conteúdo anterior
-    
+
                 // Adicionar a imagem principal
                 const mainImageItem = document.createElement('div');
                 mainImageItem.className = 'carousel-item active';
@@ -217,7 +239,7 @@ CPNews - Comércios
                     <img src="${bannerImage}" class="d-block w-100" alt="Imagem principal de ${bannerName}">
                 `;
                 carouselInner.appendChild(mainImageItem);
-    
+
                 // Adicionar imagens adicionais
                 bannerImages.forEach(imageUrl => {
                     const additionalImageItem = document.createElement('div');
@@ -230,11 +252,8 @@ CPNews - Comércios
             });
         });
     });
-    
-    </script>
-    
 
+</script>
 
 {% include 'components/_pagination.html' %}
-
 {% endblock %}
