@@ -58,6 +58,7 @@ if not DEBUG:
 	SESSION_COOKIE_SECURE = True
 	CSRF_COOKIE_SECURE = True
  
+ 
 
 INSTALLED_APPS = [
 	'apps.accounts',
@@ -83,6 +84,7 @@ INSTALLED_APPS = [
 	'apps.signos',
 	'apps.reviews',
 	'apps.contatos',
+    'apps.newsletter',
 ]
 
 MIDDLEWARE = [

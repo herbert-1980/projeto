@@ -28,8 +28,9 @@ class News(models.Model):
     status = models.CharField(max_length=12, choices=STATUS_CHOICES, default='draft', verbose_name='Status')
 
     # Conteúdo da Notícia
-    content = models.TextField(verbose_name='Conteúdo da Notícia')
     resume = models.TextField(max_length=500, blank=True, null=True, verbose_name='Resumo da Notícia')
+    content = models.TextField(verbose_name='Conteúdo da Notícia')
+    
     principal_image = models.ImageField(upload_to='news/images/%Y/%m/%d', blank=True, null=True,
                                         verbose_name='Imagem Principal')
     video = models.URLField(blank=True, null=True)
@@ -59,6 +60,8 @@ class News(models.Model):
     class Meta:
         db_table = 'news'
         ordering = ['-published_at']
+        verbose_name = "Notícia"
+        verbose_name_plural = "Notícias"  # Certifique-se de que está correto
 
     def __str__(self):
         return self.title

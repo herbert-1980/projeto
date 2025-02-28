@@ -6,10 +6,10 @@
     <div class="d-flex justify-content-center h-100">
         <div class="card">
             <div class="card-header text-center">
-                <h3>Bem Vindos&#9996;</h3>
+                <h3>Bem Vindos</h3>
                 <!-- Apenas o logo dentro do link -->
-                <a href="{% url 'home' %}" style="color: #FFCC00; text-decoration:none; background:transparent;">
-                    <img src="{% static 'dashboard/img/logo_coophanews1.png' %}" alt="Logo" style="height: 90px;"/> <!-- Ajuste a altura conforme necessário -->
+                <a href="{% url 'home' %}" style="color: #30c96a; text-decoration:none; background:transparent;">
+                    <img src="{% static 'news/images/logo_dark.png' %}" alt="Logo" style="height: 90px;"/> <!-- Ajuste a altura conforme necessário -->
                 </a>
                 <div class="d-flex justify-content-end social_icon">
                     <span><i class="fab fa-facebook-square"></i></span>
@@ -33,14 +33,14 @@
                             <span class="input-group-text"><i class="fas fa-key"></i></span>
                         </div>
                         <input type="password" class="form-control" id="password1" name="password" placeholder="Senha" required>
-                        <button type="button" class="btn btn-link position-absolute end-0 top-50 translate-middle-y me-2" style="color: #FFCC00; text-decoration:none; background:transparent;" onclick="togglePassword('password', this)">
+                        <button type="button" class="btn btn-link position-absolute end-0 top-50 translate-middle-y me-2" style="color: #30c96a; text-decoration:none; background:transparent;" onclick="togglePassword('password', this)">
                             <i class="bi bi-eye"></i>
                         </button>
                     </div>
 
                     <!-- Campo Lembrar -->
                     <div class="row align-items-center remember">
-                        <input type="checkbox" style="color: #FFCC00; text-decoration:none; background:transparent;" id="remember_me" name="remember_me">
+                        <input type="checkbox" style="color: #30c96a; text-decoration:none; background:transparent;" id="remember_me" name="remember_me">
                         Lembrar Senha
                     </div>
                     <div class="form-group">
@@ -52,12 +52,12 @@
                 <div class="alert alert-danger mt-4">
                     <ul class="mb-0">
                         {% for field in form %}
-                        {% for error in field.errors %}
-                        <li>{{ error }}</li>
-                        {% endfor %}
+                            {% for error in field.errors %}
+                            <li>{{ error }}</li>
+                            {% endfor %}
                         {% endfor %}
                         {% for error in form.non_field_errors %}
-                        <li>{{ error }}</li>
+                            <li>{{ error }}</li>
                         {% endfor %}
                     </ul>
                 </div>
@@ -65,10 +65,10 @@
             </div>
             <div class="card-footer">
                 <div class="d-flex justify-content-center links">
-                    Não tem conta? <a href="{% url 'register' %}" style="color: #FFCC00; text-decoration:none; background:transparent;">Criar Conta</a>
+                    Não tem conta? <a href="{% url 'register' %}" style="color: #30c96a; text-decoration:none; background:transparent;">Criar Conta</a>
                 </div>
                 <div class="d-flex justify-content-center">
-                    <a href="{% url 'password_reset' %}" style="color: #FFCC00; text-decoration:none; background:transparent;">Esqueceu a Senha?</a>
+                    <a href="{% url 'password_reset' %}" style="color: #30c96a; text-decoration:none; background:transparent;">Esqueceu a Senha?</a>
                 </div>
             </div>
         </div>

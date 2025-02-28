@@ -21,7 +21,7 @@ class CustomUserCreationForm(UserCreationForm):
         }
         
     def clean_email(self):
-        email = self.cleaned_data('email')
+        email = self.cleaned_data.get('email')
         if MyUser.objects.filter(email=email).exists():
             raise ValidationError("Esse email já esta cadastrado")
         return email

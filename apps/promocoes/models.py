@@ -13,6 +13,10 @@ class Promocao(models.Model):
     def __str__(self):
         return self.titulo
 
+    class Meta:
+        verbose_name = "Promoção"
+        verbose_name_plural = "Promoções"  # Certifique-se de que está correto
+
 class ImagemPromocao(models.Model):
     promocao = models.ForeignKey(Promocao, on_delete=models.CASCADE, related_name='imagens_da_promocao')
     imagem = models.ImageField(upload_to='promocoes/imagens/')
@@ -29,3 +33,7 @@ class ImagemPromocao(models.Model):
 
     def __str__(self):
         return self.legenda or "Imagem adicional"
+
+    class Meta:
+        verbose_name = "Imagem Promoção"
+        verbose_name_plural = "Imagem Promoções"  # Certifique-se de que está correto

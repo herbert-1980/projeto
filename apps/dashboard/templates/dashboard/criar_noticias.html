@@ -15,7 +15,7 @@
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0">
                                 <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
-                                <li class="breadcrumb-item"><a href="{% url 'news_list' %}">Notícias</a></li>
+                                <li class="breadcrumb-item"><a href="{% url 'dashboard_news_list' %}">Notícias</a></li>
                                 <li class="breadcrumb-item active">Adicionar Notícia</li>
                             </ol>
                         </div>
@@ -33,27 +33,29 @@
                             <p class="card-title-desc">Preencha as informações abaixo para adicionar uma nova notícia.</p>
                         </div>
                         <div class="card-body p-4">
-                            <form class="row g-3" method="POST" autocomplete="off" enctype="multipart/form-data" action="{% url 'news_create' %}">
-                                {% csrf_token %}
-                                {% for field in news_form %}
-                                    <div class="col-md-6">
-                                        <div class="form-floating">
-                                            {{ field }}
-                                            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                                            {% for error in field.errors %}
-                                            <p class="text-danger small">{{ error }}</p>
-                                            {% endfor %}
-                                        </div>
-                                    </div>
-                                {% endfor %}
+                            <form class="row g-3" method="POST" autocomplete="off" enctype="multipart/form-data" action="{% url 'create_news' %}">
+    {% csrf_token %}
+    
+    {% for field in form %}
+        <div class="{% if field.name == 'content' %}col-md-12{% else %}col-md-6{% endif %}">
+            <div class="form-floating">
+                {{ field }}
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {% for error in field.errors %}
+                    <p class="text-danger small">{{ error }}</p>
+                {% endfor %}
+            </div>
+        </div>
+    {% endfor %}
 
-                                <!-- Botão de Submissão -->
-                                <div class="col-12 mt-3">
-                                    <button class="btn btn-primary" type="submit">Criar Notícia</button>
-                                    <div class="vr"></div>
-                                    <button class="btn btn-outline-danger" type="reset">Limpar</button>
-                                </div>
-                            </form>
+    <!-- Botão de Submissão -->
+    <div class="col-12 mt-3">
+        <button class="btn btn-primary" type="submit">Criar Notícia</button>
+        <div class="vr"></div>
+        <button class="btn btn-outline-danger" type="reset">Limpar</button>
+    </div>
+</form>
+
                         </div>
                     </div>
                 </div>

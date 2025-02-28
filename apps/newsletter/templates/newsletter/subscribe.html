@@ -1,10 +1,30 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Title</title>
-</head>
-<body>
+<div class="widget">
+    <h6 class="widget-title">Assine nossas Notícias</h6>
+        <div class="newsletter">
+            <i class="fa-solid fa-envelope-open-text"></i>
+                <p>Inscreva-se para receber nossas últimas notícias e atualizações.</p>
+                {% if messages %}
+        <ul>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+                    <div class="newsletter-box">
+                        <form id="newsletter_form" method="POST" action="{%url 'subscribe_newsletter' %}">
+                            {% csrf_token %}
+<input type="hidden" name="form_type" value="newsletter_form">
+                            <input type="email" id="newsletter_email"class="form-control" placeholder="E-Mail Address">
+<button id="newsletter-button" type="submit" class="btn btn-primary">Inscrever</button>
+                        </form>
+                    </div>
+                            <small>Não enviamos Span!</small>
+                        </div>
+                    </div>
 
-</body>
-</html>
+                    <script>
+                        document.getElementById('newsletter-button').addEventListener('click', function(event) {
+         event.preventDefault(); // Previne comportamento padrão do botão
+         document.getElementById('newsletter_form').submit(); // Envia formulário correto
+     });
+                    </script>

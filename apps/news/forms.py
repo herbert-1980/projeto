@@ -9,7 +9,7 @@ class NewsForm(forms.ModelForm):
     class Meta:
         model = News
         fields = [
-            'title', 'subtitle', 'slug_title', 'author', 'status', 'content', 'resume',
+            'title', 'subtitle', 'slug_title', 'author', 'status', 'resume','content',
             'principal_image', 'video', 'source', 'views', 'share', 'categorias',
             'published_at', 'seo_title', 'seo_description', 'is_published'
         ]
@@ -19,8 +19,8 @@ class NewsForm(forms.ModelForm):
             'slug_title': forms.TextInput(attrs={'class': 'form-control'}),
             'author': forms.Select(attrs={'class': 'form-control'}),
             'status': forms.Select(attrs={'class': 'form-control'}),
-            'content': SummernoteWidget(attrs={'class': 'form-control'}),  # Campo com Summernote
             'resume': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Resumo da Notícia'}),
+            'content': SummernoteWidget(attrs={'class': 'form-control'}),  # Campo com Summernote
             'principal_image': forms.FileInput(attrs={'class': 'form-control'}),
             'video': forms.URLInput(attrs={'class': 'form-control', 'placeholder': 'URL do Vídeo'}),
             'source': forms.URLInput(attrs={'class': 'form-control', 'placeholder': 'Fonte da Notícia'}),
@@ -47,9 +47,15 @@ class NewsForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         """Inicializa o formulário e define campos como desabilitados."""
-        super().__init__(*args, **kwargs)
-        self.fields['views'].widget.attrs['disabled'] = True
-        self.fields['share'].widget.attrs['disabled'] = True
+        super(NewsForm, self).__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            if field.widget.__class__ in [forms.CheckboxInput, forms.RadioSelect]:
+                field.widget.attrs['class'] = 'form-check-input'
+            else:
+                field.widget.attrs['class'] = 'form-control'
+
+        self.fields['views'].widget.attrs['readonly'] = True
+        self.fields['share'].widget.attrs['readonly'] = True
 
     def clean_published_at(self):
         """Valida o campo de data de publicação."""

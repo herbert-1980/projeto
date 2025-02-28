@@ -6,10 +6,10 @@
 <div class="container">
     <div class="d-flex justify-content-center h-100">
         <div class="card">
-			<div class="card-header">
-                <h3>Registrar &#128077;</h3>
-                <a href="{% url 'home' %}" style="color: #FFCC00; text-decoration:none; background:transparent;">
-                    <img src="{% static 'dashboard/img/logo_coophanews1.png' %}" alt="Logo" style="height: 90px;"/> <!-- Ajuste a altura conforme necessário -->
+			 <div class="card-header text-center">
+                <h3>Registrar</h3>
+                <a href="{% url 'home' %}" style="color: #30c96a; text-decoration:none; background:transparent;">
+                    <img src="{% static 'news/images/logo_dark.png' %}" alt="Logo" style="height: 90px;"/> <!-- Ajuste a altura conforme necessário -->
                 </a><!-- Ajuste a altura conforme necessário -->
                     <div class="d-flex justify-content-end social_icon">
                         <span><i class="fab fa-facebook-square"></i></span>
@@ -71,7 +71,7 @@
                             </span>
                         </div>
                         <input type="password" id="password1" name="password1" class="form-control" placeholder="Senha" required>
-                        <button type="button" class="btn btn-link position-absolute end-0 top-50 translate-middle-y me-2" style="color: #FFCC00; text-decoration:none; background:transparent;" onclick="togglePassword('password1', this)">
+                        <button type="button" class="btn btn-link position-absolute end-0 top-50 translate-middle-y me-2" style="color: #30c96a; text-decoration:none; background:transparent;" onclick="togglePassword('password1', this)">
                             <i class="bi bi-eye"></i>
                         </button>
                     </div>
@@ -83,7 +83,7 @@
                             </span>
                         </div>
                         <input type="password" id="password2" name="password2" class="form-control" placeholder="Confirme a Senha" required>
-                        <button type="button" class="btn btn-link position-absolute end-0 top-50 translate-middle-y me-2" style="color: #FFCC00; text-decoration:none; background:transparent;" onclick="togglePassword('password2', this)">
+                        <button type="button" class="btn btn-link position-absolute end-0 top-50 translate-middle-y me-2" style="color: #30c96a; text-decoration:none; background:transparent;" onclick="togglePassword('password2', this)">
                             <i class="bi bi-eye"></i>
                         </button>
                     </div>
@@ -97,12 +97,12 @@
             <div class="card-footer">
                 <div class="d-flex justify-content-center links mb-2">
                     Já tem Conta? 
-                    <a href="{% url 'login' %}" style="color: #FFCC00; text-decoration:none; background:transparent; margin-left: 5px;">
+                    <a href="{% url 'login' %}" style="color: #30c96a; text-decoration:none; background:transparent; margin-left: 5px;">
                         Logar
                     </a>
                 </div>
                 <div class="d-flex justify-content-center links mb-2">
-                    <a href="{% url 'password_reset' %}" style="color: #FFCC00; text-decoration:none; background:transparent;">
+                    <a href="{% url 'password_reset' %}" style="color: #30c96a; text-decoration:none; background:transparent;">
                         Esqueceu a senha?
                     </a>
                 </div>

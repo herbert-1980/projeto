@@ -1,9 +1,7 @@
 from django.urls import path
-from apps.news import views
-from apps.news.views import NewsDetail
-from apps.signos.views import signo_view
 from django.views.generic import TemplateView
-
+from apps.news import views
+from apps.signos.views import signo_view
 
 urlpatterns = [
     path('', views.NewsIndex.as_view(), name='home'),

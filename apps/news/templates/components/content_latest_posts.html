@@ -76,17 +76,17 @@
             </div>
           </div>
           {% endif %}
-          {% if viagens %}
+          {% if turismo %}
           <div class="col-sm-6">
             <div class="blog-post post-style-01">
               <div class="blog-image">
-                <img class="img-fluid" src="{{ viagens.principal_image.url }}" alt="Imagem de Viagens">
+                <img class="img-fluid" src="{{ turismo.principal_image.url }}" alt="Imagem de Viagens">
               </div>
               <div class="blog-post-details">
-                <span class="badge badge-large bg-orange">{{ viagens.categorias.first.nome_categoria|default:"Sem categoria" }}</span>
+                <span class="badge badge-large bg-orange">{{ turismo.categorias.first.nome_categoria|default:"Sem categoria" }}</span>
                 <h4 class="blog-title">
-                  <a href="{% url 'news_detail' slug_title=viagens.slug_title %}">
-                    {{ viagens.title|slice:":30" }}{% if viagens.title|length > 30 %}...{% endif %}
+                  <a href="{% url 'news_detail' slug_title=turismo.slug_title %}">
+                    {{ turismo.title|slice:":30" }}{% if turismo.title|length > 30 %}...{% endif %}
                   </a>
                 </h4>
               </div>

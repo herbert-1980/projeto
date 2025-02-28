@@ -2,9 +2,8 @@ from typing import Any
 from django.db.models.query import QuerySet
 from django.http import Http404
 from django.shortcuts import get_object_or_404, render, redirect
-from django.views.generic.list import ListView
-from django.views.generic.edit import UpdateView
-from django.urls import reverse
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
+from django.urls import reverse, reverse_lazy
 from apps.comments.forms import CommentForm
 from django.utils.timezone import now
 from django.utils.text import slugify
@@ -13,7 +12,6 @@ from django.db.models import Q, Count, Case, When
 from datetime import timedelta
 from django.contrib import messages
 from apps.comments.models import Comment
-from django.views.generic import DetailView
 from apps.news.forms import NewsForm
 from apps.news.models import News, Categoria
 from apps.enquetes.models import Enquete, Escolha
@@ -23,7 +21,7 @@ from django.views import View
 from django.utils import timezone
 from django.shortcuts import render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
-
+from apps.newsletter.forms import NewsletterForm
 from apps.public_services.forms import LostAndFoundForm
 #from apps.news.models import Article
 
@@ -73,9 +71,9 @@ class NewsIndex(ListView):
         ).order_by('-published_at').first()
 
         # Últimas notícias da categoria Viagens
-        context['viagens'] = News.objects.filter(
+        context['turismo'] = News.objects.filter(
             status='published',
-            categorias__nome_categoria='Viagens',
+            categorias__nome_categoria='Turismo',
             is_published=True,
         ).order_by('-published_at').first()
 
@@ -215,6 +213,7 @@ class NewsDetail(DetailView):
         context['is_news_detail'] = True
         context['search_news'] = True
         context['form'] = CommentForm()
+        context['newsletter_form'] = NewsletterForm()
         context['comments'] = Comment.objects.filter(comment_news=self.object, comment_published=True, parent__isnull=True).order_by('created_at')
         context['comment_count'] = context['comments'].count()  # Adiciona a contagem de comentários
 
@@ -234,37 +233,52 @@ class NewsDetail(DetailView):
         return context
 
     def post(self, request, *args, **kwargs):
-        form = CommentForm(request.POST)
-        parent_id = request.POST.get('parent_id')
-        if form.is_valid():
-            comment = form.save(commit=False)
-            # Associa o comentário à notícia correta
-            comment.comment_news = self.get_object()
+        # Identifica qual formulário foi submetido
+        form_type = request.POST.get('form_type')
+
+        # Processar formulário de comentários
+        if form_type == 'comment_form':
+            if not request.user.is_authenticated:
+                messages.error(request, "Você precisa estar logado para comentar.")
+            #return redirect('news_detail', slug_title=self.get_object().slug_title)
             
-            # Verifica se é uma resposta a outro comentário
-            # parent_id = request.POST.get('parent_id')
-            if parent_id:
-                try:
-                    parent_comment = Comment.objects.get(id=parent_id)
-                    comment.parent = parent_comment
-                except Comment.DoesNotExist:
-                    messages.error(request, "Comentário da Notícia não Existe!")
-                    return self.get(request, form=form, *args, **kwargs)
-                    
+            form = CommentForm(request.POST)
+            parent_id = request.POST.get('parent_id')
+
+            if form.is_valid():
+                comment = form.save(commit=False)
+                comment.comment_news = self.get_object()  # Associa à notícia
+                # Verifica se é uma resposta a outro comentário
+                if parent_id:
+                    try:
+                        parent_comment = Comment.objects.get(id=parent_id)
+                        comment.parent = parent_comment
+                    except Comment.DoesNotExist:
+                        messages.error(request, "Comentário não encontrado!")
+            return self.get(request, form=form, *args, **kwargs)
+
             if request.user.is_authenticated:
-                comment.comment_user = request.user  # ou outro campo de usuário, se houver
+                comment.comment_user = request.user
                 comment.save()
-                messages.success(request, 'Comentário e avaliação enviado com sucesso!')
+                messages.success(request, "Comentário enviado com sucesso!")
                 return redirect('news_detail', slug_title=self.get_object().slug_title)
             else:
-                # Se o usuário não estiver autenticado, adiciona um erro no formulário
-                form.add_error(None, 'Você precisa estar logado para enviar um comentário.')
-                # Renderiza novamente a página com o formulário e mensagens de erro
+                messages.error(request, "Erro ao enviar comentário. Tente novamente.")
 
-        return self.get(request, form=form, *args, **kwargs)
+        # Processar formulário da newsletter
+        elif form_type == 'newsletter_form':
+            newsletter_form = NewsletterForm(request.POST)
+            if newsletter_form.is_valid():
+                newsletter_form.save()
+                messages.success(request, "Inscrição na newsletter realizada com sucesso!")
+            else:
+                messages.error(request, "Erro ao se inscrever na newsletter. Tente novamente.")
 
+        return redirect('news_detail', slug_title=self.get_object().slug_title)
+
+#####################NOTICIAS POPULARES#####################
 class PopularNewsView(ListView):
-    template_name = 'news/popular_news.html'
+    template_name = 'components/mais_populares.html'
     context_object_name = 'news_list'
 
     # paginate_by = 5  # Se você quiser paginação, ajuste conforme necessário
@@ -274,13 +288,9 @@ class PopularNewsView(ListView):
         return News.objects.filter(
             status='published',
             is_published=True,
-            principal_image__isnull=False  # Garante que haja uma imagem principal
-        ).order_by('-views')[:5]
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['news_list'] = News.objects.filter(status='published', is_published=True).order_by('-views')[:5]
-        return context
+            ).exclude(principal_image__isnull=True
+            ).exclude(principal_image=''
+            ).order_by('-views')
 
 
 class NewsByCategoryView(ListView):
@@ -329,60 +339,8 @@ def news_list_view(request):
 def custom_404_view(request, exception):
     return render(request, '404.html', status=404)
 
-############################## CRUD ##################################
-class DashboardNewsView(View):
-    template_name = 'news/criar_noticia.html'
-    form_class = NewsForm
-
-    def get_context(self, form=None):
-        """Método auxiliar para criar o contexto"""
-        news_list = News.objects.filter(is_published=True)
-        if form is None:
-            form = self.form_class()
-        return {
-            'news_list': news_list,
-            'form': form,
-        }
-
-    def get(self, request, *args, **kwargs):
-        context = self.get_context()
-        return render(request, self.template_name, context)
-
-    def post(self, request, *args, **kwargs):
-        form = self.form_class(request.POST)
-        if form.is_valid():
-            news = form.save(commit=False)
-            # Atribui o autor e cria o slug se necessário
-            news.author = request.user
-            if not news.slug_title:
-                news.slug_title = slugify(news.title)
-            news.save()
-            messages.success(request, 'Notícia adicionada com sucesso!')
-            return redirect(reverse('news_dashboard'))
-        else:
-            print("Erros do Formulário:", form.errors)
-            context = self.get_context(form)
-            return render(request, self.template_name, context)
-
-class DashboardNewsListView(LoginRequiredMixin, ListView):
-    model = News
-    template_name = 'dashboard/listar_noticias.html'  # Template para o dashboard
-    paginate_by = 10
-    context_object_name = 'news_list'
-
-    def get_queryset(self):
-        """Filtra as notícias para exibição no dashboard."""
-        queryset = super().get_queryset()
-        # Você pode ajustar os filtros aqui, por exemplo, exibir todas as notícias
-        # ou apenas as publicadas.
-        return queryset.order_by('-published_at')  # Ordena por data de publicação
-
-    def get_context_data(self, **kwargs):
-        """Adiciona informações adicionais ao contexto, se necessário."""
-        context = super().get_context_data(**kwargs)
-        context['title'] = "Lista de Notícias"
-        return context
-
+        
+    
 """def article_detail(request, article_id):
     article = get_object_or_404(Article, id=article_id)
     related_articles = Article.objects.filter(tags__in=article.tags.all()).exclude(id=article.id).distinct()
